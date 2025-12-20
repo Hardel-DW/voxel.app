@@ -89,6 +89,7 @@
     --animate-fadein: fadein 200ms ease-in;
     --animate-item-pulse: item-pulse 2s linear infinite;
     --text-shadow-tooltip: 0.1em 0.1em 0 rgb(0, 0, 0 / 0.25);
+    --color-sidebar: #0C0C0E;
     --color-primary: #d2d2d2;
     --color-secondary: #454545;
     --color-tertiary: #8080802e;

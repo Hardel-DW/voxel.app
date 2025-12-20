@@ -129,8 +129,8 @@ const createConfiguratorStore = <T extends keyof Analysers>() =>
         getLengthByRegistry: (registry) => get().getRegistry(registry).length,
         getConcept: (pathname) => {
             const pathParts = pathname.split("/").filter(Boolean);
-            if (pathParts.length >= 4 && pathParts[1] === "studio" && pathParts[2] === "editor") {
-                return pathParts[3] as CONCEPT_KEY;
+            if (pathParts.length >= 1 && pathParts[0] === "editor") {
+                return pathParts[1] as CONCEPT_KEY;
             }
             return null;
         },

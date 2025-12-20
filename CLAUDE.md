@@ -1,26 +1,25 @@
 # CLAUDE.md
-This file provides guidance to Claude Code (claude.ai/code) when working with
-code in this repository.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 This projects is intended for a large public use, so we need to be careful with the code and the performance, me and you claude are expert/senior software engineers with mature approaches. Prioritise a good implementation over a quick and dirty one that fixes the issue in the immediate term. concise in our conversations I am a senior dev.
+This project use Tauri 2, please refer to the actual documentation. https://v2.tauri.app/. When you use Tauri features, cite the documentation page and section.
 
 ## Development Commands
-
 - **Dev server**: `npm run dev` - Start Vite development server
 - **Build**: `npm run build` - TypeScript compilation + Vite build
+- **Tauri dev**: `npm run tauri` - Start Tauri development server
 - **Preview**: `npm run preview` - Preview production build
-- **Lint/Typecheck**: `npm run lint` - Run TypeScript compiler without emit for
-  type checking
+- **Lint/Typecheck**: `npm run lint` - Run TypeScript 7 Go compiler without emit for type checking
 - **Format**: `npm run biome:format` - Format code with Biome
 - **Lint check**: `npm run biome:check` - Check code with Biome linter
 - **Auto-fix**: `npm run biome:unsafefix` - Auto-fix with Biome (unsafe)
 
 ## Architecture Overview
-This is a React + TypeScript application built with Vite, using TanStack Router
-for routing and Zustand for state management. It's a Minecraft datapack/voxel
+This is a Desktop Application with React + TypeScript built with Vite, using TanStack Router and Tauri
+for routing and Zustand for state management. It's a Minecraft datapack/voxel/mods
 editor studio application.
 
 ### Core Technologies
-- **Build Tool**: Vite with Rolldown
+- **Build Tool**: Vite 8 with Rolldown
 - **Framework**: React 19 with React Compiler
 - **Routing**: TanStack Router (file-based routing in `src/routes/`)
 - **State Management**: Zustand
@@ -34,9 +33,9 @@ editor studio application.
 src/
 ├── components/          # React components
 │   ├── layout/         # Layout components (Navbar, Footer, etc.)
-│   ├── pages/          # Page-specific components
 │   ├── tools/          # Core editor tools and elements
-│   │   ├── elements/   # Voxel element renderers (recipe, loot, etc.)
+│   │   ├── concept/    # Component related to a specific concept (recipe, loot, enchantment, etc.)
+│   │   ├── elements/   # Generic component for studio with reactive zustand state management
 │   │   ├── sidebar/    # Editor sidebar components
 │   │   ├── debug/      # Editor debug panels
 │   │   └── elements.ts # All data abouts Tabs and Href Navigation elements
@@ -44,17 +43,13 @@ src/
 │   └── ui/            # Reusable UI components (Not Shadcn)
 ├── lib/               # Utilities and hooks
 │   ├── hook/         # Custom React hooks
-│   ├── i18n/         # Internationalization containting i18nServer.ts (Server Side) and i18nStore.ts (Client Side)
 │   └── utils/        # General utilities
 ├── routes/           # TanStack Router file-based routes
-├── i18n/             # Translation files containing en.json and fr.json
 └── globals.css       # Global styles
 ```
 
 ### Key Architectural Concepts
-
 #### Voxel Studio
-
 - **Main Store**: `src/components/tools/Store.ts` - Central Zustand store
   managing:
   - Voxel elements and datapack compilation
@@ -64,12 +59,14 @@ src/
 - **Query Provider**: TanStack Query for server state with persistence
 
 #### Routing Pattern
-
 - Uses TanStack Router with file-based routing
 - Nested layouts with `Outlet` components
 
-#### Element System
+#### Internationalization
+- use t() function to transtale string allow interpolation with {}, i18n code is in @/lib/i18n.ts.
+- All translations are in `src-tauri/resources/locales` folder.
 
+#### Element System
 - Powered by `@voxelio/breeze` library for Minecraft datapack operations
 - Elements stored in Map with identifier-based keys
 - Registry-based organization (recipes, loot tables, textures, etc.)

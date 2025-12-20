@@ -5,6 +5,7 @@ import RepositoryOpener from "@/components/tools/RepositoryOpener";
 import RestoreLastSession from "@/components/tools/RestoreLastSession";
 import VanillaImportButton from "@/components/tools/VanillaImportButton";
 import { getLocale, t } from "@/lib/i18n";
+import TitleBar from "@/components/layout/TitleBar";
 
 const DISABLE_MAINTENANCE = false;
 export const Route = createFileRoute("/")({
@@ -22,6 +23,7 @@ function questions() {
 function StudioLayout() {
     return (
         <main className="relative w-full overflow-x-hidden">
+            <TitleBar />
             <Link to="/editor" className="hidden" aria-hidden="true" />
             <div className="pointer-events-none absolute inset-x-0 top-0 h-screen -z-10 overflow-hidden">
                 <svg

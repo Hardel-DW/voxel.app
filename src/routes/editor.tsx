@@ -1,3 +1,4 @@
+import { getCurrentWindow } from "@tauri-apps/api/window";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
 import { createFileRoute, Outlet } from "@tanstack/react-router";
 import EditorLoading from "@/components/tools/loading/EditorLoading";
@@ -7,8 +8,9 @@ import ItemTooltip from "@/components/tools/elements/gui/ItemTooltip";
 import NotFoundStudio from "@/components/tools/NotFoundStudio";
 import StudioSidebar from "@/components/tools/sidebar/Sidebar";
 import ToolInternalization from "@/components/tools/ToolInternalization";
-import { useDataAttribute } from "@/lib/hook/useDataAttribute";
 import { getQueryClient } from "@/lib/utils/query";
+
+const appWindow = getCurrentWindow();
 
 export const Route = createFileRoute("/editor")({
     component: EditorLayout,
@@ -18,54 +20,70 @@ export const Route = createFileRoute("/editor")({
 
 function EditorLayout() {
     const queryClient = getQueryClient();
-    const pinned = useDataAttribute<HTMLDivElement>({ name: "pinned", initial: true });
 
     return (
-        <div
-            className="flex gap-4 h-dvh w-full p-4 overflow-hidden relative transition-all duration-300 ease-in-out box-border"
-            ref={pinned.ref}>
-            <div className="shrink-0 transition-[width] duration-300 ease-in-out z-40 w-20 in-data-pinned:w-70 border in-data-pinned:border-none not-in-data-pinned:rounded-2xl not-in-data-pinned:border-zinc-800/50 not-in-data-pinned:bg-zinc-950/75">
-                <aside className="flex flex-col h-full w-full overflow-hidden rounded-2xl border-none">
-                    <div className="flex items-center shrink-0 in-data-pinned:pt-5 transition-all duration-300 justify-center in-data-pinned:justify-between flex-col gap-4 in-data-pinned:flex-row in-data-pinned:gap-0 in-data-pinned:px-6">
-                        <a
-                            href="/"
-                            className="flex items-center gap-2 text-lg transition-colors hover:opacity-80 w-0 opacity-0 in-data-pinned:w-auto in-data-pinned:opacity-100 not-in-data-pinned:h-0">
-                            <img src="/icons/logo.svg" alt="Voxel" className="size-6 brightness-90" />
-                            <span className="font-bold text-primary transition-all duration-300 overflow-hidden">VOXEL</span>
-                        </a>
-                        <button
-                            type="button"
-                            onClick={pinned.toggle}
-                            className="size-10 flex items-center justify-center rounded-md hover:bg-white/10 transition-colors cursor-pointer text-zinc-400 hover:text-zinc-100">
-                            <img src="/icons/menu.svg" alt="Collapse" className="size-6 invert-75" />
-                        </button>
-                    </div>
-
-                    <div className="flex-1 min-h-0 px-2">
-                        <StudioSidebar />
-                    </div>
-                </aside>
-            </div>
-
-            <main className="flex-1 relative flex flex-col min-w-0 bg-content overflow-hidden rounded-2xl border border-zinc-900">
-                <div className="absolute top-6 right-8 z-50 flex items-center gap-6 pointer-events-auto">
-                    <ToolInternalization />
-                    <a href="/" className="select-none size-fit opacity-50 hover:opacity-100 transition-opacity">
-                        <img src="/icons/logo.svg" alt="Voxel" className="size-6" />
+        <div className="flex h-dvh w-full overflow-hidden bg-[#0f0e0e]">
+            <aside className="shrink-0 w-16 flex flex-col ">
+                <div className="h-12 flex items-center justify-center">
+                    <a href="/" className="hover:opacity-80 transition-opacity">
+                        <img src="/icons/logo.svg" alt="Voxel" className="size-5" />
                     </a>
                 </div>
+                <StudioSidebar />
+            </aside>
 
-                <div className="size-full relative">
-                    <div className="absolute w-full -z-10 inset-0 shadow-2xl bg-linear-to-r from-[#401727] to-[#311e7696] opacity-20 rounded-full blur-3xl" />
-                    <HydrationBoundary state={dehydrate(queryClient)}>
-                        <ConfigManager>
-                            <Outlet />
-                            <ItemTooltip />
-                            <StudioDialog />
-                        </ConfigManager>
-                    </HydrationBoundary>
-                </div>
-            </main>
+            <div className="flex-1 flex flex-col min-w-0">
+                <header
+                    data-tauri-drag-region
+                    className="shrink-0 h-12 flex items-center justify-between select-none">
+                    <div className="flex items-center gap-4 pl-4">
+                        <ToolInternalization />
+                    </div>
+
+                    <div className="flex items-center h-full">
+                        <button
+                            type="button"
+                            onClick={() => appWindow.minimize()}
+                            className="h-full px-4 flex items-center justify-center group cursor-pointer">
+                            <svg className="size-3 text-zinc-500 group-hover:text-zinc-200 transition-colors" viewBox="0 0 10 1">
+                                <path fill="currentColor" d="M0 0h10v1H0z" />
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => appWindow.toggleMaximize()}
+                            className="h-full px-4 flex items-center justify-center group cursor-pointer">
+                            <svg className="size-3 text-zinc-500 group-hover:text-zinc-200 transition-colors" viewBox="0 0 10 10">
+                                <path fill="currentColor" d="M0 0v10h10V0H0zm1 1h8v8H1V1z" />
+                            </svg>
+                        </button>
+                        <button
+                            type="button"
+                            onClick={() => appWindow.close()}
+                            className="h-full px-4 flex items-center justify-center group cursor-pointer">
+                            <svg className="size-3 text-zinc-500 group-hover:text-red-400 transition-colors" viewBox="0 0 10 10">
+                                <path
+                                    fill="currentColor"
+                                    d="M1.41 0L0 1.41 3.59 5 0 8.59 1.41 10 5 6.41 8.59 10 10 8.59 6.41 5 10 1.41 8.59 0 5 3.59 1.41 0z"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                </header>
+
+                <main className="flex-1 relative min-h-0 ml-0 bg-content overflow-hidden border-t border-zinc-800/50 rounded-tl-3xl">
+                    <div className="size-full relative">
+                        <div className="absolute w-full -z-10 inset-0 shadow-2xl bg-linear-to-r from-[#401727] to-[#311e7696] opacity-20 rounded-full blur-3xl" />
+                        <HydrationBoundary state={dehydrate(queryClient)}>
+                            <ConfigManager>
+                                <Outlet />
+                                <ItemTooltip />
+                                <StudioDialog />
+                            </ConfigManager>
+                        </HydrationBoundary>
+                    </div>
+                </main>
+            </div>
         </div>
     );
 }
