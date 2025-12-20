@@ -12,6 +12,7 @@ import { TreeProvider } from "@/components/ui/tree/TreeNavigationContext";
 import { TreeSidebar } from "@/components/ui/tree/TreeSidebar";
 import { useElementsByType } from "@/lib/hook/useElementsByType";
 import { buildTree } from "@/lib/utils/tree";
+import { t } from "@/lib/i18n";
 
 const concept = CONCEPTS.find((c) => c.registry === "loot_table");
 if (!concept) throw new Error("Loot table concept not found");
@@ -43,7 +44,7 @@ function LootTableLayout() {
         <TreeProvider config={{ overviewRoute, detailRoute, changesRoute, tabRoutes, tree, modifiedCount }}>
             <div className="flex size-full overflow-hidden relative isolate">
                 <EditorSidebar
-                    title="loot:overview.title"
+                    title={t("loot.overview.title")}
                     icon="/images/features/item/bundle_close.webp"
                     linkTo="/editor/loot_table/overview">
                     <TreeSidebar />

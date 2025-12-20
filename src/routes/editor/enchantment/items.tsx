@@ -43,7 +43,7 @@ function EnchantmentItemsPage() {
                         return (
                             <ToolSlot
                                 key={key}
-                                title={t(`enchantment:supported.${key}.title`)}
+                                title={t(`enchantment.supported.${key}.title`)}
                                 image={`/images/features/item/${key}.webp`}
                                 action={CoreAction.setValue(section, tag)}
                                 renderer={(el: EnchantmentProps) => el[section] === tag}

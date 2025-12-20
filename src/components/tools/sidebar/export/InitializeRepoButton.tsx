@@ -35,20 +35,20 @@ export default function InitializeRepoButton() {
             const compiledFiles = useConfiguratorStore.getState().compile().getFiles();
             const files = Object.fromEntries(Object.entries(compiledFiles).map(([path, content]) => [path, encodeToBase64(content)]));
             useExportStore.getState().setInitializing(Object.keys(files).length);
-            toast(t("github:init.progress"), TOAST.INFO, t("github:init.progress.count").replace("%s", Object.keys(files).length.toString()));
+            toast(t("github.init.progress"), TOAST.INFO, t("github.init.progress.count").replace("%s", Object.keys(files).length.toString()));
             return new GitHub({ token }).initializeRepository(repoName, DESCRIPTION, false, true, files);
         },
         onSuccess: (data) => {
-            toast(t("github:init.success"), TOAST.SUCCESS, data.htmlUrl);
+            toast(t("github.init.success"), TOAST.SUCCESS, data.htmlUrl);
             const [owner, repositoryName] = data.fullName.split("/");
             useExportStore.setState({ owner, repositoryName, branch: data.defaultBranch, isGitRepository: true });
             setRepoName("");
         },
         onError: (error: Error) => {
             if (error instanceof GithubRepoValidationError) {
-                return toast(t("github:init.error.validation"), TOAST.ERROR, t("github:init.error.validation.desc"));
+                return toast(t("github.init.error.validation"), TOAST.ERROR, t("github.init.error.validation.desc"));
             }
-            toast(t("github:init.error"), TOAST.ERROR, error.message);
+            toast(t("github.init.error"), TOAST.ERROR, error.message);
         },
         onSettled: () => useExportStore.getState().setInitializing(null)
     });
@@ -56,12 +56,12 @@ export default function InitializeRepoButton() {
     const handleSubmit = () => {
         const trimmedName = repoName.trim();
         if (!trimmedName) {
-            return toast(t("github:init.error.empty"), TOAST.ERROR);
+            return toast(t("github.init.error.empty"), TOAST.ERROR);
         }
 
         const isValid = /^[a-zA-Z0-9_-]+$/.test(trimmedName);
         if (!isValid) {
-            return toast(t("github:init.error.invalid"), TOAST.ERROR);
+            return toast(t("github.init.error.invalid"), TOAST.ERROR);
         }
 
         mutate();
@@ -71,7 +71,7 @@ export default function InitializeRepoButton() {
         <Dialog id="init-repo-modal" onOpenChange={(open) => open && setRepoName(name.toLowerCase().replace(/[^a-z0-9-_]/g, "-"))}>
             <DialogTrigger disabled={!isAuthenticated}>
                 <Button type="button" variant="aurora" disabled={!isAuthenticated}>
-                    {t("github:init.button")}
+                    {t("export.init_repository")}
                     <img src="/icons/company/github.svg" alt="init" className="size-4 invert-75" />
                 </Button>
             </DialogTrigger>
@@ -82,18 +82,18 @@ export default function InitializeRepoButton() {
                         <div className="flex items-center gap-x-4">
                             <img src="/icons/company/github.svg" alt="GitHub" className="size-6 invert" />
                             <span className="text-xl font-medium text-zinc-200">
-                                {t("github:init.title")}
+                                {t("github.init.title")}
                             </span>
                         </div>
                     </DialogTitle>
                     <DialogDescription>
-                        {t("github:init.description")}
+                        {t("github.init.description")}
                     </DialogDescription>
                 </DialogHeader>
 
                 <div>
                     <label htmlFor="repo-name" className="text-sm text-zinc-300 mb-2 block">
-                        {t("github:init.label")}
+                        {t("github.init.label")}
                     </label>
                     <TextInput
                         disableIcon={true}
@@ -101,7 +101,7 @@ export default function InitializeRepoButton() {
                         type="text"
                         value={repoName}
                         onChange={(e) => setRepoName(sanitizeRepoName(e.target.value))}
-                        placeholder={t("github:init.placeholder")}
+                        placeholder={t("github.init.placeholder")}
                         disabled={isPending}
                         className="w-full"
                     />
@@ -109,10 +109,10 @@ export default function InitializeRepoButton() {
 
                 <DialogFooter className="pt-6 flex items-center justify-end gap-3">
                     <DialogCloseButton variant="ghost" disabled={isPending}>
-                        {t("github:dialog.cancel")}
+                        {t("github.dialog.cancel")}
                     </DialogCloseButton>
                     <DialogCloseButton type="button" onClick={handleSubmit} variant="default" disabled={isPending}>
-                        {isPending ? t("github:dialog.processing") : t("github:init.confirm")}
+                        {isPending ? t("github.dialog.processing") : t("github.init.confirm")}
                     </DialogCloseButton>
                 </DialogFooter>
             </DialogContent>

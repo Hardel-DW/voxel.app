@@ -307,7 +307,7 @@ function RouteComponent() {
                                             className="group relative flex items-center justify-between px-4 py-3 rounded-lg border transition-all cursor-pointer bg-zinc-900/50 border-zinc-800 hover:bg-purple-950/30 hover:border-purple-800/50">
                                             <div className="flex items-center gap-3">
                                                 <span className="text-zinc-300 text-sm font-medium">
-                                                    {t(`enchantment:simulation.slot.${index + 1}`)}
+                                                    {t(`enchantment.simulation.slot.${index + 1}`)}
                                                 </span>
                                             </div>
                                             {slotRanges[index] && (

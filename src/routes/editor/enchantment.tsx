@@ -60,7 +60,7 @@ function EnchantmentLayout() {
                 disableAutoExpand
             }}>
             <div className="flex size-full overflow-hidden relative z-10 isolate">
-                <EditorSidebar title="enchantment:overview.title" icon={elementIcon} linkTo="/editor/enchantment/overview">
+                <EditorSidebar title={t("enchantment.overview.title")} icon={elementIcon} linkTo="/editor/enchantment/overview">
                     <ToggleGroup value={sidebarView} onChange={setSidebarView} className="mt-4">
                         <ToggleGroupOption value="slots">
                             {t("enchantment.overview.sidebar.slots")}

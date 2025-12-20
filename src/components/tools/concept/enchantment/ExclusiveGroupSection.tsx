@@ -58,8 +58,8 @@ export function ExclusiveGroupSection() {
                         return (
                             <ToolListOption
                                 key={id}
-                                title={t(`enchantment:exclusive.set.${id}.title`)}
-                                description={t(`enchantment:exclusive.set.${id}.description`)}
+                                title={t(`enchantment.exclusive.set.${id}.title`)}
+                                description={t(`enchantment.exclusive.set.${id}.description`)}
                                 image={`/images/features/item/${image}.webp`}
                                 values={values}
                                 lock={[isMinecraft]}

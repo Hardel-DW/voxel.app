@@ -34,8 +34,8 @@ function EnchantmentTechnicalPage() {
                     {FIELDS.map((field) => (
                         <ToolSwitch
                             key={field}
-                            title={t(`enchantment:technical.${field}.title`)}
-                            description={t(`enchantment:technical.${field}.description`)}
+                            title={t(`enchantment.technical.${field}.title`)}
+                            description={t(`enchantment.technical.${field}.description`)}
                             action={CoreAction.toggleValueInList("tags", `#minecraft:${field}`)}
                             renderer={(el: EnchantmentProps) => el.tags.includes(`#minecraft:${field}`)}
                             lock={[isMinecraft]}
@@ -53,7 +53,7 @@ function EnchantmentTechnicalPage() {
                         <div key={field}>
                             <ToolRange
                                 key={field}
-                                label={t(`enchantment:global.${field}.title`)}
+                                label={t(`enchantment.global.${field}.title`)}
                                 min={0}
                                 max={100}
                                 step={1}
@@ -71,7 +71,7 @@ function EnchantmentTechnicalPage() {
                         <ToolSwitch
                             key={effect}
                             title={Identifier.toDisplay(effect)}
-                            description={t(`effects:${effect}`)}
+                            description={t(`effects.${effect}`)}
                             action={CoreAction.toggleValueInList("disabledEffects", effect)}
                             renderer={(el: EnchantmentProps) => !el.disabledEffects.includes(effect)}
                         />

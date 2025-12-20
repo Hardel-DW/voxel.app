@@ -88,7 +88,7 @@ function EnchantmentFindPage() {
                             renderer={(el: EnchantmentProps) => el.tags.includes(value.tag)}
                             lock={[
                                 new LockEntryBuilder()
-                                    .addTextKey("enchantment:technical.lock.reason")
+                                    .addTextKey("enchantment.technical.lock.reason")
                                     .addCondition((el: EnchantmentProps) => (value.lock_value ? el.tags.includes(value.lock_value) : false))
                                     .build(),
                                 isMinecraft
@@ -107,8 +107,8 @@ function EnchantmentFindPage() {
                         logo="/images/addons/logo/dnt.webp"
                         image="/images/addons/hero/dnt.png"
                         href="https://modrinth.com/datapack/dungeons-and-taverns"
-                        title={t("dnt:title")}
-                        description={t("dnt:description")}>
+                        title={t("dnt.title")}
+                        description={t("dnt.description")}>
                         <Suspense fallback={<Loader />}>
                             <EnchantDNTSection />
                         </Suspense>
@@ -118,8 +118,8 @@ function EnchantmentFindPage() {
                         logo="/images/addons/logo/yggdrasil.webp"
                         image="/images/addons/hero/yggdrasil.png"
                         href="https://modrinth.com/datapack/yggdrasil-structure"
-                        title={t("yggdrasil:title")}
-                        description={t("yggdrasil:description")}>
+                        title={t("yggdrasil.title")}
+                        description={t("yggdrasil.description")}>
                         <Suspense fallback={<Loader />}>
                             <EnchantYggdrasilSection />
                         </Suspense>

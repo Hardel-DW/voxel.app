@@ -23,8 +23,8 @@ function EnchantmentMainPage() {
                         <TemplateCard
                             key={key}
                             image={`/icons/tools/${key}.svg`}
-                            title={t(`enchantment:global.${key}.title`)}
-                            description={t(`enchantment:global.explanation.list.${index + 1}`)}>
+                            title={t(`enchantment.global.${key}.title`)}
+                            description={t(`enchantment.global.explanation.list.${index + 1}`)}>
                             <ToolCounter
                                 min={1}
                                 max={127}

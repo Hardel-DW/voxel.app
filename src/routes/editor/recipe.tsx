@@ -12,6 +12,7 @@ import { getCurrentElement, getModifiedElements, useConfiguratorStore } from "@/
 import { TreeProvider } from "@/components/ui/tree/TreeNavigationContext";
 import { TreeSidebar } from "@/components/ui/tree/TreeSidebar";
 import { useElementsByType } from "@/lib/hook/useElementsByType";
+import { t } from "@/lib/i18n";
 
 const concept = CONCEPTS.find((c) => c.registry === "recipe");
 if (!concept) throw new Error("Recipe concept not found");
@@ -47,7 +48,7 @@ function RecipeLayout() {
     return (
         <TreeProvider config={{ overviewRoute, detailRoute, changesRoute, tabRoutes, tree, modifiedCount, folderIcons }}>
             <div className="flex size-full overflow-hidden relative z-10 isolate">
-                <EditorSidebar title="recipe:overview.title" icon={RECIPE_ICON} linkTo="/editor/recipe/overview">
+                <EditorSidebar title={t("recipe.overview.title")} icon={RECIPE_ICON} linkTo="/editor/recipe/overview">
                     <TreeSidebar />
                 </EditorSidebar>
 

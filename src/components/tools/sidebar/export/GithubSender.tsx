@@ -38,15 +38,15 @@ export default function GithubSender() {
     const { mutate, isPending } = useMutation({
         mutationFn: () => new GitHub({ token }).send(owner, repositoryName, branch, pendingAction?.type, pendingAction?.files, newBranch),
         onSuccess: (data) => {
-            const message = pendingAction?.type === "pr" ? t("github:pr.success") : t("github:push.success");
+            const message = pendingAction?.type === "pr" ? t("github.pr.success") : t("github.push.success");
             const detail =
-                pendingAction?.type === "pr" ? data.prUrl || undefined : t("github:files.modified").replace("%s", String(data.filesModified));
+                pendingAction?.type === "pr" ? data.prUrl || undefined : t("github.files.modified").replace("%s", String(data.filesModified));
             toast(message, TOAST.SUCCESS, detail);
             setPendingAction(null);
             setNewBranch(undefined);
         },
         onError: (error: Error) => {
-            const message = pendingAction?.type === "pr" ? t("github:pr.error") : t("github:push.error");
+            const message = pendingAction?.type === "pr" ? t("github.pr.error") : t("github.push.error");
             toast(message, TOAST.ERROR, error.message);
         }
     });
@@ -56,7 +56,7 @@ export default function GithubSender() {
         const compiledFiles = configuratorStore.compile().getFiles();
         const changes = new DatapackDownloader(compiledFiles).getDiff(configuratorStore.files);
         if (changes.size === 0) {
-            toast(t("github:no.changes"), TOAST.ERROR);
+            toast(t("github.no.changes"), TOAST.ERROR);
             return false;
         }
 
@@ -92,19 +92,19 @@ export default function GithubSender() {
                         <div className="flex items-center gap-x-4">
                             <img src="/icons/company/github.svg" alt="GitHub" className="size-6 invert" />
                             <span className="text-xl font-medium text-zinc-200">
-                                {t(pendingAction?.type === "pr" ? "github:dialog.pr.title" : "github:dialog.push.title")}
+                                {t(pendingAction?.type === "pr" ? "github.dialog.pr.title" : "github.dialog.push.title")}
                             </span>
                         </div>
                     </DialogTitle>
                     <DialogDescription>
-                        {t(pendingAction?.type === "pr" ? "github:dialog.pr.description" : "github:dialog.push.description")}
+                        {t(pendingAction?.type === "pr" ? "github.dialog.pr.description" : "github.dialog.push.description")}
                     </DialogDescription>
                 </DialogHeader>
 
                 {pendingAction && (
                     <div>
                         <div className="text-sm text-zinc-300 mb-3">
-                            {t("github:files.count")} {pendingAction.changes.size}
+                            {t("github.files.count")} {pendingAction.changes.size}
                         </div>
                         <div className="max-h-[400px] overflow-y-auto rounded-lg border border-zinc-800 bg-zinc-950">
                             {Array.from(pendingAction.changes).map(([path, status]) => (
@@ -140,10 +140,10 @@ export default function GithubSender() {
                     </div>
                     <div className="flex items-center gap-2">
                         <DialogCloseButton variant="link" disabled={isPending}>
-                            {t("github:dialog.cancel")}
+                            {t("github.dialog.cancel")}
                         </DialogCloseButton>
                         <DialogCloseButton type="button" onClick={() => pendingAction && mutate()} variant="ghost" disabled={isPending}>
-                            {t(isPending ? "github:dialog.processing" : pendingAction?.type === "pr" ? "github:dialog.pr.confirm" : "github:dialog.push.confirm")}
+                            {t(isPending ? "github.dialog.processing" : pendingAction?.type === "pr" ? "github.dialog.pr.confirm" : "github.dialog.push.confirm")}
                         </DialogCloseButton>
                     </div>
                 </DialogFooter>

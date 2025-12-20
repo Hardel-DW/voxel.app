@@ -27,32 +27,32 @@ export const CONCEPTS: Concept[] = [
         tabs: [
             {
                 id: "global",
-                text: "enchantment:section.global",
+                text: "enchantment.section.global",
                 url: "/editor/enchantment/main"
             },
             {
                 id: "find",
-                text: "enchantment:section.find",
+                text: "enchantment.section.find",
                 url: "/editor/enchantment/find"
             },
             {
                 id: "slots",
-                text: "enchantment:section.slots",
+                text: "enchantment.section.slots",
                 url: "/editor/enchantment/slots"
             },
             {
                 id: "items",
-                text: "enchantment:section.supported",
+                text: "enchantment.section.supported",
                 url: "/editor/enchantment/items"
             },
             {
                 id: "exclusive",
-                text: "enchantment:section.exclusive",
+                text: "enchantment.section.exclusive",
                 url: "/editor/enchantment/exclusive"
             },
             {
                 id: "technical",
-                text: "enchantment:section.technical",
+                text: "enchantment.section.technical",
                 url: "/editor/enchantment/technical"
             }
         ]
@@ -68,12 +68,12 @@ export const CONCEPTS: Concept[] = [
         tabs: [
             {
                 id: "main",
-                text: "loot:section.main",
+                text: "loot.section.main",
                 url: "/editor/loot_table/main"
             },
             {
                 id: "pools",
-                text: "loot:section.pools",
+                text: "loot.section.pools",
                 url: "/editor/loot_table/pools"
             }
         ]
@@ -89,7 +89,7 @@ export const CONCEPTS: Concept[] = [
         tabs: [
             {
                 id: "main",
-                text: "recipe:section.main",
+                text: "recipe.section.main",
                 url: "/editor/recipe/main"
             }
         ]
