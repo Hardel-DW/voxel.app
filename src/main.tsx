@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { routeTree } from "./routeTree.gen";
 import { initI18n } from "@/lib/i18n";
 import "./globals.css";
+import Splash from "./components/layout/Splash";
 
 const router = createRouter({ routeTree, defaultPreload: "intent", defaultPreloadStaleTime: 10000, defaultPreloadDelay: 0 });
 
@@ -12,21 +13,10 @@ declare module "@tanstack/react-router" {
     }
 }
 
-function Splash() {
-    return (
-        <div className="fixed inset-0 bg-black flex flex-col items-center justify-center gap-6">
-            <img src="/icons/logo.svg" alt="Voxel" className="size-24 animate-pulse" />
-            <p className="text-zinc-500 text-sm tracking-widest uppercase">Loading...</p>
-        </div>
-    );
-}
-
+const delay = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const rootElement = document.getElementById("root");
 if (rootElement && !rootElement.innerHTML) {
     const root = ReactDOM.createRoot(rootElement);
     root.render(<Splash />);
-
-    initI18n().then(() => {
-        root.render(<RouterProvider router={router} />);
-    });
+    Promise.all([initI18n(), delay(2000)]).then(() => root.render(<RouterProvider router={router} />));
 }
