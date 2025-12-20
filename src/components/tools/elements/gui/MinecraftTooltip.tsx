@@ -18,7 +18,7 @@ export default function MinecraftTooltip(props: MinecraftTooltipProps) {
     return (
         <div
             className={cn(
-                "relative mx-1 my-[0.1rem] p-1.5 pointer-events-none z-10 bg-[#100010f0] after:absolute after:top-[0.1rem] after:-right-[0.1rem] after:bottom-[0.1rem] after:-left-[0.1rem] after:border-[0.1rem] after:border-[#100010f0] border-none-solid before:right-0 before:left-0 before:top-[0.1rem] before:bottom-[0.1rem] tooltip-border",
+                "relative mx-1 my-[0.1rem] p-1.5 pointer-events-none z-10 bg-tooltip after:absolute after:top-[0.1rem] after:-right-[0.1rem] after:bottom-[0.1rem] after:-left-[0.1rem] after:border-[0.1rem] after:border-tooltip border-none-solid before:right-0 before:left-0 before:top-[0.1rem] before:bottom-[0.1rem] tooltip-border",
                 props.className
             )}>
             <div className="font-seven text-base text-white whitespace-nowrap text-left word-spacing">

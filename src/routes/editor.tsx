@@ -22,7 +22,7 @@ function EditorLayout() {
     const queryClient = getQueryClient();
 
     return (
-        <div className="flex h-dvh w-full overflow-hidden bg-[#0f0e0e]">
+        <div className="flex h-dvh w-full overflow-hidden bg-editor">
             <aside className="shrink-0 w-16 flex flex-col ">
                 <div className="h-12 flex items-center justify-center">
                     <a href="/" className="hover:opacity-80 transition-opacity">

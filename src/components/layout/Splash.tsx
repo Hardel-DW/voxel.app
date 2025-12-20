@@ -2,7 +2,7 @@ import TitleBar from "./TitleBar";
 
 const GridBackground = () => (
     <div className="absolute inset-0 z-0 pointer-events-none">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#27272a_1px,transparent_1px),linear-gradient(to_bottom,#27272a_1px,transparent_1px)] bg-size-[4rem_4rem] mask-[radial-gradient(ellipse_60%_50%_at_50%_50%,#000_70%,transparent_100%)] opacity-20" />
+        <div className="absolute inset-0 squaring-zinc-800 opacity-20" />
         <div className="absolute inset-0 bg-radial-at-c from-zinc-900/50 via-black to-black" />
     </div>
 );
