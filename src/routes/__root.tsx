@@ -7,6 +7,7 @@ import { useLocalStorage } from "@/lib/hook/useLocalStorage";
 import ShiningStars from "@/components/ui/ShiningStars";
 import { FloatingBarProvider } from "@/components/tools/floatingbar/FloatingBarContext";
 import DebugPanel from "@/components/tools/debug/DebugPanel";
+import AppLayout from "@/components/layout/AppLayout";
 
 export const Route = createRootRoute({
     errorComponent: DefaultCatchBoundary,
@@ -34,7 +35,9 @@ function RootComponent() {
                 <Providers>
                     <DebugPanel />
                     <FloatingBarProvider>
-                        <Outlet />
+                        <AppLayout>
+                            <Outlet />
+                        </AppLayout>
                     </FloatingBarProvider>
                     <Toaster />
                 </Providers>
