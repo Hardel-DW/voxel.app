@@ -18,5 +18,5 @@ const rootElement = document.getElementById("root");
 if (rootElement && !rootElement.innerHTML) {
     const root = ReactDOM.createRoot(rootElement);
     root.render(<Splash />);
-    // Promise.all([initI18n(), delay(2000)]).then(() => root.render(<RouterProvider router={router} />));
+    Promise.all([initI18n(), delay(2000)]).then(() => root.render(<RouterProvider router={router} />));
 }
