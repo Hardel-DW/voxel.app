@@ -770,7 +770,7 @@
     "loot.main.item.close": "Close",
     "loot.pools.title": "Loot Pools",
     "loot.pools.add_pool": "Add Pool",
-    "loot.pools.pool_title": "Pool %s",
+    "loot.pools.pool_title": "Pool {index}",
     "loot.pools.add_item": "Add Item",
     "loot.pools.rolls": "Rolls",
     "loot.pools.bonus_rolls": "Bonus",

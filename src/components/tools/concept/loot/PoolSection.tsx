@@ -15,7 +15,7 @@ export default function PoolSection({ poolIndex, poolData, items }: { poolIndex:
             <div className="flex items-center justify-between px-6 py-4 border-b border-zinc-800 bg-zinc-900/50">
                 <div className="flex items-center gap-6">
                     <h3 className="text-lg font-semibold text-white">
-                        {t("loot.pools.pool_title", { poolIndex: String(poolIndex) })}
+                        {t("loot.pools.pool_title", { index: poolIndex })}
                     </h3>
                     <div className="flex items-center gap-4">
                         <div className="flex items-center gap-2 px-3 py-1.5 bg-zinc-800/50 rounded-lg">

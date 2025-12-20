@@ -770,7 +770,7 @@
     "loot.main.item.close": "Fermer",
     "loot.pools.title": "Pools de Butin",
     "loot.pools.add_pool": "Ajouter un Pool",
-    "loot.pools.pool_title": "Pool %s",
+    "loot.pools.pool_title": "Pool {index}",
     "loot.pools.add_item": "Ajouter un Objet",
     "loot.pools.rolls": "Tirages",
     "loot.pools.bonus_rolls": "Bonus",
