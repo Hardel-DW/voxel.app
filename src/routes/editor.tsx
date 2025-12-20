@@ -7,7 +7,7 @@ import StudioDialog from "@/components/tools/concept/home/StudioDialog";
 import ItemTooltip from "@/components/tools/elements/gui/ItemTooltip";
 import NotFoundStudio from "@/components/tools/NotFoundStudio";
 import StudioSidebar from "@/components/tools/sidebar/Sidebar";
-import ToolInternalization from "@/components/tools/ToolInternalization";
+import Internalization from "@/components/tools/Internalization";
 import { getQueryClient } from "@/lib/utils/query";
 
 const appWindow = getCurrentWindow();
@@ -37,7 +37,7 @@ function EditorLayout() {
                     data-tauri-drag-region
                     className="shrink-0 h-12 flex items-center justify-between select-none">
                     <div className="flex items-center gap-4 pl-4">
-                        <ToolInternalization />
+                        <Internalization />
                     </div>
 
                     <div className="flex items-center h-full">
