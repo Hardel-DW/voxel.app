@@ -1,0 +1,28 @@
+{
+    "compilerOptions": {
+        "target": "es2024",
+        "module": "ESNext",
+        "skipLibCheck": true,
+        "moduleResolution": "bundler",
+        "allowImportingTsExtensions": true,
+        "strictNullChecks": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "jsx": "react-jsx",
+        "strict": true,
+        "noUnusedLocals": true,
+        "noUnusedParameters": true,
+        "noFallthroughCasesInSwitch": true,
+        "paths": {
+            "@/*": [
+                "./src/*"
+            ],
+            "@routes/*": [
+                "./src/routes/*"
+            ],
+            "@lib/*": [
+                "./src/lib/*"
+            ]
+        }
+    }
+}

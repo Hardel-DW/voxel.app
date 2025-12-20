@@ -1,0 +1,25 @@
+import { type Enchantment, Identifier } from "@voxelio/breeze";
+import { EnchantmentCategory } from "@/components/tools/concept/enchantment/EnchantmentCategory";
+import ErrorPlaceholder from "@/components/tools/elements/error/ErrorPlaceholder";
+import { useConfiguratorStore } from "@/components/tools/Store";
+import Loader from "@/components/ui/Loader";
+import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
+import { t } from "@/lib/i18n";
+
+export function ExclusiveSingleSection() {
+    const enchantments = useConfiguratorStore((state) => state.getRegistry<Enchantment>("enchantment"));
+    const { data, isLoading, isError } = useRegistry<FetchedRegistry<Enchantment>>("summary", "enchantment");
+    const identifiers = enchantments.map((enchantment) => new Identifier(enchantment.identifier));
+    const vanillaIdentifiers = Object.keys(data ?? {}).map((key) => Identifier.of(key, "enchantment"));
+
+    return (
+        <>
+            <EnchantmentCategory title={t("enchantment.exclusive.custom.title")} identifiers={identifiers} />
+            {isLoading && <Loader />}
+            {isError && <ErrorPlaceholder error={new Error("Erreur de chargement du registre.")} />}
+            {vanillaIdentifiers.length > 0 && (
+                <EnchantmentCategory title={t("enchantment.exclusive.vanilla.title")} identifiers={vanillaIdentifiers} />
+            )}
+        </>
+    );
+}

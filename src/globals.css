@@ -1,0 +1,304 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/rubik';
+
+@custom-variant hidden (&[hidden]);
+@custom-variant popover {
+    &:popover-open,
+    &[open] {
+        @slot;
+    }
+}
+
+@custom-variant track {
+    &::-webkit-slider-runnable-track {
+        @slot;
+    }
+
+    &::-moz-range-track {
+        @slot;
+    }
+}
+
+@custom-variant thumb {
+    &::-webkit-slider-thumb {
+        @slot;
+    }
+    
+    &::-moz-range-thumb {
+        @slot;
+    }
+}
+
+@custom-variant thumb-webkit {
+    &::-webkit-slider-thumb {
+        @slot;
+    }
+}
+
+@utility slider-* {
+    box-shadow: 0 0 0 3px --value(--color-*) inset, calc(100rem * -1 - .6rem) 0 0 100rem --value(--color-*);
+}
+
+@utility linear-* {
+    background-image: --value(--color-*);
+}
+
+@utility shimmer-* {
+    --c: --value(--color-*);
+    animation: shimmer 2s linear infinite;
+    background-image: linear-gradient(110deg in oklch,var(--c) 45%, oklch(from var(--c) clamp(0.3, calc(l + (0.7 - l) * 0.3), 0.95) calc(c * 0.9) h), var(--c) 55%);
+    background-size: 200% 100%;
+}
+
+@utility pixelated {
+    image-rendering: pixelated;
+}
+
+@utility discrete {
+    transition-timing-function: cubic-bezier(0.735, 0.590, 0.660, 1.225);
+    transition: translate 200ms ease-out, scale 200ms ease-out, opacity 200ms ease-out, overlay 200ms ease-out allow-discrete, display 200ms ease-out allow-discrete;
+}
+  
+@font-face {
+    font-family: 'Minecraft';
+    src: url('/fonts/minecraftten.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'MinecraftSeven';
+    src: url('/fonts/seven.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@theme {
+    --breakpoint-s: 420px;
+    --text-s: 0.7rem;
+    --text-s--line-height: 1.5rem; 
+    --font-rubik: 'Rubik Variable', sans-serif;
+    --font-minecraft: 'Minecraft', monospace;
+    --font-seven: 'MinecraftSeven', monospace;
+    --grid-template-columns-items: repeat(auto-fill, minmax(120px, 1fr));
+    --grid-template-columns-items: repeat(auto-fill, minmax(52px, 1fr));
+    --grid-template-rows-items: repeat(auto-fill, minmax(52px, 1fr)); 
+    --animate-levitate: levitate 2500ms ease-in-out infinite;
+    --animate-fadein: fadein 200ms ease-in;
+    --animate-item-pulse: item-pulse 2s linear infinite;
+    --text-shadow-tooltip: 0.1em 0.1em 0 rgb(0, 0, 0 / 0.25);
+    --color-primary: #d2d2d2;
+    --color-secondary: #454545;
+    --color-tertiary: #8080802e;
+    --color-modrinth: #1bd96a;
+    --color-header-translucent: #18181d6b;
+    --color-header-cloudy: #151418;
+    --color-guides-gradient-from: #0d0709;
+    --color-guides-gradient-to: #151416;
+    --color-card: #1c1b1ec2;
+    --color-content: #38373f33;
+    --color-background: #080507;
+    --color-checked-rail: linear-gradient(45deg, #180909, #7a009f);
+    --color-checked-circle: #ffffff;
+    --color-unchecked-rail: #343434;
+    --color-unchecked-circle: #dfdfdf;
+    --color-gold: #b8881d;
+    --color-name: #fafafa;
+    --color-curse: #ff5555;
+    --color-enchant: #A8A8A8;
+    --color-enchant-shadow: #292929;
+    --color-durability: #fcfcfc;
+    --color-attribute: #5555ff;
+    --color-lore: #545454;
+    --color-experience: #80FF20;
+    --color-experience-shadow: #203F08;
+
+    @keyframes shimmer {
+        from { background-position: 0 0; }
+        to { background-position: -200% 0; }
+    }
+
+    @keyframes levitate {
+        0% { transform: translateY(0); }
+        50% { transform: translateY(1.5rem); }
+        100% { transform: translateY(0); }
+    }
+
+    @keyframes fadein {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes item-pulse {
+        0% { opacity: 0.5; }
+        50% { opacity: 1; }
+        100% { opacity: 0.5; }
+    }
+
+    @keyframes fall {
+        to { transform: translate3d(var(--x), var(--y), var(--z));}
+    }
+}
+
+@layer utilities {
+    dialog, [popover] {
+        translate: 0 1rem;
+        scale: 0.95;
+        opacity: 0;
+        transition:translate 200ms ease-out,scale 200ms ease-out,opacity 200ms ease-out,overlay 200ms ease-out allow-discrete,display 200ms ease-out allow-discrete;
+    }
+
+    dialog[open], [popover]:popover-open {
+        translate: 0 0;
+        scale: 1;
+        opacity: 1;
+    }
+
+    @starting-style {
+        dialog[open], [popover]:popover-open {
+            translate: 0 1rem;
+            scale: 0.95;
+            opacity: 0;
+        }
+    }
+
+    .overview-grid .overview-card {
+        transition: filter 200ms ease, opacity 200ms ease;
+    }
+
+    .overview-grid:has(.overview-card:focus-within) .overview-card:not(:focus-within) {
+        filter: grayscale(0.85) brightness(0.5) blur(6px);
+        pointer-events: none;
+    }
+
+    .stack {
+        display: grid;
+
+        >* {
+            grid-area: 1 / 1 / 2 / 2;
+        }
+    }
+
+    .dynamic-island {
+        --island-duration: 400ms;
+        --island-easing: cubic-bezier(0.32, 0.72, 0, 1);
+
+        interpolate-size: allow-keywords;
+        transition-property: width, height, padding, border-radius, opacity;
+        transition-duration: var(--island-duration);
+        transition-timing-function: var(--island-easing);
+        overflow: hidden;
+    }
+
+    /* Collapsed: barre minimale en bas */
+    .dynamic-island[data-expanded="false"] {
+        width: calc-size(fit-content, size);
+        height: 3.75rem;
+    }
+
+    /* Expanded fit: petit contenu (LootItemEditor) */
+    .dynamic-island[data-expanded="true"][data-size="fit"] {
+        width: 700px;
+        height: 320px;
+    }
+
+    /* Expanded large: grand contenu (ItemSelector) */
+    .dynamic-island[data-expanded="true"][data-size="large"] {
+        width: clamp(500px, 60vw, 1000px);
+        height: min(500px, 70vh);
+    }
+
+    /* Contenu interne */
+    .dynamic-island-content {
+        height: 100%;
+        width: 100%;
+        overflow: hidden;
+        animation: island-content-in var(--island-duration) var(--island-easing) forwards;
+    }
+
+    @starting-style {
+        .dynamic-island[data-expanded="true"] {
+            opacity: 0.8;
+        }
+    }
+
+    @keyframes island-content-in {
+        from {
+            opacity: 0;
+            filter: blur(4px);
+            scale: 0.98;
+        }
+        to {
+            opacity: 1;
+            filter: blur(0);
+            scale: 1;
+        }
+    }
+}
+
+html,
+body {
+    height: 100%;
+}
+
+html:has(.body-hidden:popover-open),
+body:has(.body-hidden:popover-open) {
+    overflow: hidden;
+}
+
+body {
+    font-family: var(--font-rubik);
+    color: #e8e8e8;
+    margin: 0;
+    padding: 0;
+    background: #000000 radial-gradient(hsl(0 0% 0% / 1), hsl(243.97deg 41% 0%)) no-repeat fixed;
+    min-height: 100dvh;
+    display: grid;
+    grid-template-rows: 1fr auto;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 10px 10px rgba(255, 255, 255, 0);
+    border: solid 3px transparent;
+    border-radius: 32px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 32px;
+    box-shadow: inset 0 0 10px 10px var(--color-primary);
+    border: solid 3px transparent;
+}
+
+::-webkit-scrollbar-corner {
+    display: none;
+}
+
+::-webkit-resizer {
+    display: none;
+}
+
+hr {
+    flex-shrink: 0;
+    border-top: 0 solid #00000014;
+    border-right: 0 solid #00000014;
+    border-left: 0 solid #00000014; 
+    height: 0.0625rem;
+    border-bottom: none;
+    opacity: 0.25;
+    width: 100%;
+    background-color: transparent;
+    background-image: linear-gradient(to right, #0075ff00, #ffffff, #ffffff00);
+}
+
+.tooltip-border::after {
+    border-image: linear-gradient(rgba(80, 0, 255, 0.31), rgba(40, 0, 127, 0.31)) 1;
+    border: 0.1em solid #2d0a63;
+}
+ 
