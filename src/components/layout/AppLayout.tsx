@@ -9,7 +9,7 @@ const appWindow = getCurrentWindow();
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
     const location = useLocation();
-    const isHome = location.pathname === "/";
+    const isHome = !location.pathname.startsWith("/editor");
 
     return (
         <div className="flex h-dvh w-full overflow-hidden bg-editor">

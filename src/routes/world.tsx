@@ -9,23 +9,17 @@ export const Route = createFileRoute("/world")({
 
 function WorldPage() {
     return (
-        <div className="size-full flex">
+        <div className="size-full flex relative">
             <Background />
 
-            {/* Main Content */}
-            <main className="flex-1 flex flex-col min-w-0 overflow-y-auto overflow-x-hidden">
-                <header className="h-40 w-full flex flex-col justify-end px-12 pb-8 overflow-hidden isolate">
-                    <div className="absolute inset-0 z-0">
-                        <img
-                            src="/images/addons/card/dnt/toxic_lair.webp"
-                            alt="Toxic Lair"
-                            className="size-full object-cover opacity-40 scale-105 blur-sm"
-                        />
-                        <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent" />
-                        <div className="absolute inset-0 squaring-zinc-500/10" />
-                    </div>
+            {/* World background image */}
+            <img src="/images/addons/card/dnt/toxic_lair.webp" alt="Toxic Lair" className="absolute inset-0 w-full h-full object-cover opacity-40 blur-sm pointer-events-none" />
+            <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent pointer-events-none" />
 
-                    <div className="relative z-10 flex items-center justify-between">
+            {/* Main Content */}
+            <main className="relative z-10 flex-1 flex flex-col min-w-0">
+                <header className="relative shrink-0 h-40 w-full flex flex-col justify-end px-12 pb-8">
+                    <div className="relative flex items-center justify-between">
                         <div className="flex items-center gap-6">
                             <div className="size-24 rounded-2xl border-2 border-white/10 p-1 bg-zinc-900/50 backdrop-blur-md shadow-2xl">
                                 <img src="/images/addons/card/dnt/toxic_lair.webp" alt="Toxic Lair" className="size-full object-cover rounded-xl" />
@@ -61,8 +55,8 @@ function WorldPage() {
                     </div>
                 </header>
 
-                <div className="px-8 pb-12 flex flex-col gap-2">
-                    {Array.from({ length: 9 }).map((_, index) => (
+                <div className="relative flex-1 overflow-y-auto px-8 pb-12 pt-4 flex flex-col gap-2 mask-[linear-gradient(to_bottom,transparent,black_24px)]">
+                    {Array.from({ length: 50 }).map((_, index) => (
                         <ContentCard key={`${index.toString()}-content-card`} title="Content Card" author="Author" version="1.0.0" type="Datapack" />
                     ))}
                 </div>
