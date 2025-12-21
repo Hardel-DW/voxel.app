@@ -5,6 +5,8 @@ import Avatar from "@/components/ui/Avatar";
 import { Datapack, Logger } from "@voxelio/breeze";
 import { useConfiguratorStore } from "../tools/Store";
 import { useNavigate } from "@tanstack/react-router";
+import { TOAST, toast } from "../ui/Toast";
+import { loadDatapackFromPath } from "@/lib/utils/datapack";
 
 
 export default function HomeSidebar() {
@@ -18,6 +20,19 @@ export default function HomeSidebar() {
         const logger = new Logger(files);
         useConfiguratorStore.getState().setup({ files, elements: new Map(), version: 61, logger }, false, "New Project");
         navigate({ to: "/editor/enchantment/overview" });
+    };
+
+    const openDatapack = async (path: string) => {
+        try {
+            const { datapack, name, isModded } = await loadDatapackFromPath(path);
+            useConfiguratorStore.getState().setup(datapack, isModded, name);
+            useHomeStore.getState().addRecentProject({ name, path, type: isModded ? "mod" : "datapack" });
+            toast(t("studio.success.loaded", { file: name }), TOAST.SUCCESS);
+            navigate({ to: "/editor/enchantment/overview" });
+        } catch (e: unknown) {
+            const errorMessage = e instanceof Error ? e.message : t("studio.error.failed_to_upload");
+            toast(t("generic.dialog.error"), TOAST.ERROR, errorMessage);
+        }
     };
 
     return (
@@ -47,7 +62,7 @@ export default function HomeSidebar() {
                     <>
                         <div className="w-8 h-px bg-zinc-800/50 my-2" />
                         {displayedProjects.map((project) => (
-                            <button key={project.id + project.name} type="button" className="group relative size-10 rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-zinc-600/50 flex items-center justify-center overflow-hidden cursor-pointer transition-all hover:scale-105" title={project.name}>
+                            <button key={project.id + project.name} type="button" className="group relative size-10 rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-zinc-600/50 flex items-center justify-center overflow-hidden cursor-pointer transition-all hover:scale-105" title={project.name} onClick={() => openDatapack(project.path)}>
                                 <Avatar name={project.name} icon={project.icon} className="size-full" />
                                 <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors" />
                             </button>

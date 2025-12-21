@@ -1,5 +1,6 @@
 import { useHomeStore } from "@/components/home/HomeStore";
 import { cn } from "@/lib/utils";
+import { Link } from "@tanstack/react-router";
 
 const assets = [
     "/images/addons/card/dnt/snowy.webp",
@@ -44,7 +45,7 @@ export default function GameClients() {
                                 </div>
                                 <div className="flex gap-8 -mx-8 px-8">
                                     {mocks.map((mock) => (
-                                        <div key={`${mock.id}-${mock.name}`} className="group flex flex-col justify-between rounded-xl shadow-lg shadow-zinc-950/30 bg-zinc-900/30 border border-zinc-800/50 min-w-60 overflow-hidden cursor-pointer">
+                                        <Link to="/world" key={`${mock.id}-${mock.name}`} className="group flex flex-col justify-between rounded-xl shadow-lg shadow-zinc-950/30 bg-zinc-900/30 border border-zinc-800/50 min-w-60 overflow-hidden cursor-pointer">
                                             <div className="overflow-hidden">
                                                 <img src={mock.asset} alt={mock.name} className="w-full h-full rounded-xl object-cover transition-transform duration-300 group-hover:scale-110" />
                                             </div>
@@ -54,7 +55,7 @@ export default function GameClients() {
                                                     {mock.date.toLocaleDateString('fr-FR', { month: 'long' })} {mock.version}
                                                 </p>
                                             </div>
-                                        </div>
+                                        </Link>
                                     ))}
                                 </div>
                             </div>
