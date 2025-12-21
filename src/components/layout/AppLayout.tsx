@@ -14,7 +14,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
     return (
         <div className="flex h-dvh w-full overflow-hidden bg-editor">
             <aside className="shrink-0 w-16 flex flex-col">
-                <div className="h-12 flex items-center justify-center">
+                <div className="h-16 flex items-center justify-center">
                     <Link to="/" className="hover:opacity-80 transition-opacity">
                         <img src="/icons/logo.svg" alt="Voxel" className="size-5" />
                     </Link>
@@ -60,7 +60,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         </button>
                     </div>
                 </header>
-                <main className="flex-1 relative min-h-0 h-full ml-0 bg-content overflow-hidden border-t border-zinc-800/50 rounded-tl-3xl">
+                <main className="flex-1 relative min-h-0 h-full ml-0 bg-content overflow-hidden border-t border-l border-zinc-800/50 rounded-tl-3xl">
                     {children}
                 </main>
             </div>

@@ -1,6 +1,5 @@
 import { useEffect, useRef } from "react";
 import { animateLines, createLine, type Line } from "@/components/ui/line/LineAnimationUtils";
-
 export default function LineBackground() {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const linesRef = useRef<Line[]>([]);
@@ -47,7 +46,7 @@ export default function LineBackground() {
         const scheduleNextLine = () => {
             clearTimeout(timeoutId);
             if (document.hidden) return;
-            timeoutId = setTimeout(createNewLine, Math.random() * 2000 + 500);
+            timeoutId = setTimeout(createNewLine, Math.random() * 6000 + 1000);
         };
 
         const handleVisibilityChange = () => {

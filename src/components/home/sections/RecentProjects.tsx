@@ -30,12 +30,12 @@ function ProjectCard({ project, onOpen, onRemove }: ProjectCardProps) {
         <button
             type="button"
             onClick={onOpen}
-            className="group relative flex items-center gap-4 p-4 rounded-xl bg-zinc-900/40 border border-zinc-800/50 hover:bg-zinc-800/50 hover:border-zinc-700/50 transition-all text-left w-full cursor-pointer">
-            <div className="size-14 rounded-xl bg-zinc-800 border border-zinc-700/50 flex items-center justify-center overflow-hidden shrink-0">
+            className="group relative flex items-center gap-4 p-4 rounded-xl bg-zinc-950/30 border border-zinc-800/50 hover:border-zinc-700/50 transition-all ease-in-out duration-200 text-left cursor-pointer backdrop-blur-sm">
+            <div className="size-14 rounded-xl bg-zinc-900 border border-zinc-800/50 flex items-center justify-center overflow-hidden shrink-0">
                 {project.icon ? (
-                    <img src={project.icon} alt="" className="size-full object-cover" />
+                    <img src={"/images/addons/icon/yggdrasil.webp"} alt="" className="size-full object-cover" />
                 ) : (
-                    <img src="/icons/package.svg" alt="" className="size-7 opacity-40 invert" />
+                    <img src="/images/addons/icon/yggdrasil.webp" alt="" className="size-full object-cover" />
                 )}
             </div>
             <div className="flex-1 min-w-0">
@@ -60,7 +60,7 @@ function ProjectCard({ project, onOpen, onRemove }: ProjectCardProps) {
                     e.stopPropagation();
                     onRemove();
                 }}
-                className="opacity-0 group-hover:opacity-100 p-2 rounded-lg hover:bg-zinc-700/50 transition-all">
+                className="opacity-0 group-hover:opacity-100 p-2 rounded-lg hover:bg-zinc-700/50 transition-all cursor-pointer">
                 <svg className="size-4 text-zinc-500 hover:text-zinc-300" viewBox="0 0 16 16" fill="none">
                     <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
                 </svg>
@@ -89,7 +89,7 @@ export default function RecentProjects() {
     };
 
     return (
-        <section className="space-y-4">
+        <section className="space-y-4 relative z-50">
             <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                     <h2 className="text-lg font-semibold text-zinc-200">{t("home.recent.title")}</h2>
@@ -99,14 +99,6 @@ export default function RecentProjects() {
                         </span>
                     )}
                 </div>
-                {projects.length > 0 && (
-                    <button
-                        type="button"
-                        onClick={() => useHomeStore.getState().clearRecentProjects()}
-                        className="text-xs text-zinc-500 hover:text-zinc-300 transition-colors">
-                        {t("home.recent.clear")}
-                    </button>
-                )}
             </div>
             {projects.length > 0 ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

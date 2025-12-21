@@ -1,130 +1,93 @@
-import { type ClientType, type GameClient, useHomeStore } from "@/components/home/HomeStore";
-import { t } from "@/lib/i18n";
+import { useHomeStore } from "@/components/home/HomeStore";
 import { cn } from "@/lib/utils";
 
-const CLIENT_ICONS: Record<ClientType, string> = {
-    vanilla: "/icons/logo.svg",
-    modrinth: "/icons/logo.svg",
-    curseforge: "/icons/logo.svg",
-    custom: "/icons/folder.svg"
-};
+const assets = [
+    "/images/addons/card/dnt/snowy.webp",
+    "/images/addons/card/dnt/toxic_lair.webp",
+    "/images/addons/card/dnt/shrine.webp",
+    "/images/addons/card/dnt/shrine_ominous.webp",
+    "/images/addons/card/dnt/pale_residence.webp",
+    "/images/addons/card/dnt/nether_keep.webp",
+    "/images/addons/card/dnt/illager.webp",
+    "/images/addons/card/dnt/illager_outpost.webp",
+    "/images/addons/card/dnt/creeping_crypt.webp"
+];
 
-const CLIENT_COLORS: Record<ClientType, string> = {
-    vanilla: "bg-green-500/10 border-green-500/20 text-green-400",
-    modrinth: "bg-emerald-500/10 border-emerald-500/20 text-emerald-400",
-    curseforge: "bg-orange-500/10 border-orange-500/20 text-orange-400",
-    custom: "bg-zinc-500/10 border-zinc-500/20 text-zinc-400"
-};
+const mocks = assets.map((asset, index) => ({
+    id: `${index + 1}`,
+    name: `Client ${index + 1}`,
+    version: `1.${20 + index}.${index * 10}`,
+    asset: asset,
+    date: new Date(2025, 11 - index, 21 - index * 3),
+}));
 
-interface ClientCardProps {
-    client: GameClient;
-    isExpanded: boolean;
-    onToggle: () => void;
-}
-
-function ClientCard({ client, isExpanded, onToggle }: ClientCardProps) {
-    return (
-        <div
-            className={cn(
-                "rounded-xl border transition-all overflow-hidden",
-                isExpanded
-                    ? "bg-zinc-900/60 border-zinc-700/50"
-                    : "bg-zinc-900/30 border-zinc-800/50 hover:border-zinc-700/50"
-            )}>
-            <button
-                type="button"
-                onClick={onToggle}
-                className="w-full flex items-center gap-4 p-4 text-left cursor-pointer">
-                <div className={cn(
-                    "size-12 rounded-xl flex items-center justify-center border shrink-0",
-                    CLIENT_COLORS[client.type]
-                )}>
-                    <img
-                        src={CLIENT_ICONS[client.type]}
-                        alt=""
-                        className="size-6"
-                    />
-                </div>
-                <div className="flex-1 min-w-0">
-                    <p className="font-medium text-zinc-200">{client.name}</p>
-                    <p className="text-xs text-zinc-500 truncate">{client.path}</p>
-                </div>
-                <div className="flex items-center gap-3">
-                    {client.instanceCount !== undefined && client.instanceCount > 0 && (
-                        <span className="text-xs text-zinc-500 bg-zinc-800/50 px-2 py-1 rounded-md">
-                            {t("home.clients.worlds", { count: client.instanceCount })}
-                        </span>
-                    )}
-                    <svg
-                        className={cn(
-                            "size-4 text-zinc-500 transition-transform",
-                            isExpanded && "rotate-180"
-                        )}
-                        viewBox="0 0 16 16"
-                        fill="none">
-                        <path d="M4 6L8 10L12 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                </div>
-            </button>
-            {isExpanded && (
-                <div className="px-4 pb-4 border-t border-zinc-800/50">
-                    <div className="py-6 text-center">
-                        <p className="text-sm text-zinc-500">{t("home.clients.scan")}</p>
-                        <button
-                            type="button"
-                            className="mt-3 px-4 py-2 text-sm font-medium text-zinc-300 bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 rounded-lg transition-colors cursor-pointer">
-                            {t("home.clients.browse")}
-                        </button>
-                    </div>
-                </div>
-            )}
-        </div>
-    );
-}
-
-function AddClientButton() {
-    return (
-        <button
-            type="button"
-            className="w-full flex items-center gap-4 p-4 rounded-xl border border-dashed border-zinc-800/50 bg-zinc-900/20 hover:bg-zinc-900/40 hover:border-zinc-700/50 transition-all text-left group cursor-pointer">
-            <div className="size-12 rounded-xl bg-zinc-800/30 border border-zinc-700/30 flex items-center justify-center group-hover:bg-zinc-800/50 transition-colors">
-                <svg className="size-5 text-zinc-500 group-hover:text-zinc-400 transition-colors" viewBox="0 0 16 16" fill="none">
-                    <path d="M8 3V13M3 8H13" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-            </div>
-            <div>
-                <p className="font-medium text-zinc-400 group-hover:text-zinc-300 transition-colors">
-                    {t("home.clients.add")}
-                </p>
-                <p className="text-xs text-zinc-600">{t("home.clients.add.hint")}</p>
-            </div>
-        </button>
-    );
-}
+const instances = [
+    "Official Launcher", "Modrinth", "CurseForge"
+]
 
 export default function GameClients() {
     const clients = useHomeStore((s) => s.gameClients);
-    const expandedId = useHomeStore((s) => s.expandedClientId);
-    const setExpanded = useHomeStore((s) => s.setExpandedClient);
 
     return (
         <section className="space-y-4">
-            <div className="flex items-center gap-3">
-                <h2 className="text-lg font-semibold text-zinc-200">{t("home.clients.title")}</h2>
-                <span className="text-xs text-zinc-500 bg-zinc-800/50 px-2 py-0.5 rounded-md">
-                    {clients.length}
-                </span>
-            </div>
-            <div className="space-y-3">
-                {clients.map((client) => (
-                    <ClientCard
-                        key={client.id}
-                        client={client}
-                        isExpanded={expandedId === client.id}
-                        onToggle={() => setExpanded(expandedId === client.id ? null : client.id)}
-                    />
+            <h2 className="text-lg font-semibold text-zinc-200">Game Clients</h2>
+            <div className="space-y-8 p-8 rounded-2xl bg-editor/70 backdrop-blur-sm relative z-50 border border-zinc-800/50">
+                {instances.map((instance, index) => (
+                    <>
+                        <div key={instance} className="space-y-4">
+                            <div className="flex items-center gap-4">
+                                <h2 className="text-lg font-semibold text-zinc-200">{instance}</h2>
+                                <span className="text-xs text-zinc-500 bg-zinc-800/50 px-2 py-0.5 rounded-md">
+                                    {clients.length}
+                                </span>
+                            </div>
+                            <div className="flex gap-8 overflow-x-hidden">
+                                {mocks.map((mock) => (
+                                    <div key={mock.id} className="group flex flex-col justify-between rounded-xl bg-zinc-900 border border-zinc-800/50 min-w-60 overflow-hidden cursor-pointer">
+                                        <div className="overflow-hidden">
+                                            <img src={mock.asset} alt={mock.name} className="w-full h-full rounded-xl object-cover transition-transform duration-300 group-hover:scale-110" />
+                                        </div>
+                                        <div className="p-2">
+                                            <p className="font-semibold text-zinc-200 tracking-tight">{mock.name}</p>
+                                            <p className="text-[10px] font-medium text-zinc-500">
+                                                {mock.date.toLocaleDateString('fr-FR', { month: 'long' })} {mock.version}
+                                            </p>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                        {index < instances.length - 1 && (
+                            <div className="h-px bg-linear-to-r from-transparent via-zinc-700/30 to-transparent" />
+                        )}
+                    </>
                 ))}
-                <AddClientButton />
+
+                <div className="h-px bg-linear-to-r from-transparent via-zinc-700/30 to-transparent" />
+
+                <button
+                    type="button"
+                    className={cn(
+                        "group relative flex flex-col items-center justify-center w-full p-6 transition-all duration-300 rounded-3xl border-2 border-dashed cursor-pointer",
+                        "border-zinc-700/50 bg-zinc-900/20 backdrop-blur-sm",
+                        "hover:bg-zinc-800/30 hover:border-zinc-500"
+                    )}>
+                    <div className="flex flex-col items-center gap-3">
+                        <div className="flex items-center justify-center w-12 h-12 rounded-full bg-zinc-800/50 group-hover:bg-zinc-700/50 transition-colors">
+                            <svg className="w-6 h-6 text-zinc-400 group-hover:text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                            </svg>
+                        </div>
+                        <div className="text-center">
+                            <p className="text-sm font-medium text-zinc-300 group-hover:text-zinc-200 transition-colors">
+                                Ajouter un client de jeu
+                            </p>
+                            <p className="text-xs text-zinc-500 mt-1">
+                                Cliquez pour configurer un nouveau client
+                            </p>
+                        </div>
+                    </div>
+                </button>
             </div>
         </section>
     );
