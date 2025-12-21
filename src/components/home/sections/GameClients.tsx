@@ -30,38 +30,40 @@ export default function GameClients() {
 
     return (
         <section className="space-y-4">
-            <h2 className="text-lg font-semibold text-zinc-200">Game Clients</h2>
-            <div className="space-y-8 p-8 rounded-2xl bg-editor/70 backdrop-blur-sm relative z-50 border border-zinc-800/50">
-                {instances.map((instance, index) => (
-                    <>
-                        <div key={instance} className="space-y-4">
-                            <div className="flex items-center gap-4">
-                                <h2 className="text-lg font-semibold text-zinc-200">{instance}</h2>
-                                <span className="text-xs text-zinc-500 bg-zinc-800/50 px-2 py-0.5 rounded-md">
-                                    {clients.length}
-                                </span>
-                            </div>
-                            <div className="flex gap-8 overflow-x-hidden">
-                                {mocks.map((mock) => (
-                                    <div key={mock.id} className="group flex flex-col justify-between rounded-xl bg-zinc-900 border border-zinc-800/50 min-w-60 overflow-hidden cursor-pointer">
-                                        <div className="overflow-hidden">
-                                            <img src={mock.asset} alt={mock.name} className="w-full h-full rounded-xl object-cover transition-transform duration-300 group-hover:scale-110" />
+            <h2 className="text-lg font-semibold text-zinc-200 px-8">Game Clients</h2>
+            <div className="p-8 mx-2 rounded-2xl bg-editor/40 backdrop-blur-sm relative z-50 border border-zinc-800/50">
+                <div className="overflow-hidden space-y-8">
+                    {instances.map((instance, index) => (
+                        <>
+                            <div key={`${instance}-${index.toString()}`} className="space-y-4">
+                                <div className="flex items-center gap-4">
+                                    <h2 className="text-lg font-semibold text-zinc-200">{instance}</h2>
+                                    <span className="text-xs text-zinc-500 bg-zinc-800/50 px-2 py-0.5 rounded-md">
+                                        {clients.length}
+                                    </span>
+                                </div>
+                                <div className="flex gap-8 -mx-8 px-8">
+                                    {mocks.map((mock) => (
+                                        <div key={`${mock.id}-${mock.name}`} className="group flex flex-col justify-between rounded-xl shadow-lg shadow-zinc-950/30 bg-zinc-900/30 border border-zinc-800/50 min-w-60 overflow-hidden cursor-pointer">
+                                            <div className="overflow-hidden">
+                                                <img src={mock.asset} alt={mock.name} className="w-full h-full rounded-xl object-cover transition-transform duration-300 group-hover:scale-110" />
+                                            </div>
+                                            <div className="p-2">
+                                                <p className="font-semibold text-zinc-200 tracking-tight">{mock.name}</p>
+                                                <p className="text-[10px] font-medium text-zinc-500">
+                                                    {mock.date.toLocaleDateString('fr-FR', { month: 'long' })} {mock.version}
+                                                </p>
+                                            </div>
                                         </div>
-                                        <div className="p-2">
-                                            <p className="font-semibold text-zinc-200 tracking-tight">{mock.name}</p>
-                                            <p className="text-[10px] font-medium text-zinc-500">
-                                                {mock.date.toLocaleDateString('fr-FR', { month: 'long' })} {mock.version}
-                                            </p>
-                                        </div>
-                                    </div>
-                                ))}
+                                    ))}
+                                </div>
                             </div>
-                        </div>
-                        {index < instances.length - 1 && (
-                            <div className="h-px bg-linear-to-r from-transparent via-zinc-700/30 to-transparent" />
-                        )}
-                    </>
-                ))}
+                            {index < instances.length - 1 && (
+                                <div className="h-px bg-linear-to-r from-transparent via-zinc-700/30 to-transparent" />
+                            )}
+                        </>
+                    ))}
+                </div>
 
                 <div className="h-px bg-linear-to-r from-transparent via-zinc-700/30 to-transparent" />
 

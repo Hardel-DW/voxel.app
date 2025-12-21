@@ -1,31 +1,24 @@
 import { Link } from "@tanstack/react-router";
 import { useHomeStore } from "@/components/home/HomeStore";
 import { t } from "@/lib/i18n";
+import Avatar from "@/components/ui/Avatar";
+import { Datapack, Logger } from "@voxelio/breeze";
+import { useConfiguratorStore } from "../tools/Store";
+import { useNavigate } from "@tanstack/react-router";
 
-function RecentProjectIcon({ name, icon, index }: { name: string; icon?: string; index: number }) {
-    return (
-        <button
-            type="button"
-            className="group relative size-10 rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-zinc-600/50 flex items-center justify-center overflow-hidden cursor-pointer transition-all hover:scale-105"
-            title={name}>
-            {icon ? (
-                <img src={icon} alt={name} className="size-full object-cover" />
-            ) : (
-                <span className="text-xs font-bold text-zinc-500 group-hover:text-zinc-400">
-                    {name.charAt(0).toUpperCase()}
-                </span>
-            )}
-            <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors" />
-            {index < 3 && (
-                <div className="absolute -bottom-0.5 -right-0.5 size-2 rounded-full bg-emerald-500 border border-zinc-900" />
-            )}
-        </button>
-    );
-}
 
 export default function HomeSidebar() {
+    const navigate = useNavigate();
     const recentProjects = useHomeStore((s) => s.recentProjects);
     const displayedProjects = recentProjects.slice(0, 5);
+
+    function handleNewProject() {
+        const mcmeta = { pack: { pack_format: 61, description: "New Voxel Project" } };
+        const files = new Datapack({ "pack.mcmeta": new TextEncoder().encode(JSON.stringify(mcmeta)) }).getFiles();
+        const logger = new Logger(files);
+        useConfiguratorStore.getState().setup({ files, elements: new Map(), version: 61, logger }, false, "New Project");
+        navigate({ to: "/editor/enchantment/overview" });
+    };
 
     return (
         <div className="flex flex-col h-full py-3">
@@ -53,13 +46,11 @@ export default function HomeSidebar() {
                 {displayedProjects.length > 0 && (
                     <>
                         <div className="w-8 h-px bg-zinc-800/50 my-2" />
-                        {displayedProjects.map((project, index) => (
-                            <RecentProjectIcon
-                                key={project.id}
-                                name={project.name}
-                                icon={project.icon}
-                                index={index}
-                            />
+                        {displayedProjects.map((project) => (
+                            <button key={project.id + project.name} type="button" className="group relative size-10 rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-zinc-600/50 flex items-center justify-center overflow-hidden cursor-pointer transition-all hover:scale-105" title={project.name}>
+                                <Avatar name={project.name} icon={project.icon} className="size-full" />
+                                <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors" />
+                            </button>
                         ))}
                     </>
                 )}
@@ -68,7 +59,8 @@ export default function HomeSidebar() {
                 <button
                     type="button"
                     className="group size-10 rounded-xl flex items-center justify-center cursor-pointer transition-all hover:bg-zinc-800/40"
-                    title={t("home.nav.new_project")}>
+                    title={t("home.nav.new_project")}
+                    onClick={handleNewProject}>
                     <svg className="size-4 text-zinc-500 group-hover:text-zinc-300 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
                     </svg>

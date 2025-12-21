@@ -13,6 +13,17 @@
     "opener:default",
     "fs:default",
     "fs:allow-resource-read-recursive",
+    "fs:allow-read-file",
+    "fs:allow-stat",
+    {
+      "identifier": "fs:scope",
+      "allow": [
+        { "path": "$HOME/**/*" },
+        { "path": "$DESKTOP/**/*" },
+        { "path": "$DOWNLOAD/**/*" },
+        { "path": "$DOCUMENT/**/*" }
+      ]
+    },
     "store:default"
   ]
 }

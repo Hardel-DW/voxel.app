@@ -10,3 +10,13 @@ export function throttle<T extends (...args: any[]) => void>(func: T, limit: num
         }
     }) as T;
 }
+
+
+export async function trying<T>(fn: () => Promise<T>, onError: (e: unknown) => void): Promise<T | undefined> {
+    try {
+        return await fn();
+    } catch (e) {
+        onError(e);
+        return undefined;
+    }
+}
