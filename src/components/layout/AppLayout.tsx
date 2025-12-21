@@ -1,19 +1,25 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { useLocation } from "@tanstack/react-router";
+import HomeSidebar from "@/components/home/HomeSidebar";
 import Internalization from "@/components/tools/Internalization";
-import StudioSidebar from "../tools/sidebar/Sidebar";
+import StudioSidebar from "@/components/tools/sidebar/Sidebar";
+import { Link } from "@tanstack/react-router";
 
 const appWindow = getCurrentWindow();
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
+    const location = useLocation();
+    const isHome = location.pathname === "/";
+
     return (
         <div className="flex h-dvh w-full overflow-hidden bg-editor">
-            <aside className="shrink-0 w-16 flex flex-col ">
+            <aside className="shrink-0 w-16 flex flex-col">
                 <div className="h-12 flex items-center justify-center">
-                    <a href="/" className="hover:opacity-80 transition-opacity">
+                    <Link to="/" className="hover:opacity-80 transition-opacity">
                         <img src="/icons/logo.svg" alt="Voxel" className="size-5" />
-                    </a>
+                    </Link>
                 </div>
-                <StudioSidebar />
+                {isHome ? <HomeSidebar /> : <StudioSidebar />}
             </aside>
 
             <div className="flex-1 flex flex-col min-w-0">
@@ -54,7 +60,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         </button>
                     </div>
                 </header>
-                <main className="flex-1 relative min-h-0 ml-0 bg-content overflow-hidden border-t border-zinc-800/50 rounded-tl-3xl">
+                <main className="flex-1 relative min-h-0 h-full ml-0 bg-content overflow-hidden border-t border-zinc-800/50 rounded-tl-3xl">
                     {children}
                 </main>
             </div>

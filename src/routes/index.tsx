@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import HomeLayout from "@/components/home/layout/HomeLayout";
-import QuickActions from "@/components/home/dashboard/QuickActions";
-import ProjectList from "@/components/home/dashboard/ProjectList";
-import VanillaExplorer from "@/components/home/dashboard/VanillaExplorer";
+import CreateProject from "@/components/home/sections/CreateProject";
+import GameClients from "@/components/home/sections/GameClients";
+import NewsSidebar from "@/components/home/sections/NewsSidebar";
+import RecentProjects from "@/components/home/sections/RecentProjects";
 import StudioLoading from "@/components/tools/loading/StudioLoading";
+import { useHomeStore } from "@/components/home/HomeStore";
+import { getGreeting } from "@/lib/getGreeting";
 import { t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
@@ -12,34 +14,53 @@ export const Route = createFileRoute("/")({
 });
 
 function HomePage() {
+    const projectCount = useHomeStore((s) => s.recentProjects.length);
+
     return (
-        <HomeLayout>
-            <div className="grid grid-cols-12 gap-8 h-full">
-                <div className="col-span-12 lg:col-span-8 flex flex-col gap-8">
-                    <div className="flex flex-col gap-2">
-                        <h1 className="text-3xl font-bold text-white tracking-tight">{t("studio.welcome")}</h1>
-                        <p className="text-zinc-500">{t("studio.welcome.description")}</p>
-                    </div>
+        <div className="size-full flex overflow-hidden relative">
+            <div className="absolute inset-0 -z-10">
+                <div className="absolute top-0 left-1/4 w-96 h-96 bg-emerald-500/5 rounded-full blur-3xl" />
+                <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-cyan-500/5 rounded-full blur-3xl" />
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-zinc-800/20 rounded-full blur-3xl" />
+            </div>
 
-                    <QuickActions />
-
-                    <div className="h-px bg-linear-to-r from-transparent via-zinc-800/50 to-transparent" />
-
-                    <ProjectList />
-                </div>
-
-                <div className="col-span-12 lg:col-span-4 flex flex-col gap-6 h-full min-h-[400px]">
-                    <VanillaExplorer />
-
-                    <div className="rounded-2xl border border-zinc-800/50 bg-zinc-900/30 p-5 flex flex-col gap-3">
-                        <div className="flex items-center gap-2">
-                            <span className="flex size-2 rounded-full bg-emerald-500 shadow-[0_0_8px_rgba(16,185,129,0.5)]" />
-                            <span className="text-xs font-bold text-zinc-300 uppercase tracking-widest">{t("studio.update")}</span>
+            <div className="flex-1 overflow-y-auto">
+                <div className="w-full p-8 space-y-10">
+                    <div className="flex items-start justify-between">
+                        <div className="space-y-1">
+                            <h1 className="text-2xl font-bold text-white tracking-tight">{getGreeting()}</h1>
+                            <p className="text-sm text-zinc-500">
+                                {projectCount > 0
+                                    ? t("home.subtitle.projects", { count: projectCount })
+                                    : t("home.subtitle.empty")}
+                            </p>
                         </div>
-                        <p className="text-sm text-zinc-400">{t("studio.update.description")}</p>
+                        <div className="flex items-center gap-3">
+                            <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
+                                <span className="size-2 rounded-full bg-emerald-500 animate-pulse" />
+                                <span className="text-xs font-medium text-emerald-400">{t("home.status.ready")}</span>
+                            </div>
+                        </div>
                     </div>
+                    <RecentProjects />
+
+                    <div className="h-px bg-linear-to-r from-transparent via-zinc-700/30 to-transparent" />
+
+                    <GameClients />
+
+                    <div className="h-px bg-linear-to-r from-transparent via-zinc-700/30 to-transparent" />
+
+                    <CreateProject />
+
+                    <div className="h-20" />
                 </div>
             </div>
-        </HomeLayout>
+
+            <div className="hidden xl:block border-l border-zinc-800/30 bg-zinc-950/30">
+                <div className="p-6 h-full overflow-y-auto">
+                    <NewsSidebar />
+                </div>
+            </div>
+        </div>
     );
 }
