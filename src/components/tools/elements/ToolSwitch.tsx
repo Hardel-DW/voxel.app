@@ -19,13 +19,9 @@ export default function ToolSwitch(props: ToolSwitchType) {
             <div className="bg-black/35 border border-zinc-900 transition-transform duration-150 ease-out hover:-translate-y-1 p-6 rounded-xl relative overflow-hidden isolate">
                 <label htmlFor={id} className="flex items-center justify-between w-full cursor-pointer">
                     <div className="flex flex-col w-3/4">
-                        <span className="text-white line-clamp-1">
-                            {props.title}
-                        </span>
+                        <span className="text-white line-clamp-1">{props.title}</span>
                         <span className="text-xs text-zinc-400 font-light line-clamp-2">
-                            <span className="text-xs text-zinc-400 font-light w-max">
-                                {lock.isLocked ? lock.text : props.description}
-                            </span>
+                            <span className="text-xs text-zinc-400 font-light w-max">{lock.isLocked ? lock.text : props.description}</span>
                         </span>
                     </div>
                     <div className="flex gap-4">

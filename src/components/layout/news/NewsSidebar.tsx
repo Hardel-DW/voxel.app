@@ -7,7 +7,6 @@ const links = [
     { icon: "/icons/company/github.svg", label: "GitHub", href: "https://github.com/voxelio" }
 ];
 
-
 const NEWS_ITEMS: NewsItem[] = [
     {
         id: "1",
@@ -46,9 +45,7 @@ export default function NewsSidebar() {
                             </div>
                         </div>
                         <div className="space-y-3">
-                            <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider px-1">
-                                {t("home.news.title")}
-                            </h3>
+                            <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider px-1">{t("home.news.title")}</h3>
                             {NEWS_ITEMS.map((item) => (
                                 <NewsCard key={`${item.id}-${item.title}`} item={item} />
                             ))}
@@ -81,7 +78,11 @@ export default function NewsSidebar() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="flex-1 flex items-center justify-center gap-2 px-3 py-2 rounded-lg bg-zinc-900/40 border border-zinc-800/50 hover:bg-zinc-800/50 hover:border-zinc-700/50 transition-colors group">
-                                    <img src={link.icon} alt="" className="size-4 invert opacity-50 group-hover:opacity-80 transition-opacity" />
+                                    <img
+                                        src={link.icon}
+                                        alt=""
+                                        className="size-4 invert opacity-50 group-hover:opacity-80 transition-opacity"
+                                    />
                                     <span className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">{link.label}</span>
                                 </a>
                             ))}

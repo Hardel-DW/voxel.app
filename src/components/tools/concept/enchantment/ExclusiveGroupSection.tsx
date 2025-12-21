@@ -6,9 +6,9 @@ import ToolGrid from "@/components/tools/elements/ToolGrid";
 import ToolListOption, { type ToolListOptionAction } from "@/components/tools/elements/ToolListOption";
 import { useConfiguratorStore } from "@/components/tools/Store";
 import Loader from "@/components/ui/Loader";
-import { t } from "@/lib/i18n";
 import { exclusiveSetGroups } from "@/lib/data/exclusive";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
+import { t } from "@/lib/i18n";
 import { isMinecraft } from "@/lib/utils/lock";
 
 export function ExclusiveGroupSection() {
@@ -72,9 +72,7 @@ export function ExclusiveGroupSection() {
 
             <ToolCategory title={t("enchantment.exclusive.custom.title")}>
                 {merge.filter((tag) => tag.identifier.namespace !== "minecraft").length === 0 && (
-                    <p className="text-zinc-400 p-4">
-                        {t("enchantment.exclusive.custom.fallback")}
-                    </p>
+                    <p className="text-zinc-400 p-4">{t("enchantment.exclusive.custom.fallback")}</p>
                 )}
 
                 {merge.filter((tag) => tag.identifier.namespace !== "minecraft").length > 0 && (

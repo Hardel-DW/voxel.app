@@ -1,4 +1,3 @@
-
 import { getMinecraftVersion } from "@voxelio/breeze";
 import { Button } from "@/components/ui/Button";
 import { t } from "@/lib/i18n";
@@ -13,7 +12,6 @@ interface StatusBoxProps {
 }
 
 export function StatusBox({ files, version, onResetAction, variant = "success", reason }: StatusBoxProps) {
-
     const variants = {
         success: {
             container: "border-green-500 bg-green-950/50",

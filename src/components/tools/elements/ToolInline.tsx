@@ -35,21 +35,13 @@ export default function ToolInline(props: ToolInlineType) {
                             </div>
                         )}
                         <div className="flex flex-col">
-                            <span className="text-white line-clamp-1">
-                                {props.title}
-                            </span>
-                            <span className="text-xs text-zinc-400 font-light line-clamp-2">
-                                {props.description}
-                            </span>
+                            <span className="text-white line-clamp-1">{props.title}</span>
+                            <span className="text-xs text-zinc-400 font-light line-clamp-2">{props.description}</span>
                         </div>
                     </div>
 
                     <div className="flex gap-4 items-center">
-                        {lock.isLocked && (
-                            <span className="text-xs text-zinc-400 font-light w-max flex items-center">
-                                {lock.text}
-                            </span>
-                        )}
+                        {lock.isLocked && <span className="text-xs text-zinc-400 font-light w-max flex items-center">{lock.text}</span>}
                         {value && !lock.isLocked && <img src="/icons/check.svg" alt="checkbox" className="w-6 h-6 invert" />}
                         {lock.isLocked && <img src="/icons/tools/lock.svg" alt="checkbox" className="w-6 h-6 invert" />}
                     </div>

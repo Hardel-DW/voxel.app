@@ -7,8 +7,8 @@ import ToolReveal, { ToolRevealElement } from "@/components/tools/elements/ToolR
 import ToolSection from "@/components/tools/elements/ToolSection";
 import ToolSlot from "@/components/tools/elements/ToolSlot";
 import Loader from "@/components/ui/Loader";
-import { isMinecraft, LockEntryBuilder } from "@/lib/utils/lock";
 import { t } from "@/lib/i18n";
+import { isMinecraft, LockEntryBuilder } from "@/lib/utils/lock";
 
 // Lazy load page components
 const EnchantDNTSection = lazy(() => import("@/components/tools/concept/enchantment/EnchantDNTSection"));

@@ -11,8 +11,8 @@ import { ToggleGroup, ToggleGroupOption } from "@/components/ui/ToggleGroup";
 import { TreeProvider } from "@/components/ui/tree/TreeNavigationContext";
 import { TreeSidebar } from "@/components/ui/tree/TreeSidebar";
 import { useElementsByType } from "@/lib/hook/useElementsByType";
-import { buildTree } from "@/lib/utils/tree";
 import { t } from "@/lib/i18n";
+import { buildTree } from "@/lib/utils/tree";
 
 const concept = CONCEPTS.find((c) => c.registry === "loot_table");
 if (!concept) throw new Error("Loot table concept not found");

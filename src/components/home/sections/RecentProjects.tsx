@@ -1,12 +1,12 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useHomeStore } from "@/components/home/HomeStore";
+import ProjectCard from "@/components/home/sections/ProjectCard";
 import { useConfiguratorStore } from "@/components/tools/Store";
-import { t } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
 import { TOAST, toast } from "@/components/ui/Toast";
 import { useTauriFileDrop } from "@/lib/hook/useTauriFileDrop";
+import { t } from "@/lib/i18n";
+import { cn } from "@/lib/utils";
 import { loadDatapackFromPath } from "@/lib/utils/datapack";
-import ProjectCard from "@/components/home/sections/ProjectCard";
 
 export default function RecentProjects() {
     const navigate = useNavigate();
@@ -35,9 +35,7 @@ export default function RecentProjects() {
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                             <h2 className="text-lg font-semibold text-zinc-200">{t("home.recent.title")}</h2>
-                            <span className="text-xs text-zinc-500 bg-zinc-800/50 px-2 py-0.5 rounded-md">
-                                {projects.length}
-                            </span>
+                            <span className="text-xs text-zinc-500 bg-zinc-800/50 px-2 py-0.5 rounded-md">{projects.length}</span>
                         </div>
                     </div>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">

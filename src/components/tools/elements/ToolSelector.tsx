@@ -20,18 +20,12 @@ export default function ToolSelector(props: ToolSelectorType & { index?: number 
                     <div className="flex justify-between items-center w-full gap-4">
                         <div className="flex flex-col flex-1">
                             <div className="flex items-center gap-2">
-                                <span className="text-white line-clamp-1">
-                                    {props.title}
-                                </span>
+                                <span className="text-white line-clamp-1">{props.title}</span>
                             </div>
                             {lock.isLocked ? (
-                                <span className="text-xs text-zinc-400 font-light line-clamp-2">
-                                    {lock.text}
-                                </span>
+                                <span className="text-xs text-zinc-400 font-light line-clamp-2">{lock.text}</span>
                             ) : (
-                                <span className="text-xs text-zinc-400 font-light line-clamp-2">
-                                    {props.description}
-                                </span>
+                                <span className="text-xs text-zinc-400 font-light line-clamp-2">{props.description}</span>
                             )}
                         </div>
 

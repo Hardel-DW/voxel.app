@@ -37,7 +37,13 @@ export default function Internalization() {
                         <span>{locale.name}</span>
                         {locale.code === currentLocale && (
                             <svg className="size-4" viewBox="0 0 12 12" fill="none">
-                                <path d="M2 6L5 9L10 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                                <path
+                                    d="M2 6L5 9L10 3"
+                                    stroke="currentColor"
+                                    strokeWidth="1.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                />
                             </svg>
                         )}
                     </DropdownMenuItem>

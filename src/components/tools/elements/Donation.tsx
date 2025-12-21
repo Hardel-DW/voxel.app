@@ -27,25 +27,17 @@ export default function Donation(props: ToolDonationType) {
 
                 <div className="flex flex-col justify-between h-full p-8 pl-12">
                     <div>
-                        <h1 className="text-white text-3xl tracking-wide font-semibold">
-                            {props.title}
-                        </h1>
-                        <p className="text-zinc-400 text-sm pt-2 w-full lg:w-3/4">
-                            {props.description}
-                        </p>
+                        <h1 className="text-white text-3xl tracking-wide font-semibold">{props.title}</h1>
+                        <p className="text-zinc-400 text-sm pt-2 w-full lg:w-3/4">{props.description}</p>
                     </div>
                     <div className="xl:flex justify-between gap-4 mt-4">
                         <div>
-                            <h3 className="text-white font-bold text-xl pb-4 pt-6">
-                                {props.subTitle}
-                            </h3>
+                            <h3 className="text-white font-bold text-xl pb-4 pt-6">{props.subTitle}</h3>
                             <ul className="grid grid-cols-2 gap-x-8 items-center *:flex *:items-center *:gap-2 gap-y-4">
                                 {props.extra.map((item, index) => (
                                     <li key={index.toString()}>
                                         <img src="/icons/check.svg" alt="check" className="w-4 h-4 invert" />
-                                        <span className="text-zinc-300 text-sm font-semibold">
-                                            {item}
-                                        </span>
+                                        <span className="text-zinc-300 text-sm font-semibold">{item}</span>
                                     </li>
                                 ))}
                             </ul>

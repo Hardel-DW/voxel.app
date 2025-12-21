@@ -7,8 +7,8 @@ import ToolCounter from "@/components/tools/elements/ToolCounter";
 import ToolGrid from "@/components/tools/elements/ToolGrid";
 import ToolSection from "@/components/tools/elements/ToolSection";
 import ToolSelector from "@/components/tools/elements/ToolSelector";
-import { isMinecraft } from "@/lib/utils/lock";
 import { t } from "@/lib/i18n";
+import { isMinecraft } from "@/lib/utils/lock";
 
 export const Route = createFileRoute("/editor/enchantment/main")({
     component: EnchantmentMainPage

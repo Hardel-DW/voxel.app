@@ -36,17 +36,11 @@ function EnchantmentSlotsPage() {
                 ))}
 
                 <div className="flex flex-col gap-4 p-4">
-                    <p className="text-zinc-300">
-                        {t("enchantment.slots.explanation.title")}
-                    </p>
+                    <p className="text-zinc-300">{t("enchantment.slots.explanation.title")}</p>
                     <div>
                         <ul className="list-disc list-inside space-y-2">
-                            <li className="text-zinc-400">
-                                {t("enchantment.slots.explanation.list.1")}
-                            </li>
-                            <li className="text-zinc-400">
-                                {t("enchantment.slots.explanation.list.2")}
-                            </li>
+                            <li className="text-zinc-400">{t("enchantment.slots.explanation.list.1")}</li>
+                            <li className="text-zinc-400">{t("enchantment.slots.explanation.list.2")}</li>
                         </ul>
                     </div>
                 </div>

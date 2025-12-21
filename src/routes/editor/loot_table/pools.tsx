@@ -105,9 +105,7 @@ function PoolsPage() {
                 </div>
 
                 <div className="sticky top-0 z-30 px-8 py-4 bg-zinc-950/75 backdrop-blur-md border-b border-zinc-800/50 flex items-center justify-between">
-                    <h1 className="text-2xl font-bold text-white">
-                        {t("loot.pools.title")}
-                    </h1>
+                    <h1 className="text-2xl font-bold text-white">{t("loot.pools.title")}</h1>
                     <Button variant="default" onClick={handleAddPool}>
                         {t("loot.pools.add_pool")}
                     </Button>

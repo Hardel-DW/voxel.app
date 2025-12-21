@@ -24,9 +24,7 @@ export function ToolbarTextLink(props: ToolbarTextLinkProps) {
                 props.className
             )}>
             <img src={props.icon} alt="" className="w-4 h-4 invert opacity-75 select-none user-select-none" />
-            <span className="text-xs text-zinc-300 font-medium whitespace-nowrap">
-                {props.labelText}
-            </span>
+            <span className="text-xs text-zinc-300 font-medium whitespace-nowrap">{props.labelText}</span>
         </Link>
     );
 }

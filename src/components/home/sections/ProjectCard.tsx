@@ -19,16 +19,15 @@ export default function ProjectCard(props: { project: RecentProject; onOpen: () 
                 )}
             </div>
             <div className="flex-1 min-w-0 pointer-events-none">
-                <p className="font-medium text-zinc-200 group-hover:text-white transition-colors truncate">
-                    {props.project.name}
-                </p>
+                <p className="font-medium text-zinc-200 group-hover:text-white transition-colors truncate">{props.project.name}</p>
                 <div className="flex items-center gap-2 mt-1">
-                    <span className={cn(
-                        "text-xs px-2 py-0.5 rounded-md font-medium",
-                        props.project.type === "mod"
-                            ? "bg-purple-500/10 text-purple-400 border border-purple-500/20"
-                            : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
-                    )}>
+                    <span
+                        className={cn(
+                            "text-xs px-2 py-0.5 rounded-md font-medium",
+                            props.project.type === "mod"
+                                ? "bg-purple-500/10 text-purple-400 border border-purple-500/20"
+                                : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                        )}>
                         {props.project.type === "mod" ? "Mod" : "Datapack"}
                     </span>
                     <span className="text-xs text-zinc-500">{formatRelativeTime(props.project.lastOpened)}</span>

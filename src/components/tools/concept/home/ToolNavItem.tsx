@@ -46,23 +46,17 @@ export function ToolNavItem({ title, description, image, href, alignRight, comin
                 </div>
                 <div className={cn("text-left", alignRight && "text-right")}>
                     <div className={cn("flex items-center gap-2 mb-1", alignRight && "flex-row-reverse")}>
-                        <h3 className="text-xl font-semibold text-white">
-                            {title}
-                        </h3>
+                        <h3 className="text-xl font-semibold text-white">{title}</h3>
                         {elementsCount !== undefined && !comingSoon && (
                             <span className="bg-zinc-900/50 text-zinc-400 border border-zinc-800 text-xs px-2 py-1 rounded-full font-medium">
                                 {elementsCount} {t("elements")}
                             </span>
                         )}
                         {comingSoon && (
-                            <span className="bg-zinc-800 text-zinc-400 px-2 py-0.5 text-xs rounded-full">
-                                {t("tools.coming_soon")}
-                            </span>
+                            <span className="bg-zinc-800 text-zinc-400 px-2 py-0.5 text-xs rounded-full">{t("tools.coming_soon")}</span>
                         )}
                     </div>
-                    <p className="text-zinc-500 text-sm leading-relaxed">
-                        {description}
-                    </p>
+                    <p className="text-zinc-500 text-sm leading-relaxed">{description}</p>
                 </div>
             </div>
 

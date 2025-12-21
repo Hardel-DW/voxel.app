@@ -15,10 +15,10 @@ import {
 } from "@/components/ui/Dialog";
 import { TextInput } from "@/components/ui/TextInput";
 import { TOAST, toast } from "@/components/ui/Toast";
-import { t } from "@/lib/i18n";
 import { GitHub } from "@/lib/github/GitHub";
 import { GithubRepoValidationError } from "@/lib/github/GitHubError";
 import { useGitHubAuth } from "@/lib/hook/useGitHubAuth";
+import { t } from "@/lib/i18n";
 import { encodeToBase64 } from "@/lib/utils/encode";
 import { sanitizeRepoName } from "@/lib/utils/text";
 
@@ -35,7 +35,11 @@ export default function InitializeRepoButton() {
             const compiledFiles = useConfiguratorStore.getState().compile().getFiles();
             const files = Object.fromEntries(Object.entries(compiledFiles).map(([path, content]) => [path, encodeToBase64(content)]));
             useExportStore.getState().setInitializing(Object.keys(files).length);
-            toast(t("github.init.progress"), TOAST.INFO, t("github.init.progress.count").replace("%s", Object.keys(files).length.toString()));
+            toast(
+                t("github.init.progress"),
+                TOAST.INFO,
+                t("github.init.progress.count").replace("%s", Object.keys(files).length.toString())
+            );
             return new GitHub({ token }).initializeRepository(repoName, DESCRIPTION, false, true, files);
         },
         onSuccess: (data) => {
@@ -81,14 +85,10 @@ export default function InitializeRepoButton() {
                     <DialogTitle className="flex items-center gap-x-2">
                         <div className="flex items-center gap-x-4">
                             <img src="/icons/company/github.svg" alt="GitHub" className="size-6 invert" />
-                            <span className="text-xl font-medium text-zinc-200">
-                                {t("github.init.title")}
-                            </span>
+                            <span className="text-xl font-medium text-zinc-200">{t("github.init.title")}</span>
                         </div>
                     </DialogTitle>
-                    <DialogDescription>
-                        {t("github.init.description")}
-                    </DialogDescription>
+                    <DialogDescription>{t("github.init.description")}</DialogDescription>
                 </DialogHeader>
 
                 <div>

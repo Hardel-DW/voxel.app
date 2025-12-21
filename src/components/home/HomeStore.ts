@@ -19,22 +19,21 @@ export interface GameClient {
     type: ClientType;
     path: string;
     icon?: string;
-    instanceCount?: number;
 }
 
-export interface WorldInstance {
+export interface GameInstance {
     id: string;
     name: string;
     clientId: string;
     path: string;
-    icon?: string;
-    lastPlayed?: number;
-    version?: string;
+    iconPath: string | null;
+    lastModified: number;
 }
 
 interface HomeState {
     recentProjects: RecentProject[];
     gameClients: GameClient[];
+    gameInstances: GameInstance[];
     expandedClientId: string | null;
 
     addRecentProject: (project: Omit<RecentProject, "id" | "lastOpened">) => void;
@@ -44,21 +43,17 @@ interface HomeState {
     addGameClient: (client: Omit<GameClient, "id">) => void;
     removeGameClient: (id: string) => void;
     setExpandedClient: (id: string | null) => void;
+
+    setClientInstances: (clientId: string, instances: Omit<GameInstance, "id" | "clientId">[]) => void;
+    getInstancesByClient: (clientId: string) => GameInstance[];
 }
 
 export const useHomeStore = create<HomeState>()(
     persist(
-        (set) => ({
+        (set, get) => ({
             recentProjects: [],
-            gameClients: [
-                {
-                    id: "vanilla-default",
-                    name: "Vanilla Minecraft",
-                    type: "vanilla",
-                    path: "%appdata%/.minecraft",
-                    instanceCount: 0
-                }
-            ],
+            gameClients: [],
+            gameInstances: [],
             expandedClientId: null,
 
             addRecentProject: (project) =>
@@ -91,10 +86,26 @@ export const useHomeStore = create<HomeState>()(
 
             removeGameClient: (id) =>
                 set((state) => ({
-                    gameClients: state.gameClients.filter((c) => c.id !== id)
+                    gameClients: state.gameClients.filter((c) => c.id !== id),
+                    gameInstances: state.gameInstances.filter((i) => i.clientId !== id)
                 })),
 
-            setExpandedClient: (id) => set({ expandedClientId: id })
+            setExpandedClient: (id) => set({ expandedClientId: id }),
+
+            setClientInstances: (clientId, instances) =>
+                set((state) => {
+                    const filtered = state.gameInstances.filter((i) => i.clientId !== clientId);
+                    const newInstances = instances.map((inst) => ({
+                        ...inst,
+                        id: crypto.randomUUID(),
+                        clientId
+                    }));
+                    return { gameInstances: [...filtered, ...newInstances] };
+                }),
+
+            getInstancesByClient: (clientId) => {
+                return get().gameInstances.filter((i) => i.clientId === clientId);
+            }
         }),
         {
             name: "voxel-home-storage"

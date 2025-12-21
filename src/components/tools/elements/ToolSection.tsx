@@ -16,9 +16,7 @@ export default function ToolSection(props: ToolSectionType) {
             <div className="not-first:mt-16">
                 <div className="py-2 px-2 gap-4 flex flex-wrap justify-between items-center cursor-pointer shrink-0">
                     <div className="relative">
-                        <h2 className="text-2xl font-semibold">
-                            {props.title}
-                        </h2>
+                        <h2 className="text-2xl font-semibold">{props.title}</h2>
                         <hr className="m-0 absolute -bottom-2 left-0 right-0" />
                     </div>
                     {props.button && (

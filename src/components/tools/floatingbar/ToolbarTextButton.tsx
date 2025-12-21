@@ -22,9 +22,7 @@ export function ToolbarTextButton({ icon, tooltip, onClick, disabled, labelText,
                 className
             )}>
             <img src={icon} alt="" className="w-4 h-4 invert opacity-75 select-none user-select-none" />
-            <span className="text-xs text-zinc-300 font-medium whitespace-nowrap">
-                {labelText}
-            </span>
+            <span className="text-xs text-zinc-300 font-medium whitespace-nowrap">{labelText}</span>
         </button>
     );
 }

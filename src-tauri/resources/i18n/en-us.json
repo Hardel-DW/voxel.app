@@ -882,5 +882,22 @@
     "restore_session.description": "Continue where you left off",
     "studio.projects": "Projects",
     "studio.vanilla_explorer": "Vanilla Data",
-    "studio.vanilla_explorer.description": "Browse Minecraft's default content"
+    "studio.vanilla_explorer.description": "Browse Minecraft's default content",
+    "home.gameClients": "Game Instances",
+    "home.noClients": "No game clients configured",
+    "home.addClientHint": "Add a launcher to see your Minecraft instances",
+    "home.noInstances": "No instances found in this launcher",
+    "home.addClient.title": "Add Game Client",
+    "home.addClient.button": "Add a game client",
+    "home.addClient.buttonHint": "Click to configure a new launcher",
+    "home.addClient.launcher": "Launcher",
+    "home.addClient.path": "Installation Path",
+    "home.addClient.pathPlaceholder": "Select a folder...",
+    "home.addClient.browse": "Browse",
+    "home.addClient.validate": "Validate Path",
+    "home.addClient.validating": "Validating...",
+    "home.addClient.add": "Add Client",
+    "home.addClient.status.validating": "Checking path...",
+    "home.addClient.status.valid": "{count} instance(s) found",
+    "home.addClient.status.invalid": "No valid Minecraft instance found"
 }

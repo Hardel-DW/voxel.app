@@ -39,12 +39,8 @@ function RouteComponent() {
                         <div className="size-24 bg-zinc-900/50 rounded-full flex items-center justify-center mb-6 border border-zinc-800">
                             <img src="/icons/search.svg" className="size-10 opacity-20 invert" alt="No results" />
                         </div>
-                        <h3 className="text-xl font-medium text-zinc-300 mb-2">
-                            {t("loot.overview.empty.title")}
-                        </h3>
-                        <p className="text-zinc-500 max-w-sm text-center mb-6">
-                            {t("loot.overview.empty.description")}
-                        </p>
+                        <h3 className="text-xl font-medium text-zinc-300 mb-2">{t("loot.overview.empty.title")}</h3>
+                        <p className="text-zinc-500 max-w-sm text-center mb-6">{t("loot.overview.empty.description")}</p>
                     </div>
                 ) : (
                     <div>

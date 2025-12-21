@@ -33,22 +33,12 @@ export default function ToolInlineSlot(props: ToolInlineType & { index?: number 
                     </div>
                 )}
 
-                {lock.isLocked && (
-                    <span className="absolute top-0 p-4 text-xs text-zinc-400 font-light">
-                        {lock.text}
-                    </span>
-                )}
+                {lock.isLocked && <span className="absolute top-0 p-4 text-xs text-zinc-400 font-light">{lock.text}</span>}
 
                 <div className="stack h-full rounded-2xl overflow-hidden">
                     <div className="pb-2 self-end px-4 relative z-20">
-                        <h3 className="text-xl font-semibold text-white">
-                            {props.title}
-                        </h3>
-                        {props.description && (
-                            <p className="text-sm text-zinc-400">
-                                {props.description}
-                            </p>
-                        )}
+                        <h3 className="text-xl font-semibold text-white">{props.title}</h3>
+                        {props.description && <p className="text-sm text-zinc-400">{props.description}</p>}
                     </div>
                     <div className="rounded-2xl relative bg-shadow-bottom z-10" />
                     <div

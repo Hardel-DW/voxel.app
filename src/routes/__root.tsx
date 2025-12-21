@@ -1,11 +1,11 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
 import DefaultCatchBoundary from "@/components/DefaultCatchBoundary";
+import AppLayout from "@/components/layout/AppLayout";
 import NotFound from "@/components/NotFound";
 import Providers from "@/components/QueryProvider";
-import { Toaster } from "@/components/ui/Toast";
-import { FloatingBarProvider } from "@/components/tools/floatingbar/FloatingBarContext";
 import DebugPanel from "@/components/tools/debug/DebugPanel";
-import AppLayout from "@/components/layout/AppLayout";
+import { FloatingBarProvider } from "@/components/tools/floatingbar/FloatingBarContext";
+import { Toaster } from "@/components/ui/Toast";
 
 export const Route = createRootRoute({
     errorComponent: DefaultCatchBoundary,

@@ -62,15 +62,9 @@ function EnchantmentLayout() {
             <div className="flex size-full overflow-hidden relative z-10 isolate">
                 <EditorSidebar title={t("enchantment.overview.title")} icon={elementIcon} linkTo="/editor/enchantment/overview">
                     <ToggleGroup value={sidebarView} onChange={setSidebarView} className="mt-4">
-                        <ToggleGroupOption value="slots">
-                            {t("enchantment.overview.sidebar.slots")}
-                        </ToggleGroupOption>
-                        <ToggleGroupOption value="items">
-                            {t("enchantment.overview.sidebar.items")}
-                        </ToggleGroupOption>
-                        <ToggleGroupOption value="exclusive">
-                            {t("enchantment.overview.sidebar.exclusive")}
-                        </ToggleGroupOption>
+                        <ToggleGroupOption value="slots">{t("enchantment.overview.sidebar.slots")}</ToggleGroupOption>
+                        <ToggleGroupOption value="items">{t("enchantment.overview.sidebar.items")}</ToggleGroupOption>
+                        <ToggleGroupOption value="exclusive">{t("enchantment.overview.sidebar.exclusive")}</ToggleGroupOption>
                     </ToggleGroup>
                     <TreeSidebar />
                 </EditorSidebar>

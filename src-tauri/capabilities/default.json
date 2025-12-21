@@ -14,16 +14,21 @@
     "fs:default",
     "fs:allow-resource-read-recursive",
     "fs:allow-read-file",
+    "fs:allow-read-dir",
+    "fs:allow-exists",
     "fs:allow-stat",
     {
       "identifier": "fs:scope",
       "allow": [
         { "path": "$HOME/**/*" },
+        { "path": "$APPDATA/**/*" },
+        { "path": "$LOCALDATA/**/*" },
         { "path": "$DESKTOP/**/*" },
         { "path": "$DOWNLOAD/**/*" },
         { "path": "$DOCUMENT/**/*" }
       ]
     },
+    "dialog:default",
     "store:default"
   ]
 }

@@ -22,12 +22,13 @@ export default function NewsCard({ item }: { item: NewsItem }) {
             )}
             <div className="p-4 space-y-3">
                 <div className="flex items-center justify-between gap-2">
-                    <span className={cn(
-                        "text-xs px-2 py-0.5 rounded-md font-medium border ",
-                        item.type === "Update" && "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
-                        item.type === "Feature" && "bg-emerald-500/5 text-emerald-600 border-emerald-500/10",
-                        item.type === "Announcement" && "bg-amber-500/5 text-amber-600 border-amber-500/10"
-                    )}>
+                    <span
+                        className={cn(
+                            "text-xs px-2 py-0.5 rounded-md font-medium border ",
+                            item.type === "Update" && "bg-zinc-500/10 text-zinc-400 border-zinc-500/20",
+                            item.type === "Feature" && "bg-emerald-500/5 text-emerald-600 border-emerald-500/10",
+                            item.type === "Announcement" && "bg-amber-500/5 text-amber-600 border-amber-500/10"
+                        )}>
                         {item.type}
                     </span>
                     <p className="text-xs text-zinc-600">{formattedDate}</p>

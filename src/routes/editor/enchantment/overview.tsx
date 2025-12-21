@@ -6,9 +6,9 @@ import EnchantmentOverviewList from "@/components/tools/concept/enchantment/Ench
 import { viewMatchers } from "@/components/tools/concept/enchantment/viewMatchers";
 import { useConfiguratorStore } from "@/components/tools/Store";
 import { TextInput } from "@/components/ui/TextInput";
-import { t } from "@/lib/i18n";
 import { useElementsByType } from "@/lib/hook/useElementsByType";
 import { useInfiniteScroll } from "@/lib/hook/useInfiniteScroll";
+import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/editor/enchantment/overview")({
@@ -42,12 +42,8 @@ function OverviewPage() {
                         <div className="size-24 bg-zinc-900/50 rounded-full flex items-center justify-center mb-6 border border-zinc-800">
                             <img src="/icons/search.svg" className="size-10 opacity-20 invert" alt="No results" />
                         </div>
-                        <h3 className="text-xl font-medium text-zinc-300 mb-2">
-                            {t("enchantment.items.no_results.title")}
-                        </h3>
-                        <p className="text-zinc-500 max-w-sm text-center">
-                            {t("enchantment.items.no_results.description")}
-                        </p>
+                        <h3 className="text-xl font-medium text-zinc-300 mb-2">{t("enchantment.items.no_results.title")}</h3>
+                        <p className="text-zinc-500 max-w-sm text-center">{t("enchantment.items.no_results.description")}</p>
                     </div>
                 ) : (
                     <div

@@ -24,9 +24,7 @@ export default function Splash() {
                             <div className="w-1 h-1 bg-zinc-500/50"></div>
                             <div className="w-1 h-1 bg-zinc-500/20"></div>
                         </div>
-                        <div className="text-[10px] tracking-widest text-zinc-600 font-mono">
-                            BUILD 24.0.1-RC
-                        </div>
+                        <div className="text-[10px] tracking-widest text-zinc-600 font-mono">BUILD 24.0.1-RC</div>
                     </div>
 
                     <div className="flex justify-between items-end">
@@ -37,8 +35,7 @@ export default function Splash() {
                             href="https://github.com"
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="pointer-events-auto hover:opacity-70 transition-opacity"
-                        >
+                            className="pointer-events-auto hover:opacity-70 transition-opacity">
                             <img src="/icons/company/github.svg" alt="GitHub" className="size-4 invert cursor-pointer" />
                         </a>
                     </div>
@@ -60,9 +57,7 @@ export default function Splash() {
                     </div>
 
                     <div className="absolute bottom-20 flex flex-col items-center gap-3 w-64 opacity-100 transition-opacity duration-500 delay-500 starting:opacity-0">
-                        <p className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest animate-pulse">
-                            Loading...
-                        </p>
+                        <p className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest animate-pulse">Loading...</p>
                     </div>
                 </div>
             </div>

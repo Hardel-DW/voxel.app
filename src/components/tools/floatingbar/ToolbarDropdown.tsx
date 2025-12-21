@@ -49,14 +49,8 @@ export function ToolbarDropdown({ icon, tooltip, value, options, onChange, disab
                             {value === option.value && <img src="/icons/valid.svg" alt="Selected" className="h-4 w-4 shrink-0" />}
                             {value !== option.value && <div className="h-4 w-4 shrink-0" />}
                             <div className="flex flex-col">
-                                <span className="font-medium">
-                                    {option.label}
-                                </span>
-                                {option.description && (
-                                    <span className="text-xs text-zinc-400">
-                                        {option.description}
-                                    </span>
-                                )}
+                                <span className="font-medium">{option.label}</span>
+                                {option.description && <span className="text-xs text-zinc-400">{option.description}</span>}
                             </div>
                         </div>
                     );

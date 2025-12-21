@@ -5,9 +5,7 @@ const appWindow = getCurrentWindow();
 export default function TitleBar() {
     return (
         <div className="fixed top-0 left-0 right-0 flex flex-col select-none z-1000">
-            <div
-                data-tauri-drag-region
-                className="h-8 flex items-center justify-between">
+            <div data-tauri-drag-region className="h-8 flex items-center justify-between">
                 <div className="flex items-center gap-2 pl-3 pointer-events-none">
                     <img src="/icons/logo.svg" alt="Voxel" className="size-4" />
                     <span className="text-xs font-medium text-zinc-400">Voxel Studio Pro</span>

@@ -19,9 +19,7 @@ export default function OverviewCase(props: OverviewCaseProps) {
             </PopoverTrigger>
             <PopoverContent>
                 <div className="flex flex-col gap-2">
-                    <p className="text-sm text-zinc-400">
-                        {props.title}
-                    </p>
+                    <p className="text-sm text-zinc-400">{props.title}</p>
                 </div>
             </PopoverContent>
         </Popover>

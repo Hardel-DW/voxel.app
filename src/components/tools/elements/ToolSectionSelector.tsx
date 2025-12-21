@@ -34,9 +34,7 @@ export default function ToolSectionSelector(props: ToolSectionSelectorSection) {
                 <div className="flex flex-col ring-0 transition-all h-full">
                     <div className="py-2 px-2 gap-4 flex flex-wrap justify-between items-center cursor-pointer shrink-0">
                         <div className="relative">
-                            <h2 className="text-2xl font-semibold">
-                                {props.title}
-                            </h2>
+                            <h2 className="text-2xl font-semibold">{props.title}</h2>
                             <hr className="m-0 absolute -bottom-2 left-0 right-0" />
                         </div>
                         {props.elements && (
@@ -50,9 +48,7 @@ export default function ToolSectionSelector(props: ToolSectionSelectorSection) {
                                         })}
                                         key={element.id}
                                         onClick={() => handleSetValue(element.id)}>
-                                        <p className="font-semibold line-clamp-1 text-xs md:text-sm">
-                                            {element.title}
-                                        </p>
+                                        <p className="font-semibold line-clamp-1 text-xs md:text-sm">{element.title}</p>
                                     </button>
                                 ))}
 

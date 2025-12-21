@@ -48,20 +48,16 @@ function ActionItem(props: ToolListOptionAction & { elementId?: string; lock: { 
             onClick={handleAction}>
             <div className="flex flex-col flex-1">
                 <div className="text-sm text-zinc-200 flex items-center gap-2">
-                    <span className="text-sm text-zinc-200">
-                        {props.title}
-                    </span>
+                    <span className="text-sm text-zinc-200">{props.title}</span>
                     {props.subtitle && (
                         <span className="text-[10px] text-zinc-500 bg-zinc-900/20 px-1 py-0.5 rounded-md border border-zinc-900">
                             {props.subtitle}
                         </span>
                     )}
                 </div>
-                <span className="text-xs text-zinc-500">
-                    {props.description}
-                </span>
+                <span className="text-xs text-zinc-500">{props.description}</span>
             </div>
-            <Switch id="action-switch" isChecked={isChecked ?? false} setIsChecked={() => { }} disabled={props.lock.isLocked} />
+            <Switch id="action-switch" isChecked={isChecked ?? false} setIsChecked={() => {}} disabled={props.lock.isLocked} />
         </label>
     );
 }
@@ -98,12 +94,8 @@ export default function ToolListOption(props: ToolListOptionType) {
                                 </div>
                             )}
                             <div className="flex flex-col">
-                                <span className="text-white line-clamp-1">
-                                    {props.title}
-                                </span>
-                                <span className="text-xs text-zinc-400 font-light line-clamp-2">
-                                    {props.description}
-                                </span>
+                                <span className="text-white line-clamp-1">{props.title}</span>
+                                <span className="text-xs text-zinc-400 font-light line-clamp-2">{props.description}</span>
                             </div>
                         </div>
                     </div>

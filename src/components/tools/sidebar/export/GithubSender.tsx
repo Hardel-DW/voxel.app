@@ -17,9 +17,9 @@ import {
 } from "@/components/ui/Dialog";
 import { TextInput } from "@/components/ui/TextInput";
 import { TOAST, toast } from "@/components/ui/Toast";
-import { t } from "@/lib/i18n";
 import { GitHub } from "@/lib/github/GitHub";
 import { useGitHubAuth } from "@/lib/hook/useGitHubAuth";
+import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { encodeToBase64 } from "@/lib/utils/encode";
 
@@ -40,7 +40,9 @@ export default function GithubSender() {
         onSuccess: (data) => {
             const message = pendingAction?.type === "pr" ? t("github.pr.success") : t("github.push.success");
             const detail =
-                pendingAction?.type === "pr" ? data.prUrl || undefined : t("github.files.modified").replace("%s", String(data.filesModified));
+                pendingAction?.type === "pr"
+                    ? data.prUrl || undefined
+                    : t("github.files.modified").replace("%s", String(data.filesModified));
             toast(message, TOAST.SUCCESS, detail);
             setPendingAction(null);
             setNewBranch(undefined);
@@ -143,7 +145,13 @@ export default function GithubSender() {
                             {t("github.dialog.cancel")}
                         </DialogCloseButton>
                         <DialogCloseButton type="button" onClick={() => pendingAction && mutate()} variant="ghost" disabled={isPending}>
-                            {t(isPending ? "github.dialog.processing" : pendingAction?.type === "pr" ? "github.dialog.pr.confirm" : "github.dialog.push.confirm")}
+                            {t(
+                                isPending
+                                    ? "github.dialog.processing"
+                                    : pendingAction?.type === "pr"
+                                      ? "github.dialog.pr.confirm"
+                                      : "github.dialog.push.confirm"
+                            )}
                         </DialogCloseButton>
                     </div>
                 </DialogFooter>

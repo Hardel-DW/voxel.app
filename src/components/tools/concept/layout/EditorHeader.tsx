@@ -4,9 +4,9 @@ import type { ReactNode } from "react";
 import { EditorBreadcrumb } from "@/components/tools/concept/layout/EditorBreadcrumb";
 import type { Tab } from "@/components/tools/elements";
 import { useActiveConcept } from "@/lib/hook/useActiveConcept";
+import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 import { hueToHsl, stringToColor } from "@/lib/utils/color";
-import { t } from "@/lib/i18n";
 
 interface EditorHeaderProps {
     fallbackTitle: string;
@@ -24,8 +24,8 @@ export function EditorHeader({ fallbackTitle, identifier, filterPath, isOverview
             ? Identifier.toDisplay(filterPath.split("/").pop() || "")
             : "All"
         : identifier
-            ? new Identifier(identifier).toResourceName()
-            : fallbackTitle;
+          ? new Identifier(identifier).toResourceName()
+          : fallbackTitle;
 
     const colorKey = isOverview ? filterPath || "all" : identifier ? new Identifier(identifier).toUniqueKey() : fallbackTitle;
     const bgColor = hueToHsl(stringToColor(colorKey));

@@ -5,8 +5,8 @@ import SimpleSwitch from "@/components/tools/elements/SimpleSwitch";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
 import { useConfiguratorStore } from "@/components/tools/Store";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
-import { t } from "@/lib/i18n";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
+import { t } from "@/lib/i18n";
 import SlotGrid from "./SlotGrid";
 
 const SLOT_IMAGES = {
@@ -116,12 +116,8 @@ export default function SlotsEnchantmentCard({ element }: SlotsEnchantmentCardPr
                         <PopoverContent>
                             <div className="flex flex-col gap-4 min-w-120">
                                 <div className="space-y-2 pt-2">
-                                    <p className="font-semibold leading-2">
-                                        {t("enchantment.slots.tooltip.title")}
-                                    </p>
-                                    <p className="text-xs text-zinc-400">
-                                        {t("enchantment.slots.tooltip.description")}
-                                    </p>
+                                    <p className="font-semibold leading-2">{t("enchantment.slots.tooltip.title")}</p>
+                                    <p className="text-xs text-zinc-400">{t("enchantment.slots.tooltip.description")}</p>
                                 </div>
 
                                 <hr />

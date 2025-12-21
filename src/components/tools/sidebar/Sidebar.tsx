@@ -37,11 +37,7 @@ export default function StudioSidebar() {
                 <ExportButton containerRef={buttonsContainerRef} />
                 <Popover>
                     <PopoverTrigger>
-                        <Button
-                            type="button"
-                            variant="transparent"
-                            size="square"
-                            className="border-0 select-none aspect-square shrink-0">
+                        <Button type="button" variant="transparent" size="square" className="border-0 select-none aspect-square shrink-0">
                             <img src="/icons/settings.svg" alt="settings" className="size-6 invert opacity-70" />
                         </Button>
                     </PopoverTrigger>

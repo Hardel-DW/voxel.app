@@ -1,5 +1,5 @@
-import { useState, useRef, useSyncExternalStore } from "react";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
+import { useRef, useState, useSyncExternalStore } from "react";
 
 interface TauriDropState {
     isDragging: boolean;

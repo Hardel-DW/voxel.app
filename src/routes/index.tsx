@@ -1,13 +1,13 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useHomeStore } from "@/components/home/HomeStore";
 import GameClients from "@/components/home/sections/GameClients";
 import RecentProjects from "@/components/home/sections/RecentProjects";
-import StudioLoading from "@/components/tools/loading/StudioLoading";
-import { useHomeStore } from "@/components/home/HomeStore";
-import { getGreeting } from "@/lib/getGreeting";
-import { t } from "@/lib/i18n";
-import { TextInput } from "@/components/ui/TextInput";
 import Background from "@/components/layout/Background";
 import NewsSidebar from "@/components/layout/news/NewsSidebar";
+import StudioLoading from "@/components/tools/loading/StudioLoading";
+import { TextInput } from "@/components/ui/TextInput";
+import { getGreeting } from "@/lib/getGreeting";
+import { t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/")({
     component: HomePage,
@@ -16,7 +16,6 @@ export const Route = createFileRoute("/")({
 
 function HomePage() {
     const projectCount = useHomeStore((s) => s.recentProjects.length);
-
 
     return (
         <div className="size-full flex">
@@ -27,9 +26,7 @@ function HomePage() {
                         <div className="space-y-1">
                             <h1 className="text-2xl font-bold text-white tracking-tight">{getGreeting()}</h1>
                             <p className="text-sm text-zinc-500">
-                                {projectCount > 0
-                                    ? t("home.subtitle.projects", { count: projectCount })
-                                    : t("home.subtitle.empty")}
+                                {projectCount > 0 ? t("home.subtitle.projects", { count: projectCount }) : t("home.subtitle.empty")}
                             </p>
                         </div>
                         <div className="flex items-center gap-3">

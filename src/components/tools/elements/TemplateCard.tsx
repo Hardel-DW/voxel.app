@@ -14,21 +14,11 @@ export default function TemplateCard(props: {
                 {props.children}
             </div>
             <div>
-                <h3 className="text-lg font-semibold mb-1">
-                    {props.title}
-                </h3>
-                {props.description && (
-                    <p className="text-sm text-zinc-400">
-                        {props.description}
-                    </p>
-                )}
+                <h3 className="text-lg font-semibold mb-1">{props.title}</h3>
+                {props.description && <p className="text-sm text-zinc-400">{props.description}</p>}
             </div>
 
-            {props.short && (
-                <p className="text-xs text-zinc-400 pt-4 mt-4 border-t border-zinc-700">
-                    {props.short}
-                </p>
-            )}
+            {props.short && <p className="text-xs text-zinc-400 pt-4 mt-4 border-t border-zinc-700">{props.short}</p>}
         </SimpleCard>
     );
 }

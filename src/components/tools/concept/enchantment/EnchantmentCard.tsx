@@ -5,8 +5,8 @@ import OverviewCase from "@/components/tools/concept/enchantment/EnchantmentOver
 import SimpleSwitch from "@/components/tools/elements/SimpleSwitch";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
 import { useConfiguratorStore } from "@/components/tools/Store";
-import { t } from "@/lib/i18n";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
+import { t } from "@/lib/i18n";
 
 const findOptions = [
     {

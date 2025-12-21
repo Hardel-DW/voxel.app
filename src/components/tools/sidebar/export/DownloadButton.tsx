@@ -13,8 +13,8 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/Dialog";
-import { downloadFile } from "@/lib/utils/download";
 import { t } from "@/lib/i18n";
+import { downloadFile } from "@/lib/utils/download";
 
 const MOD_MANIFEST_FILES = ["fabric.mod.json", "quilt.mod.json", "META-INF/mods.toml", "META-INF/neoforge.mods.toml"];
 
@@ -56,9 +56,7 @@ export default function DownloadButton() {
                 <DialogHeader>
                     <DialogTitle className="flex items-center gap-x-2">
                         <img src="/icons/success.svg" alt="zip" className="size-6" />
-                        <span className="text-xl font-medium text-zinc-200">
-                            {t("success")}
-                        </span>
+                        <span className="text-xl font-medium text-zinc-200">{t("success")}</span>
                     </DialogTitle>
                     <DialogDescription>
                         {t("modification_success")}
@@ -77,9 +75,7 @@ export default function DownloadButton() {
                         </a>
                     </div>
                     <div className="flex items-end justify-between gap-4">
-                        <DialogCloseButton variant="ghost">
-                            {t("close")}
-                        </DialogCloseButton>
+                        <DialogCloseButton variant="ghost">{t("close")}</DialogCloseButton>
                         <Button target="_blank" rel="noopener noreferrer" href="https://streamelements.com/hardoudou/tip" variant="patreon">
                             {t("donate")}
                         </Button>

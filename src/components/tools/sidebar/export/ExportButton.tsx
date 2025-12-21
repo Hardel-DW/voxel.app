@@ -10,8 +10,8 @@ import UnauthView from "@/components/tools/sidebar/export/UnauthView";
 import { Button } from "@/components/ui/Button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 import { ToggleGroup, ToggleGroupOption } from "@/components/ui/ToggleGroup";
-import { t } from "@/lib/i18n";
 import { useGitHubAuth } from "@/lib/hook/useGitHubAuth";
+import { t } from "@/lib/i18n";
 
 export default function ExportButton({ containerRef }: { containerRef?: RefObject<HTMLDivElement | null> }) {
     const { owner, repositoryName, isGitRepository } = useExportStore();
@@ -29,9 +29,7 @@ export default function ExportButton({ containerRef }: { containerRef?: RefObjec
                     variant="shimmer"
                     size="default">
                     <img src="/icons/upload.svg" alt="Export" className="size-5 block in-data-pinned:hidden" />
-                    <span className="text-sm hidden in-data-pinned:block whitespace-nowrap">
-                        {t("export")}
-                    </span>
+                    <span className="text-sm hidden in-data-pinned:block whitespace-nowrap">{t("export")}</span>
                 </Button>
             </PopoverTrigger>
 

@@ -46,12 +46,8 @@ const ToolRevealElement = function ToolRevealElement({ element, isSelected, onSe
                     "opacity-50": !isSelected
                 })}>
                 <div className="flex flex-col gap-2">
-                    <h1 className="text-3xl font-semibold uppercase tracking-wider">
-                        {element.title}
-                    </h1>
-                    <p className="text-zinc-400 font-semibold text-xs">
-                        {element.description}
-                    </p>
+                    <h1 className="text-3xl font-semibold uppercase tracking-wider">{element.title}</h1>
+                    <p className="text-zinc-400 font-semibold text-xs">{element.description}</p>
                 </div>
             </div>
         </button>

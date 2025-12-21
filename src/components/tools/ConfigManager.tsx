@@ -1,8 +1,8 @@
 import type { PropsWithChildren } from "react";
 import { useConfiguratorStore } from "@/components/tools/Store";
 import { Button } from "@/components/ui/Button";
-import RestoreLastSession from "./RestoreLastSession";
 import { t } from "@/lib/i18n";
+import RestoreLastSession from "./RestoreLastSession";
 
 export default function ConfigManager(props: PropsWithChildren) {
     const hasElements = useConfiguratorStore((state) => Object.keys(state.files).length > 0);
@@ -10,9 +10,7 @@ export default function ConfigManager(props: PropsWithChildren) {
 
     return (
         <div className="size-full flex items-center justify-center flex-col gap-y-4">
-            <h1 className="text-zinc-400 text-2xl font-bold">
-                {t("no_config.title")}
-            </h1>
+            <h1 className="text-zinc-400 text-2xl font-bold">{t("no_config.title")}</h1>
             <div className="text-zinc-400 text-sm text-center">
                 {t("no_config.description.1")}
                 <br />

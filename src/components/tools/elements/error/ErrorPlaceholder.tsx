@@ -9,19 +9,13 @@ export default function ErrorPlaceholder({ error }: ErrorPlaceholderProps) {
         <div className="bg-blue-50/5 ring-0 ring-zinc-700 relative transition-all p-6 rounded-xl">
             <div className="flex flex-col items-center justify-between gap-4 h-full">
                 <div className="text-center">
-                    <h3 className="text-lg font-semibold mb-1">
-                        {t("error.title")}
-                    </h3>
-                    <p className="text-sm text-zinc-400">
-                        {t("error.component")}
-                    </p>
+                    <h3 className="text-lg font-semibold mb-1">{t("error.title")}</h3>
+                    <p className="text-sm text-zinc-400">{t("error.component")}</p>
                 </div>
 
                 <div className="h-16 w-16 flex items-center justify-center">
                     <svg className="h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <title>
-                            {t("error")}
-                        </title>
+                        <title>{t("error")}</title>
                         <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
@@ -33,9 +27,7 @@ export default function ErrorPlaceholder({ error }: ErrorPlaceholderProps) {
 
                 <div className="w-full">
                     <details className="text-xs text-zinc-400 pt-4 mt-4 border-t border-zinc-700">
-                        <summary className="cursor-pointer">
-                            {t("error.details")}
-                        </summary>
+                        <summary className="cursor-pointer">{t("error.details")}</summary>
                         <pre className="mt-2 whitespace-pre-wrap">{error?.message || t("error.component")}</pre>
                     </details>
                 </div>
