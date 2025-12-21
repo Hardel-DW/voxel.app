@@ -1,13 +1,17 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useState } from "react";
 import { ContentCard } from "@/components/home/sections/ContentCard";
 import NewsSidebar from "@/components/layout/news/NewsSidebar";
 import Background from "@/components/layout/Background";
+import { SegmentedControl, SegmentedItem } from "@/components/ui/SegmentedControl";
 
 export const Route = createFileRoute("/world")({
     component: WorldPage,
 });
 
 function WorldPage() {
+    const [tab, setTab] = useState("world");
+
     return (
         <div className="size-full flex relative">
             <Background />
@@ -55,7 +59,15 @@ function WorldPage() {
                     </div>
                 </header>
 
-                <div className="relative flex-1 overflow-y-auto px-8 pb-12 pt-4 flex flex-col gap-2 mask-[linear-gradient(to_bottom,transparent,black_24px)]">
+                <div className="px-8 py-4">
+                    <SegmentedControl value={tab} onChange={setTab}>
+                        <SegmentedItem value="world">World</SegmentedItem>
+                        <SegmentedItem value="mods">Mods and Pack</SegmentedItem>
+                        <SegmentedItem value="datapack">Resources Pack</SegmentedItem>
+                    </SegmentedControl>
+                </div>
+
+                <div className="relative flex-1 overflow-y-auto px-8 pb-12 pt-2 flex flex-col gap-2 mask-[linear-gradient(to_bottom,transparent,black_24px)]">
                     {Array.from({ length: 50 }).map((_, index) => (
                         <ContentCard key={`${index.toString()}-content-card`} title="Content Card" author="Author" version="1.0.0" type="Datapack" />
                     ))}
