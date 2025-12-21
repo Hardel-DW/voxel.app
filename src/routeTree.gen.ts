@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WorldRouteImport } from './routes/world'
 import { Route as EditorRouteImport } from './routes/editor'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
@@ -29,6 +30,11 @@ import { Route as EditorEnchantmentItemsRouteImport } from './routes/editor/ench
 import { Route as EditorEnchantmentFindRouteImport } from './routes/editor/enchantment/find'
 import { Route as EditorEnchantmentExclusiveRouteImport } from './routes/editor/enchantment/exclusive'
 
+const WorldRoute = WorldRouteImport.update({
+  id: '/world',
+  path: '/world',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const EditorRoute = EditorRouteImport.update({
   id: '/editor',
   path: '/editor',
@@ -134,6 +140,7 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRouteWithChildren
+  '/world': typeof WorldRoute
   '/editor/enchantment': typeof EditorEnchantmentRouteWithChildren
   '/editor/loot_table': typeof EditorLoot_tableRouteWithChildren
   '/editor/recipe': typeof EditorRecipeRouteWithChildren
@@ -155,6 +162,7 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRouteWithChildren
+  '/world': typeof WorldRoute
   '/editor/enchantment': typeof EditorEnchantmentRouteWithChildren
   '/editor/loot_table': typeof EditorLoot_tableRouteWithChildren
   '/editor/recipe': typeof EditorRecipeRouteWithChildren
@@ -177,6 +185,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRouteWithChildren
+  '/world': typeof WorldRoute
   '/editor/enchantment': typeof EditorEnchantmentRouteWithChildren
   '/editor/loot_table': typeof EditorLoot_tableRouteWithChildren
   '/editor/recipe': typeof EditorRecipeRouteWithChildren
@@ -200,6 +209,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/editor'
+    | '/world'
     | '/editor/enchantment'
     | '/editor/loot_table'
     | '/editor/recipe'
@@ -221,6 +231,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/editor'
+    | '/world'
     | '/editor/enchantment'
     | '/editor/loot_table'
     | '/editor/recipe'
@@ -242,6 +253,7 @@ export interface FileRouteTypes {
     | '/'
     | '/auth'
     | '/editor'
+    | '/world'
     | '/editor/enchantment'
     | '/editor/loot_table'
     | '/editor/recipe'
@@ -264,10 +276,18 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthRoute: typeof AuthRoute
   EditorRoute: typeof EditorRouteWithChildren
+  WorldRoute: typeof WorldRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/world': {
+      id: '/world'
+      path: '/world'
+      fullPath: '/world'
+      preLoaderRoute: typeof WorldRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/editor': {
       id: '/editor'
       path: '/editor'
@@ -477,6 +497,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthRoute: AuthRoute,
   EditorRoute: EditorRouteWithChildren,
+  WorldRoute: WorldRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

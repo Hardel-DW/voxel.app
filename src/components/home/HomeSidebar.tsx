@@ -30,6 +30,26 @@ export default function HomeSidebar() {
     return (
         <div className="flex flex-col h-full py-3">
             <nav className="flex-1 flex flex-col items-center gap-2 px-2 overflow-y-auto">
+                {/* Navigation links */}
+                <Link
+                    to="/"
+                    className="group size-10 rounded-xl flex items-center justify-center hover:bg-zinc-800/50 transition-colors cursor-pointer"
+                    title={t("home.nav.home")}>
+                    <svg className="size-5 text-zinc-500 group-hover:text-zinc-300 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+                    </svg>
+                </Link>
+
+                <Link
+                    to="/world"
+                    className="group size-10 rounded-xl flex items-center justify-center hover:bg-zinc-800/50 transition-colors cursor-pointer"
+                    title={t("home.nav.worlds")}>
+                    <svg className="size-5 text-zinc-500 group-hover:text-zinc-300 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z" />
+                    </svg>
+                </Link>
+
                 {displayedProjects.length > 0 && (
                     <>
                         <div className="w-8 h-px bg-zinc-800/50 my-2" />
@@ -43,6 +63,16 @@ export default function HomeSidebar() {
                         ))}
                     </>
                 )}
+
+                {/* Add new project */}
+                <button
+                    type="button"
+                    className="group size-10 rounded-xl flex items-center justify-center cursor-pointer transition-all hover:bg-zinc-800/40"
+                    title={t("home.nav.new_project")}>
+                    <svg className="size-4 text-zinc-500 group-hover:text-zinc-300 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+                    </svg>
+                </button>
             </nav>
 
             <div className="flex flex-col items-center gap-2 px-2 mt-auto">
