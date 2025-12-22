@@ -192,23 +192,21 @@ function hashPath(path: string): string {
 export async function cachePackIcon(archivePath: string, type: ContentType): Promise<string | null> {
     const cachedPath = await join(await getCacheDir(), `${hashPath(archivePath)}.png`);
     if (await safeExists(cachedPath)) return cachedPath;
-
-    try {
-        const extracted = await extractZip(await readFile(archivePath));
-        for (const name of ICON_NAMES[type]) {
-            if (extracted[name]) {
-                await writeFile(cachedPath, new Uint8Array(extracted[name]));
-                return cachedPath;
-            }
+    const extracted = await extractZip(await readFile(archivePath));
+    for (const name of ICON_NAMES[type]) {
+        if (extracted[name]) {
+            await writeFile(cachedPath, new Uint8Array(extracted[name]));
+            return cachedPath;
         }
-    } catch {}
+    }
+
     return null;
 }
 
 export async function removeCachedIcon(archivePath: string): Promise<void> {
     const cachedPath = await join(await getCacheDir(), `${hashPath(archivePath)}.png`);
     if (await safeExists(cachedPath)) {
-        await remove(cachedPath).catch(() => {});
+        await remove(cachedPath).catch(() => { });
     }
 }
 
