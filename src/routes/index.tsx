@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useHomeStore } from "@/components/home/HomeStore";
-import GameClients from "@/components/home/sections/GameClients";
+import GameClients from "@/components/home/client/GameClients";
 import RecentProjects from "@/components/home/sections/RecentProjects";
 import Background from "@/components/layout/Background";
 import NewsSidebar from "@/components/layout/news/NewsSidebar";

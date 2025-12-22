@@ -24,16 +24,18 @@ export interface WorldInfo {
     lastPlayed: number;
 }
 
-async function getVanillaPath(): Promise<string> {
+async function getAppDataParent(): Promise<string> {
     const appData = await appDataDir();
-    const parent = appData.replace(/[/\\][^/\\]+[/\\]?$/, "");
-    return await join(parent, ".minecraft");
+    return appData.replace(/[/\\][^/\\]+[/\\]?$/, "");
+}
+
+async function getVanillaPath(): Promise<string> {
+    return join(await getAppDataParent(), ".minecraft");
 }
 
 async function getModrinthPath(): Promise<string> {
-    const appData = await appDataDir();
-    const parent = appData.replace(/[/\\][^/\\]+[/\\]?$/, "");
-    return await join(parent, "ModrinthApp", "profiles");
+    const appData = await getAppDataParent();
+    return join(appData, "ModrinthApp", "profiles");
 }
 
 async function getCurseForgePath(): Promise<string> {
@@ -135,18 +137,10 @@ export async function scanLauncherInstances(clientType: ClientType, basePath: st
 async function scanVanillaInstance(path: string): Promise<InstanceInfo[]> {
     const isValid = await validateMinecraftInstance(path);
     if (!isValid) return [];
-
     const iconPath = await getMostRecentWorldIcon(path);
     const stats = await stat(path).catch(() => null);
 
-    return [
-        {
-            name: ".minecraft",
-            path,
-            iconPath,
-            lastModified: stats?.mtime?.getTime() ?? Date.now()
-        }
-    ];
+    return [{ name: ".minecraft", path, iconPath, lastModified: stats?.mtime?.getTime() ?? Date.now() }];
 }
 
 async function scanMultiInstanceLauncher(basePath: string): Promise<InstanceInfo[]> {
@@ -182,5 +176,7 @@ async function scanMultiInstanceLauncher(basePath: string): Promise<InstanceInfo
 
 export function convertIconToSrc(iconPath: string | null): string | undefined {
     if (!iconPath) return undefined;
-    return convertFileSrc(iconPath);
+    const normalizedPath = iconPath.replaceAll("\\", "/");
+    const url = convertFileSrc(normalizedPath);
+    return url;
 }
