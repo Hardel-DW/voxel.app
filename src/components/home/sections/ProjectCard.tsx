@@ -24,11 +24,11 @@ export default function ProjectCard(props: { project: RecentProject; onOpen: () 
                     <span
                         className={cn(
                             "text-xs px-2 py-0.5 rounded-md font-medium",
-                            props.project.type === "mod"
+                            props.project.type === "mods"
                                 ? "bg-purple-500/10 text-purple-400 border border-purple-500/20"
                                 : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
                         )}>
-                        {props.project.type === "mod" ? "Mod" : "Datapack"}
+                        {props.project.type === "mods" ? "Mod" : "Datapack"}
                     </span>
                     <span className="text-xs text-zinc-500">{formatRelativeTime(props.project.lastOpened)}</span>
                 </div>

@@ -9,7 +9,7 @@ export interface RecentProject {
     path: string;
     icon?: string;
     lastOpened: number;
-    type: "datapack" | "mod";
+    type: "datapacks" | "mods" | "resourcepacks";
     version?: string;
 }
 
@@ -83,7 +83,11 @@ export const useHomeStore = create<HomeState>()(
             removeRecentProject: (id) => set((state) => ({ recentProjects: state.recentProjects.filter((p) => p.id !== id) })),
             clearRecentProjects: () => set({ recentProjects: [] }),
             addGameClient: (client) => set((state) => ({ gameClients: [...state.gameClients, { ...client, id: crypto.randomUUID() }] })),
-            removeGameClient: (id) => set((state) => ({ gameClients: state.gameClients.filter((c) => c.id !== id), gameInstances: state.gameInstances.filter((i) => i.clientId !== id) })),
+            removeGameClient: (id) =>
+                set((state) => ({
+                    gameClients: state.gameClients.filter((c) => c.id !== id),
+                    gameInstances: state.gameInstances.filter((i) => i.clientId !== id)
+                })),
             setExpandedClient: (id) => set({ expandedClientId: id }),
             getWorldsByInstance: (instanceId) => get().worlds.filter((w) => w.instanceId === instanceId),
             getInstancesByClient: (clientId) => get().gameInstances.filter((i) => i.clientId === clientId),
@@ -98,8 +102,7 @@ export const useHomeStore = create<HomeState>()(
                     const filtered = state.worlds.filter((w) => w.instanceId !== instanceId);
                     const newWorlds = worlds.map((world) => ({ ...world, id: crypto.randomUUID(), instanceId }));
                     return { worlds: [...filtered, ...newWorlds] };
-                }),
-
+                })
         }),
         {
             name: "voxel-home-storage"

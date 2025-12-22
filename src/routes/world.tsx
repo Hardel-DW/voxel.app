@@ -1,6 +1,5 @@
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { revealItemInDir } from "@tauri-apps/plugin-opener";
-import { useNavigate } from "@tanstack/react-router";
-import { createFileRoute } from "@tanstack/react-router";
 import { useState } from "react";
 import { useHomeStore } from "@/components/home/HomeStore";
 import { ContentCard } from "@/components/home/sections/ContentCard";
@@ -11,33 +10,18 @@ import { SegmentedControl, SegmentedItem } from "@/components/ui/SegmentedContro
 import { TOAST, toast } from "@/components/ui/Toast";
 import { t } from "@/lib/i18n";
 import { loadDatapackFromPath } from "@/lib/utils/datapack";
-import { convertIconToSrc } from "@/lib/utils/gameInstances";
-import {
-    type PackContent,
-    type WorldContent,
-    getPackIconSrc,
-    getWorldIconSrc,
-    scanInstanceGlobalDatapacks,
-    scanInstanceMods,
-    scanInstanceResourcePacks,
-    scanInstanceWorlds
-} from "@/lib/utils/instanceContent";
-
-interface WorldSearchParams {
-    instanceId?: string;
-}
+import { convertIconToSrc, scanInstanceContent, scanInstanceWorlds, type PackContent, type WorldInfo } from "@/lib/utils/instance";
 
 export const Route = createFileRoute("/world")({
     component: WorldPage,
-    validateSearch: (search: Record<string, unknown>): WorldSearchParams => ({
+    validateSearch: (search: Record<string, unknown>): { instanceId?: string } => ({
         instanceId: typeof search.instanceId === "string" ? search.instanceId : undefined
     })
 });
 
 type TabType = "world" | "mods" | "resourcepacks";
-
 interface InstanceContentState {
-    worlds: WorldContent[];
+    worlds: WorldInfo[];
     mods: PackContent[];
     globalDatapacks: PackContent[];
     resourcePacks: PackContent[];
@@ -60,12 +44,11 @@ function WorldPage() {
 
     const loadContent = async () => {
         if (!instance) return;
-
         const [worlds, mods, globalDatapacks, resourcePacks] = await Promise.all([
             scanInstanceWorlds(instance.path),
-            scanInstanceMods(instance.path),
-            scanInstanceGlobalDatapacks(instance.path),
-            scanInstanceResourcePacks(instance.path)
+            scanInstanceContent(instance.path, "mods"),
+            scanInstanceContent(instance.path, "datapacks"),
+            scanInstanceContent(instance.path, "resourcepacks")
         ]);
 
         setContent({ worlds, mods, globalDatapacks, resourcePacks, loading: false });
@@ -82,7 +65,7 @@ function WorldPage() {
             useHomeStore.getState().addRecentProject({
                 name,
                 path: pack.path,
-                type: pack.type === "mod" ? "mod" : "datapack"
+                type: pack.type
             });
             toast(t("studio.success.loaded", { file: name }), TOAST.SUCCESS);
             navigate({ to: "/editor/enchantment/overview" });
@@ -105,20 +88,14 @@ function WorldPage() {
     }
 
     const firstWorld = content.worlds[0];
-    const backgroundSrc = firstWorld ? getWorldIconSrc(firstWorld) : undefined;
+    const backgroundSrc = firstWorld ? convertIconToSrc(firstWorld.iconPath) : undefined;
     const iconSrc = convertIconToSrc(instance.iconPath) ?? backgroundSrc;
 
     return (
         <div className="size-full flex relative">
             <Background />
 
-            {backgroundSrc && (
-                <img
-                    src={backgroundSrc}
-                    alt={instance.name}
-                    className="absolute inset-0 w-full h-full object-cover opacity-40 blur-sm pointer-events-none"
-                />
-            )}
+            {backgroundSrc && <img src={backgroundSrc} alt={instance.name} className="absolute inset-0 w-full h-full object-cover opacity-40 blur-sm pointer-events-none" />}
             <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent pointer-events-none" />
 
             <main className="relative z-10 flex-1 flex flex-col min-w-0">
@@ -153,22 +130,14 @@ function WorldPage() {
                                 type="button"
                                 onClick={() => revealItemInDir(instance.path)}
                                 className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 backdrop-blur-md text-zinc-400 hover:text-white transition-all"
-                                title="Open in explorer"
-                            >
-                                <svg className="size-5" viewBox="0 0 24 24" fill="currentColor">
-                                    <circle cx="12" cy="5" r="1.5" />
-                                    <circle cx="12" cy="12" r="1.5" />
-                                    <circle cx="12" cy="19" r="1.5" />
-                                </svg>
+                                title="Open in explorer">
+                                <img src="/icons/dots-vertical.svg" alt="Options" className="size-5" />
                             </button>
                             <button
                                 type="button"
                                 onClick={() => navigate({ to: "/" })}
-                                className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 backdrop-blur-md text-zinc-400 hover:text-white transition-all"
-                            >
-                                <svg className="size-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                                    <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
-                                </svg>
+                                className="p-3 rounded-xl bg-zinc-900/50 border border-zinc-800 backdrop-blur-md text-zinc-400 hover:text-white transition-all">
+                                <img src="/icons/arrow-left.svg" alt="Go back" className="size-5" />
                             </button>
                         </div>
                     </div>
@@ -192,27 +161,11 @@ function WorldPage() {
                             {tab === "world" &&
                                 content.worlds.map((world) => (
                                     <div key={world.id} className="flex flex-col gap-1">
-                                        <ContentCard
-                                            title={world.name}
-                                            iconSrc={getWorldIconSrc(world)}
-                                            subtitle={`${world.datapacks.length} datapacks`}
-                                            type="World"
-                                            path={world.path}
-                                            expanded={expandedWorldId === world.id}
-                                            onExpand={() => toggleWorldExpand(world.id)}
-                                            expandable={world.datapacks.length > 0}
-                                        />
+                                        <ContentCard title={world.name} iconSrc={convertIconToSrc(world.iconPath)} subtitle={`${world.datapacks.length} datapacks`} type="World" path={world.path} expanded={expandedWorldId === world.id} onExpand={() => toggleWorldExpand(world.id)} expandable={world.datapacks.length > 0} />
                                         {expandedWorldId === world.id &&
                                             world.datapacks.map((dp) => (
                                                 <div key={dp.id} className="ml-8">
-                                                    <ContentCard
-                                                        title={dp.name}
-                                                        iconSrc={getPackIconSrc(dp)}
-                                                        type="Datapack"
-                                                        path={dp.path}
-                                                        showActions={false}
-                                                        onConfigure={() => handleConfigure(dp)}
-                                                    />
+                                                    <ContentCard title={dp.name} iconSrc={convertIconToSrc(dp.iconPath)} type="Datapack" path={dp.path} showActions={false} onConfigure={() => handleConfigure(dp)} />
                                                 </div>
                                             ))}
                                     </div>
@@ -221,24 +174,10 @@ function WorldPage() {
                             {tab === "mods" && (
                                 <>
                                     {content.mods.map((mod) => (
-                                        <ContentCard
-                                            key={mod.id}
-                                            title={mod.name}
-                                            iconSrc={getPackIconSrc(mod)}
-                                            type="Mod"
-                                            path={mod.path}
-                                            onConfigure={() => handleConfigure(mod)}
-                                        />
+                                        <ContentCard key={mod.id} title={mod.name} iconSrc={convertIconToSrc(mod.iconPath)} type="Mod" path={mod.path} onConfigure={() => handleConfigure(mod)} />
                                     ))}
                                     {content.globalDatapacks.map((dp) => (
-                                        <ContentCard
-                                            key={dp.id}
-                                            title={dp.name}
-                                            iconSrc={getPackIconSrc(dp)}
-                                            type="Datapack"
-                                            path={dp.path}
-                                            onConfigure={() => handleConfigure(dp)}
-                                        />
+                                        <ContentCard key={dp.id} title={dp.name} iconSrc={convertIconToSrc(dp.iconPath)} type="Datapack" path={dp.path} onConfigure={() => handleConfigure(dp)} />
                                     ))}
                                     {content.mods.length === 0 && content.globalDatapacks.length === 0 && (
                                         <p className="text-zinc-500 text-center py-8">No mods or datapacks found</p>
@@ -249,14 +188,7 @@ function WorldPage() {
                             {tab === "resourcepacks" && (
                                 <>
                                     {content.resourcePacks.map((rp) => (
-                                        <ContentCard
-                                            key={rp.id}
-                                            title={rp.name}
-                                            iconSrc={getPackIconSrc(rp)}
-                                            type="Resource Pack"
-                                            path={rp.path}
-                                            onConfigure={() => handleConfigure(rp)}
-                                        />
+                                        <ContentCard key={rp.id} title={rp.name} iconSrc={convertIconToSrc(rp.iconPath)} type="Resource Pack" path={rp.path} onConfigure={() => handleConfigure(rp)} />
                                     ))}
                                     {content.resourcePacks.length === 0 && (
                                         <p className="text-zinc-500 text-center py-8">No resource packs found</p>

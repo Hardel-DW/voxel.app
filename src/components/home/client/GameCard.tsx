@@ -1,11 +1,8 @@
 import { Link } from "@tanstack/react-router";
 import type { GameInstance, WorldData } from "@/components/home/HomeStore";
-import { convertIconToSrc } from "@/lib/utils/gameInstances";
+import { convertIconToSrc } from "@/lib/utils/instance";
 
-type GameCardProps =
-    | { type: "world"; world: WorldData }
-    | { type: "instance"; instance: GameInstance; firstWorld?: WorldData };
-
+type GameCardProps = { type: "world"; world: WorldData } | { type: "instance"; instance: GameInstance; firstWorld?: WorldData };
 
 export default function GameCard(props: GameCardProps) {
     const isWorld = props.type === "world";
@@ -23,8 +20,7 @@ export default function GameCard(props: GameCardProps) {
         <Link
             to="/world"
             search={{ instanceId }}
-            className="group flex flex-col rounded-xl shadow-lg shadow-zinc-950/20 bg-zinc-900/40 border border-zinc-800/50 min-w-48 max-w-48 overflow-hidden cursor-pointer hover:border-zinc-700 transition-colors"
-        >
+            className="group flex flex-col rounded-xl shadow-lg shadow-zinc-950/20 bg-zinc-900/40 border border-zinc-800/50 min-w-48 max-w-48 overflow-hidden cursor-pointer hover:border-zinc-700 transition-colors">
             <div className="overflow-hidden aspect-video bg-zinc-800/50">
                 <div className="w-full h-full flex items-center justify-center bg-zinc-800/30">
                     <img

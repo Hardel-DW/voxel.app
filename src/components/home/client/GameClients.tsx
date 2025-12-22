@@ -1,6 +1,6 @@
-import { useHomeStore } from "@/components/home/HomeStore";
 import AddGameClientDialog from "@/components/home/client/AddGameClientDialog";
 import ClientRow from "@/components/home/client/ClientRow";
+import { useHomeStore } from "@/components/home/HomeStore";
 import { t } from "@/lib/i18n";
 
 export default function GameClients() {
@@ -14,7 +14,13 @@ export default function GameClients() {
             <div className="p-8 mx-2 rounded-2xl bg-editor/40 backdrop-blur-sm relative z-50 border border-zinc-800/50">
                 <div className="overflow-hidden space-y-6">
                     {gameClients.map((client, index) => (
-                        <ClientRow key={client.id} client={client} instances={gameInstances.filter((i) => i.clientId === client.id)} worlds={worlds} showDivider={index < gameClients.length - 1} />
+                        <ClientRow
+                            key={client.id}
+                            client={client}
+                            instances={gameInstances.filter((i) => i.clientId === client.id)}
+                            worlds={worlds}
+                            showDivider={index < gameClients.length - 1}
+                        />
                     ))}
 
                     {gameClients.length === 0 && (
@@ -25,9 +31,7 @@ export default function GameClients() {
                     )}
                 </div>
 
-                {gameClients.length > 0 && (
-                    <div className="h-px bg-linear-to-r from-transparent via-zinc-700/30 to-transparent my-6" />
-                )}
+                {gameClients.length > 0 && <div className="h-px bg-linear-to-r from-transparent via-zinc-700/30 to-transparent my-6" />}
 
                 <AddGameClientDialog />
             </div>

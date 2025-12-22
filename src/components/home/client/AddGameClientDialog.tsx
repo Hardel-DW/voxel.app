@@ -1,7 +1,8 @@
 import { invoke } from "@tauri-apps/api/core";
 import { open } from "@tauri-apps/plugin-dialog";
 import { useState } from "react";
-import { type ClientType, useHomeStore } from "@/components/home/HomeStore";
+import { useHomeStore } from "@/components/home/HomeStore";
+import { Button } from "@/components/ui/Button";
 import {
     Dialog,
     DialogBody,
@@ -13,9 +14,8 @@ import {
     DialogTrigger
 } from "@/components/ui/Dialog";
 import { t } from "@/lib/i18n";
-import { getPresetById, LAUNCHER_PRESETS, listInstanceWorlds, scanLauncherInstances } from "@/lib/utils/gameInstances";
-import { Button } from "@/components/ui/Button";
 import { cn } from "@/lib/utils";
+import { type ClientType, getPresetById, LAUNCHER_PRESETS, scanInstanceWorlds, scanLauncherInstances } from "@/lib/utils/instance";
 
 export type ValidationState = "idle" | "validating" | "valid" | "invalid";
 export default function AddGameClientDialog() {
@@ -24,12 +24,10 @@ export default function AddGameClientDialog() {
     const [validationState, setValidationState] = useState<ValidationState>("idle");
     const [instanceCount, setInstanceCount] = useState(0);
     const [initialized, setInitialized] = useState(false);
-
     const addGameClient = useHomeStore((s) => s.addGameClient);
     const setClientInstances = useHomeStore((s) => s.setClientInstances);
     const setInstanceWorlds = useHomeStore((s) => s.setInstanceWorlds);
     const gameClients = useHomeStore((s) => s.gameClients);
-
     const preset = getPresetById(selectedPreset);
     const isPathEmpty = customPath.trim() === "";
     const canAdd = validationState === "valid" && !isPathEmpty;
@@ -54,14 +52,14 @@ export default function AddGameClientDialog() {
 
         setValidationState("validating");
         const instances = await scanLauncherInstances(type, path);
-
-        if (instances.length > 0) {
-            setValidationState("valid");
-            setInstanceCount(instances.length);
-        } else {
+        if (instances.length === 0) {
             setValidationState("invalid");
             setInstanceCount(0);
+            return;
         }
+
+        setValidationState("valid");
+        setInstanceCount(instances.length);
     };
 
     const handlePresetChange = async (presetId: ClientType) => {
@@ -92,45 +90,27 @@ export default function AddGameClientDialog() {
 
     const handleAdd = async () => {
         if (!canAdd || !preset) return;
-
         const existingClient = gameClients.find((c) => c.path === customPath);
         if (existingClient) return;
 
         await invoke("allow_directory", { path: customPath });
 
-        const newClient = {
-            name: preset.name,
-            type: selectedPreset,
-            path: customPath,
-            icon: preset.icon
-        };
-
+        const newClient = { name: preset.name, type: selectedPreset, path: customPath, icon: preset.icon };
         addGameClient(newClient);
 
         const instances = await scanLauncherInstances(selectedPreset, customPath);
         const clientId = useHomeStore.getState().gameClients.find((c) => c.path === customPath)?.id;
-
         if (clientId && instances.length > 0) {
             setClientInstances(clientId, instances);
 
             const storedInstances = useHomeStore.getState().gameInstances.filter((i) => i.clientId === clientId);
             for (const instance of storedInstances) {
-                const worlds = await listInstanceWorlds(instance.path);
+                const worlds = await scanInstanceWorlds(instance.path);
                 if (worlds.length > 0) {
                     setInstanceWorlds(instance.id, worlds);
                 }
             }
         }
-
-        resetState();
-    };
-
-    const resetState = () => {
-        setSelectedPreset("vanilla");
-        setCustomPath("");
-        setValidationState("idle");
-        setInstanceCount(0);
-        setInitialized(false);
     };
 
     return (
@@ -142,7 +122,11 @@ export default function AddGameClientDialog() {
                     className="group relative flex items-center justify-center w-full py-4 transition-all duration-200 rounded-xl border border-dashed cursor-pointer border-zinc-700/50 bg-zinc-900/30 hover:bg-zinc-800/40 hover:border-zinc-600">
                     <div className="flex items-center gap-3">
                         <div className="flex items-center justify-center size-8 rounded-lg bg-zinc-800/60 group-hover:bg-zinc-700/60 transition-colors">
-                            <svg className="size-4 text-zinc-400 group-hover:text-zinc-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <svg
+                                className="size-4 text-zinc-400 group-hover:text-zinc-300"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                                stroke="currentColor">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                             </svg>
                         </div>
@@ -162,7 +146,9 @@ export default function AddGameClientDialog() {
 
                 <DialogBody className="space-y-5 py-3">
                     <div className="space-y-2">
-                        <label htmlFor="launcher" className="text-sm font-medium text-zinc-400">{t("home.addClient.launcher")}</label>
+                        <label htmlFor="launcher" className="text-sm font-medium text-zinc-400">
+                            {t("home.addClient.launcher")}
+                        </label>
                         <div className="grid grid-cols-3 gap-2">
                             {LAUNCHER_PRESETS.map((preset) => (
                                 <button
@@ -170,10 +156,8 @@ export default function AddGameClientDialog() {
                                     type="button"
                                     onClick={() => handlePresetChange(preset.id)}
                                     className={cn(
-                                        "flex flex-col items-center gap-2 p-3 rounded-lg border transition-all cursor-pointer",
-                                        selectedPreset === preset.id
-                                            ? "border-zinc-600 bg-zinc-800/60"
-                                            : "border-zinc-800/50 bg-zinc-900/40 hover:border-zinc-700 hover:bg-zinc-800/40"
+                                        "flex flex-col items-center gap-2 p-3 rounded-lg border transition-all cursor-pointer border-zinc-600 bg-zinc-800/60",
+                                        selectedPreset !== preset.id && "border-zinc-800/50 bg-zinc-900/40 hover:border-zinc-700 hover:bg-zinc-800/40"
                                     )}>
                                     <img src={preset.icon} alt={preset.name} className="size-7" />
                                     <span className="text-xs font-medium text-zinc-300">{preset.name}</span>
@@ -183,7 +167,9 @@ export default function AddGameClientDialog() {
                     </div>
 
                     <div className="space-y-2 pt-4">
-                        <label htmlFor="path" className="text-sm font-medium text-zinc-400">{t("home.addClient.path")}</label>
+                        <label htmlFor="path" className="text-sm font-medium text-zinc-400">
+                            {t("home.addClient.path")}
+                        </label>
                         <div className="flex gap-2">
                             <input
                                 type="text"
@@ -201,14 +187,20 @@ export default function AddGameClientDialog() {
 
                 <DialogFooter className="flex items-center justify-between mt-24">
                     {validationState !== "idle" && (
-                        <span className={cn("text-sm font-medium", validationState === "validating" && "text-zinc-500", validationState === "valid" && "text-emerald-400", validationState === "invalid" && "text-red-400")}>
+                        <span
+                            className={cn(
+                                "text-sm font-medium",
+                                validationState === "validating" && "text-zinc-500",
+                                validationState === "valid" && "text-emerald-400",
+                                validationState === "invalid" && "text-red-400"
+                            )}>
                             {validationState === "validating" && t("home.addClient.status.validating")}
                             {validationState === "valid" && t("home.addClient.status.valid", { count: instanceCount })}
                             {validationState === "invalid" && t("home.addClient.status.invalid")}
                         </span>
                     )}
                     <div className="flex gap-2">
-                        <DialogCloseButton variant="ghost_border" onClick={resetState}>
+                        <DialogCloseButton variant="ghost_border">
                             {t("cancel")}
                         </DialogCloseButton>
                         <DialogCloseButton variant="ghost" onClick={handleAdd} disabled={!canAdd}>
@@ -220,4 +212,3 @@ export default function AddGameClientDialog() {
         </Dialog>
     );
 }
-

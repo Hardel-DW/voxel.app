@@ -1,13 +1,8 @@
-import type { GameClient, GameInstance, WorldData } from "@/components/home/HomeStore";
 import GameCard from "@/components/home/client/GameCard";
+import type { GameClient, GameInstance, WorldData } from "@/components/home/HomeStore";
 import { t } from "@/lib/i18n";
 
-export default function ClientRow(props: {
-    client: GameClient;
-    instances: GameInstance[];
-    worlds: WorldData[];
-    showDivider: boolean;
-}) {
+export default function ClientRow(props: { client: GameClient; instances: GameInstance[]; worlds: WorldData[]; showDivider: boolean }) {
     const { client, instances, worlds, showDivider } = props;
     const isVanilla = client.type === "vanilla";
     const vanillaInstance = isVanilla ? instances[0] : null;
@@ -32,9 +27,11 @@ export default function ClientRow(props: {
                         {isVanilla
                             ? vanillaWorlds.map((world) => <GameCard key={world.id} type="world" world={world} />)
                             : instances.map((instance) => {
-                                const firstWorld = worlds.filter((w) => w.instanceId === instance.id).toSorted((a, b) => b.lastPlayed - a.lastPlayed)[0];
-                                return <GameCard key={instance.id} type="instance" instance={instance} firstWorld={firstWorld} />;
-                            })}
+                                  const firstWorld = worlds
+                                      .filter((w) => w.instanceId === instance.id)
+                                      .toSorted((a, b) => b.lastPlayed - a.lastPlayed)[0];
+                                  return <GameCard key={instance.id} type="instance" instance={instance} firstWorld={firstWorld} />;
+                              })}
                     </div>
                 )}
             </div>
