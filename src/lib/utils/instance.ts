@@ -1,6 +1,6 @@
 import { convertFileSrc } from "@tauri-apps/api/core";
 import { appDataDir, homeDir, join } from "@tauri-apps/api/path";
-import { exists, mkdir, readDir, readFile, writeFile } from "@tauri-apps/plugin-fs";
+import { exists, mkdir, readDir, readFile, remove, writeFile } from "@tauri-apps/plugin-fs";
 import { extractZip } from "@voxelio/zip";
 
 export type ClientType = "vanilla" | "modrinth" | "curseforge" | "custom";
@@ -157,7 +157,7 @@ async function scanPackFolder(folderPath: string, type: ContentType, page: numbe
                 name: entry.name.replace(/\.(zip|jar)$/i, ""),
                 path: entryPath,
                 type,
-                iconPath: isArchive ? await cacheIcon(entryPath, type) : await findIconInDir(entryPath, type)
+                iconPath: isArchive ? await cachePackIcon(entryPath, type) : await findIconInDir(entryPath, type)
             };
         })
     );
@@ -189,7 +189,7 @@ function hashPath(path: string): string {
     return Math.abs(path.split("").reduce((acc, c) => ((acc << 5) - acc + c.charCodeAt(0)) | 0, 0)).toString(16);
 }
 
-async function cacheIcon(archivePath: string, type: ContentType): Promise<string | null> {
+export async function cachePackIcon(archivePath: string, type: ContentType): Promise<string | null> {
     const cachedPath = await join(await getCacheDir(), `${hashPath(archivePath)}.png`);
     if (await safeExists(cachedPath)) return cachedPath;
 
@@ -203,6 +203,13 @@ async function cacheIcon(archivePath: string, type: ContentType): Promise<string
         }
     } catch {}
     return null;
+}
+
+export async function removeCachedIcon(archivePath: string): Promise<void> {
+    const cachedPath = await join(await getCacheDir(), `${hashPath(archivePath)}.png`);
+    if (await safeExists(cachedPath)) {
+        await remove(cachedPath).catch(() => {});
+    }
 }
 
 export const convertIconToSrc = (iconPath: string | null) => (iconPath ? convertFileSrc(iconPath.replaceAll("\\", "/")) : undefined);

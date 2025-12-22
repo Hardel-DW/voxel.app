@@ -1,8 +1,10 @@
 import type { RecentProject } from "@/components/home/HomeStore";
 import { formatRelativeTime } from "@/lib/getGreeting";
 import { cn } from "@/lib/utils";
+import { convertIconToSrc } from "@/lib/utils/instance";
 
 export default function ProjectCard(props: { project: RecentProject; onOpen: () => void; onRemove: () => void }) {
+    const iconSrc = convertIconToSrc(props.project.icon ?? null);
     return (
         <article className="group relative flex items-center gap-4 p-4 rounded-xl shadow-lg shadow-zinc-950/20 bg-zinc-950/30 border border-zinc-800/50 hover:border-zinc-700/50 transition-all ease-in-out duration-200 backdrop-blur-sm">
             <button
@@ -12,11 +14,7 @@ export default function ProjectCard(props: { project: RecentProject; onOpen: () 
                 aria-label={`Open ${props.project.name}`}
             />
             <div className="size-14 rounded-xl bg-zinc-900 border border-zinc-800/50 flex items-center justify-center overflow-hidden shrink-0">
-                {props.project.icon ? (
-                    <img src={"/images/addons/icon/yggdrasil.webp"} alt="" className="size-full object-cover" />
-                ) : (
-                    <img src="/images/addons/icon/yggdrasil.webp" alt="" className="size-full object-cover" />
-                )}
+                <img src={iconSrc ?? "/images/addons/icon/yggdrasil.webp"} alt="Project icon" className="size-full object-cover" />
             </div>
             <div className="flex-1 min-w-0 pointer-events-none">
                 <p className="font-medium text-zinc-200 group-hover:text-white transition-colors truncate">{props.project.name}</p>

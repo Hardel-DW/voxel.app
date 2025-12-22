@@ -16,9 +16,9 @@ export default function RecentProjects() {
 
     const openDatapack = async (path: string, callback?: () => void) => {
         try {
-            const { datapack, name, isModded } = await loadDatapackFromPath(path);
+            const { datapack, name, isModded, iconPath } = await loadDatapackFromPath(path);
             useConfiguratorStore.getState().setup(datapack, isModded, name);
-            useHomeStore.getState().addRecentProject({ name, path, type: isModded ? "mods" : "datapacks" });
+            useHomeStore.getState().addRecentProject({ name, path, type: isModded ? "mods" : "datapacks", icon: iconPath ?? undefined });
             toast(t("studio.success.loaded", { file: name }), TOAST.SUCCESS);
             navigate({ to: "/editor/enchantment/overview" });
         } catch (e: unknown) {

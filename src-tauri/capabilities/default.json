@@ -19,6 +19,10 @@
     "fs:allow-read-dir",
     "fs:allow-exists",
     "fs:allow-stat",
+    "fs:allow-appdata-write-recursive",
+    "fs:allow-mkdir",
+    "fs:allow-write-file",
+    "fs:allow-remove",
     {
       "identifier": "fs:scope",
       "allow": [
