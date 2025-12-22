@@ -1,11 +1,11 @@
 import { Link, useNavigate } from "@tanstack/react-router";
 import { Datapack, Logger } from "@voxelio/breeze";
 import { useHomeStore } from "@/components/home/HomeStore";
+import { useConfiguratorStore } from "@/components/tools/Store";
 import Avatar from "@/components/ui/Avatar";
+import { TOAST, toast } from "@/components/ui/Toast";
 import { t } from "@/lib/i18n";
 import { loadDatapackFromPath } from "@/lib/utils/datapack";
-import { useConfiguratorStore } from "@/components/tools/Store";
-import { TOAST, toast } from "@/components/ui/Toast";
 
 export default function HomeSidebar() {
     const navigate = useNavigate();
@@ -57,6 +57,7 @@ export default function HomeSidebar() {
 
                 <Link
                     to="/world"
+                    search={{ path: undefined, name: "" }}
                     className="group size-10 rounded-xl flex items-center justify-center hover:bg-zinc-800/50 transition-colors cursor-pointer"
                     title={t("home.nav.worlds")}>
                     <svg
@@ -75,7 +76,7 @@ export default function HomeSidebar() {
                         <div className="w-8 h-px bg-zinc-800/50 my-2" />
                         {displayedProjects.map((project) => (
                             <button
-                                key={project.id + project.name}
+                                key={project.path}
                                 type="button"
                                 className="group relative size-10 rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-zinc-600/50 flex items-center justify-center overflow-hidden cursor-pointer transition-all hover:scale-105"
                                 title={project.name}

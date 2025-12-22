@@ -41,10 +41,10 @@ export default function RecentProjects() {
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                         {projects.slice(0, 4).map((project) => (
                             <ProjectCard
-                                key={`${project.id}-${project.name}`}
+                                key={project.path}
                                 project={project}
-                                onOpen={() => openDatapack(project.path, () => removeProject(project.id))}
-                                onRemove={() => removeProject(project.id)}
+                                onOpen={() => openDatapack(project.path, () => removeProject(project.path))}
+                                onRemove={() => removeProject(project.path)}
                             />
                         ))}
                     </div>

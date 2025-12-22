@@ -33,7 +33,11 @@ export function ContentCard(props: ContentCardProps) {
             <div className="relative flex items-center gap-4 p-3 rounded-2xl backdrop-blur-md bg-zinc-950/50 border border-zinc-800/80 hover:border-zinc-800 hover:bg-zinc-900/90 transition-all duration-300">
                 <div className="size-14 rounded-xl overflow-hidden bg-zinc-900 border border-zinc-800 shrink-0">
                     {iconSrc ? (
-                        <img src={iconSrc} alt={title} className="size-full object-cover group-hover:scale-110 transition-transform duration-500" />
+                        <img
+                            src={iconSrc}
+                            alt={title}
+                            className="size-full object-cover group-hover:scale-110 transition-transform duration-500"
+                        />
                     ) : (
                         <div className="size-full flex items-center justify-center bg-zinc-800">
                             <svg className="size-6 text-zinc-600" viewBox="0 0 24 24" fill="currentColor">
@@ -54,18 +58,24 @@ export function ContentCard(props: ContentCardProps) {
 
                 <div className="flex items-center gap-2">
                     {expandable && (
-                        <div className={cn("size-4 transition-transform duration-200 p-2", expanded && "rotate-180")}>
-                            <img src="/icons/chevron-down.svg" alt="Expand" className="size-4" />
+                        <div className={cn("size-4 transition-transform duration-200", expanded && "rotate-180")}>
+                            <img src="/icons/chevron-down.svg" alt="Expand" className="size-4 invert-50" />
                         </div>
                     )}
 
                     {onConfigure && (
-                        <Button variant="ghost" className="border-zinc-700 relative z-10" onClick={handleConfigure}> Configure</Button>
+                        <Button variant="ghost" className="border-zinc-700 relative z-10" onClick={handleConfigure}>
+                            Configure
+                        </Button>
                     )}
 
                     {showActions && path && (
-                        <button type="button" onClick={handleOpenFolder} className="p-2 text-zinc-500 hover:text-zinc-300 transition-colors relative z-10" title="Open in explorer">
-                            <img src="/icons/folder.svg" alt="Open in explorer" className="size-4" />
+                        <button
+                            type="button"
+                            onClick={handleOpenFolder}
+                            className="p-2 text-zinc-500 hover:text-zinc-300 transition-colors relative z-10"
+                            title="Open in explorer">
+                            <img src="/icons/dots-vertical.svg" alt="Open in explorer" className="size-4 invert-50" />
                         </button>
                     )}
                 </div>

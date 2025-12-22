@@ -1,5 +1,5 @@
 import RenderGuard from "@/components/tools/elements/RenderGuard";
-import { Tabs, TabsTrigger } from "@/components/ui/Tabs";
+import { Tab, TabList, Tabs } from "@/components/ui/Tabs";
 import type { BaseInteractiveComponent } from "@/lib/hook/useInteractiveLogic";
 import { useInteractiveLogic } from "@/lib/hook/useInteractiveLogic";
 
@@ -19,25 +19,19 @@ export default function ToolSelector(props: ToolSelectorType & { index?: number 
                 <div className="flex flex-col gap-4 h-full px-6">
                     <div className="flex justify-between items-center w-full gap-4">
                         <div className="flex flex-col flex-1">
-                            <div className="flex items-center gap-2">
-                                <span className="text-white line-clamp-1">{props.title}</span>
-                            </div>
-                            {lock.isLocked ? (
-                                <span className="text-xs text-zinc-400 font-light line-clamp-2">{lock.text}</span>
-                            ) : (
-                                <span className="text-xs text-zinc-400 font-light line-clamp-2">{props.description}</span>
-                            )}
+                            <span className="text-white line-clamp-1">{props.title}</span>
+                            <span className="text-xs text-zinc-400 font-light line-clamp-2">
+                                {lock.isLocked ? lock.text : props.description}
+                            </span>
                         </div>
-
-                        <Tabs defaultValue={value} onValueChange={handleChange}>
-                            {props.options.map((option) => (
-                                <TabsTrigger
-                                    key={option.value}
-                                    value={option.value}
-                                    className={lock.isLocked ? "opacity-50 cursor-not-allowed" : ""}>
-                                    {option.label}
-                                </TabsTrigger>
-                            ))}
+                        <Tabs value={value} onChange={handleChange}>
+                            <TabList>
+                                {props.options.map((opt) => (
+                                    <Tab key={opt.value} value={opt.value} disabled={lock.isLocked}>
+                                        {opt.label}
+                                    </Tab>
+                                ))}
+                            </TabList>
                         </Tabs>
                     </div>
                 </div>
