@@ -15,7 +15,9 @@ import { t } from "@/lib/i18n";
 import { loadDatapackFromPath } from "@/lib/utils/datapack";
 import type { PackContent, WorldInfo } from "@/lib/utils/instance";
 import { convertIconToSrc, PAGE_SIZE, scanContent, scanDatapacks, scanWorlds } from "@/lib/utils/instance";
+import { syncCounts, useCachedCounts } from "@/lib/utils/instanceCache";
 
+type TabType = "worlds" | "mods" | "resourcepacks";
 export const Route = createFileRoute("/world")({
     component: WorldPage,
     validateSearch: (search: Record<string, unknown>) => ({
@@ -24,13 +26,13 @@ export const Route = createFileRoute("/world")({
     })
 });
 
-type TabType = "worlds" | "mods" | "resourcepacks";
-
 function WorldPage() {
     const { path, name } = Route.useSearch();
     const navigate = useNavigate();
     const [tab, setTab] = useState<TabType>("worlds");
     const [expandedWorld, setExpandedWorld] = useState<string | null>(null);
+    const cachedCounts = useCachedCounts(path);
+    if (path && !cachedCounts) syncCounts(path);
 
     const worlds = usePaginatedLoader<WorldInfo>((page) => {
         if (!path) return Promise.resolve({ items: [], total: 0, hasMore: false });
@@ -55,12 +57,7 @@ function WorldPage() {
 
     const tabs = { worlds, mods, resourcepacks } as const;
     const current = tabs[tab];
-    if (!path)
-        return (
-            <div className="size-full flex items-center justify-center">
-                <p className="text-zinc-400">No instance selected</p>
-            </div>
-        );
+    if (!path) throw new Error("No instance selected");
 
     const handleTabChange = (t: string) => {
         const newTab = t as TabType;
@@ -97,23 +94,18 @@ function WorldPage() {
         <div className="size-full flex relative">
             <Background />
             {backgroundSrc && (
-                <img
-                    src={backgroundSrc}
-                    alt="World background"
-                    className="absolute inset-0 size-full object-cover opacity-40 blur-sm pointer-events-none"
-                />
+                <img src={backgroundSrc} alt="World background" className="absolute inset-0 size-full object-cover opacity-40 blur-sm pointer-events-none" />
             )}
             <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent pointer-events-none" />
 
             <main className="relative z-10 flex-1 flex flex-col min-w-0">
                 <Header name={name} path={path} total={current.total} iconSrc={backgroundSrc} onBack={() => navigate({ to: "/" })} />
-
                 <Tabs value={tab} onChange={handleTabChange} className="flex-1 flex flex-col min-h-0">
                     <div className="px-8 py-3">
                         <TabList>
-                            <Tab value="worlds">Worlds ({worlds.total})</Tab>
-                            <Tab value="mods">Mods & Packs ({mods.total})</Tab>
-                            <Tab value="resourcepacks">Resources ({resourcepacks.total})</Tab>
+                            <Tab value="worlds">Worlds ({cachedCounts?.worlds ?? worlds.total})</Tab>
+                            <Tab value="mods">Mods & Packs ({cachedCounts ? cachedCounts.mods + cachedCounts.datapacks : mods.total})</Tab>
+                            <Tab value="resourcepacks">Resources ({cachedCounts?.resourcepacks ?? resourcepacks.total})</Tab>
                         </TabList>
                     </div>
 

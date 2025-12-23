@@ -62,6 +62,13 @@ export interface PaginatedResult<T> {
     hasMore: boolean;
 }
 
+export interface ContentCounts {
+    worlds: number;
+    mods: number;
+    datapacks: number;
+    resourcepacks: number;
+}
+
 const getAppDataParent = async () => (await appDataDir()).replace(/[/\\][^/\\]+[/\\]?$/, "");
 
 export const LAUNCHER_PRESETS: LauncherPreset[] = [
@@ -236,11 +243,17 @@ export async function scanContent(instancePath: string, type: ContentType, page 
     return scanPackFolder(await join(instancePath, type), type, page);
 }
 
+function isValidPackEntry(entry: { name: string; isDirectory: boolean }, type: ContentType): boolean {
+    if (entry.isDirectory) return true;
+    if (type === "mods") return entry.name.endsWith(".jar");
+    return entry.name.endsWith(".zip") || entry.name.endsWith(".jar");
+}
+
 async function scanPackFolder(folderPath: string, type: ContentType, page: number): Promise<PaginatedResult<PackContent>> {
     if (!(await safeExists(folderPath))) return { items: [], total: 0, hasMore: false };
 
     const entries = await readDir(folderPath).catch(() => []);
-    const valid = entries.filter((e) => e.isDirectory || e.name.endsWith(".zip") || e.name.endsWith(".jar"));
+    const valid = entries.filter((e) => isValidPackEntry(e, type));
     const start = page * PAGE_SIZE;
     const pageEntries = valid.slice(start, start + PAGE_SIZE);
 
@@ -260,14 +273,64 @@ async function scanPackFolder(folderPath: string, type: ContentType, page: numbe
     return { items, total: valid.length, hasMore: start + PAGE_SIZE < valid.length };
 }
 
-const ICON_NAMES: Record<ContentType, string[]> = {
+const ICON_FALLBACKS: Record<ContentType, string[]> = {
     mods: ["icon.png", "logo.png"],
     datapacks: ["pack.png"],
     resourcepacks: ["pack.png"]
 };
 
+interface ModLoaderMeta {
+    metaFile: string;
+    getIconPath: (content: string) => string | null;
+}
+
+const MOD_LOADERS: ModLoaderMeta[] = [
+    {
+        metaFile: "fabric.mod.json",
+        getIconPath: (content) => {
+            const match = /"icon"\s*:\s*"([^"]+)"/.exec(content);
+            return match?.[1] ?? null;
+        }
+    },
+    {
+        metaFile: "quilt.mod.json",
+        getIconPath: (content) => {
+            const match = /"icon"\s*:\s*"([^"]+)"/.exec(content);
+            return match?.[1] ?? null;
+        }
+    },
+    {
+        metaFile: "META-INF/neoforge.mods.toml",
+        getIconPath: (content) => {
+            const match = /logoFile\s*=\s*"([^"]+)"/.exec(content);
+            return match?.[1] ?? null;
+        }
+    },
+    {
+        metaFile: "META-INF/mods.toml",
+        getIconPath: (content) => {
+            const match = /logoFile\s*=\s*"([^"]+)"/.exec(content);
+            return match?.[1] ?? null;
+        }
+    }
+];
+
+function findModIcon(files: Record<string, ArrayBuffer>): Uint8Array | null {
+    for (const loader of MOD_LOADERS) {
+        const metaContent = files[loader.metaFile];
+        if (!metaContent) continue;
+
+        const text = new TextDecoder().decode(metaContent);
+        const iconPath = loader.getIconPath(text);
+        if (iconPath && files[iconPath]) {
+            return new Uint8Array(files[iconPath]);
+        }
+    }
+    return null;
+}
+
 async function findIconInDir(dirPath: string, type: ContentType): Promise<string | null> {
-    for (const name of ICON_NAMES[type]) {
+    for (const name of ICON_FALLBACKS[type]) {
         const iconPath = await join(dirPath, name);
         if (await safeExists(iconPath)) return iconPath;
     }
@@ -287,8 +350,20 @@ function hashPath(path: string): string {
 export async function cachePackIcon(archivePath: string, type: ContentType): Promise<string | null> {
     const cachedPath = await join(await getCacheDir(), `${hashPath(archivePath)}.png`);
     if (await safeExists(cachedPath)) return cachedPath;
+
     const extracted = await extractZip(await readFile(archivePath));
-    for (const name of ICON_NAMES[type]) {
+
+    // For mods, try loader-specific metadata first
+    if (type === "mods") {
+        const modIcon = findModIcon(extracted);
+        if (modIcon) {
+            await writeFile(cachedPath, modIcon);
+            return cachedPath;
+        }
+    }
+
+    // Fallback to standard icon names
+    for (const name of ICON_FALLBACKS[type]) {
         if (extracted[name]) {
             await writeFile(cachedPath, new Uint8Array(extracted[name]));
             return cachedPath;
@@ -306,3 +381,28 @@ export async function removeCachedIcon(archivePath: string): Promise<void> {
 }
 
 export const convertIconToSrc = (iconPath: string | null) => (iconPath ? convertFileSrc(iconPath.replaceAll("\\", "/")) : undefined);
+
+async function countDirEntries(path: string, filter?: (name: string) => boolean): Promise<number> {
+    if (!(await safeExists(path))) return 0;
+    const entries = await readDir(path).catch(() => []);
+    return filter ? entries.filter((e) => filter(e.name)).length : entries.filter((e) => e.isDirectory).length;
+}
+
+export async function getContentCounts(instancePath: string): Promise<ContentCounts> {
+    const savesPath = await join(instancePath, "saves");
+    const modsPath = await join(instancePath, "mods");
+    const datapacksPath = await join(instancePath, "datapacks");
+    const resourcepacksPath = await join(instancePath, "resourcepacks");
+
+    const isModFile = (name: string) => name.endsWith(".jar") || !name.includes(".");
+    const isPackFile = (name: string) => name.endsWith(".zip") || name.endsWith(".jar") || !name.includes(".");
+
+    const [worlds, mods, datapacks, resourcepacks] = await Promise.all([
+        countDirEntries(savesPath),
+        countDirEntries(modsPath, isModFile),
+        countDirEntries(datapacksPath, isPackFile),
+        countDirEntries(resourcepacksPath, isPackFile)
+    ]);
+
+    return { worlds, mods, datapacks, resourcepacks };
+}
