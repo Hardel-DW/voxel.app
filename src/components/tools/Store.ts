@@ -1,19 +1,15 @@
-import type {
-    Action,
-    ActionValue,
-    Analysers,
-    DataDrivenElement,
-    DataDrivenRegistryElement,
-    Datapack,
-    GetAnalyserVoxel,
-    ParseDatapackResult
-} from "@voxelio/breeze";
+import type { Action, ActionValue, Analysers, DataDrivenElement, DataDrivenRegistryElement, GetAnalyserVoxel, ParseDatapackResult } from "@voxelio/breeze";
+import { Datapack } from "@voxelio/breeze";
 import { compileDatapack, Identifier, isVoxelElement, Logger, sortElementsByRegistry, updateData } from "@voxelio/breeze";
 import { create } from "zustand";
+import { useHomeStore } from "@/components/home/HomeStore";
+import { loadDatapackFromPath } from "@/lib/utils/datapack";
 import { encodeFilesRecord } from "@/lib/utils/encode";
 import { saveSession, updateSessionData, updateSessionLogger } from "@/lib/utils/sessionPersistence";
-import type { CONCEPT_KEY } from "./elements";
-import { useExportStore } from "./sidebar/ExportStore";
+import { TOAST, toast } from "@/components/ui/Toast";
+import { t } from "@/lib/i18n";
+import type { CONCEPT_KEY } from "@/components/tools/elements";
+import { useExportStore } from "@/components/tools/sidebar/ExportStore";
 
 export type RegistrySearchOptions = {
     path?: string;
@@ -21,7 +17,6 @@ export type RegistrySearchOptions = {
 };
 
 const MAX_HISTORY_SIZE = 20;
-
 export interface ConfiguratorState<T extends keyof Analysers> {
     name: string;
     logger?: Logger;
@@ -33,13 +28,11 @@ export interface ConfiguratorState<T extends keyof Analysers> {
     sortedIdentifiers: Map<string, string[]>;
     registryCache: Map<string, DataDrivenRegistryElement<any>[]>;
     custom: Map<string, Uint8Array>;
-    // Navigation
     navigationHistory: string[];
     navigationIndex: number;
     goto: (id: string) => void;
     back: () => void;
     forward: () => void;
-    // Actions
     addFile: (key: string, value: Uint8Array) => void;
     getSortedIdentifiers: (registry: string) => string[];
     setName: (name: string) => void;
@@ -51,6 +44,7 @@ export interface ConfiguratorState<T extends keyof Analysers> {
     getLengthByRegistry: (registry: string) => number;
     getConcept: (pathname: string) => CONCEPT_KEY | null;
     getRegistry: <R extends DataDrivenElement>(registry: string, options?: RegistrySearchOptions) => DataDrivenRegistryElement<R>[];
+    createNewProject: () => void;
 }
 
 const createConfiguratorStore = <T extends keyof Analysers>() =>
@@ -142,6 +136,12 @@ const createConfiguratorStore = <T extends keyof Analysers>() =>
             const registryData = get().compile().getRegistry<R>(registry, options?.path, options?.excludeNamespaces);
             get().registryCache.set(cacheKey, registryData);
             return registryData;
+        },
+        createNewProject: () => {
+            const mcmeta = { pack: { pack_format: 61, description: "New Voxel Project" } };
+            const files = new Datapack({ "pack.mcmeta": new TextEncoder().encode(JSON.stringify(mcmeta)) }).getFiles();
+            const logger = new Logger(files);
+            get().setup({ files, elements: new Map(), version: 61, logger }, false, "New Project");
         }
     }));
 
@@ -162,4 +162,17 @@ const buildCacheKey = (registry: string, options?: { path?: string; excludeNames
     const pathKey = options.path ?? "";
     const excludeKey = options.excludeNamespaces?.length ? [...options.excludeNamespaces].sort().join(",") : "";
     return `${registry}|${pathKey}|${excludeKey}`;
+};
+
+
+export const openDatapackFromPath = async (path: string, onSuccess: () => void) => {
+    try {
+        const { datapack, name, isModded, iconPath } = await loadDatapackFromPath(path);
+        useConfiguratorStore.getState().setup(datapack, isModded, name);
+        useHomeStore.getState().addRecentProject({ name, path, type: isModded ? "mods" : "datapacks", icon: iconPath ?? undefined });
+        onSuccess();
+        toast(t("studio.success.loaded", { file: name }), TOAST.SUCCESS);
+    } catch (e: unknown) {
+        toast(t("generic.dialog.error"), TOAST.ERROR, e instanceof Error ? e.message : t("studio.error.failed_to_upload"));
+    }
 };

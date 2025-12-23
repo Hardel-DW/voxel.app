@@ -15,7 +15,8 @@ import {
 } from "@/components/ui/Dialog";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { type ClientType, getPresetById, LAUNCHER_PRESETS, scanLauncherInstances } from "@/lib/utils/instance";
+import { getPresetById, LAUNCHER_PRESETS, scanLauncherInstances } from "@/lib/utils/instance/launchers";
+import type { ClientType } from "@/lib/utils/instance/types";
 
 type ValidationState = { status: "idle" } | { status: "validating" } | { status: "valid"; count: number } | { status: "invalid" };
 

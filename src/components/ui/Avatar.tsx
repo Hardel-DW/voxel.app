@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { convertIconToSrc } from "@/lib/utils/instance";
+import { convertIconToSrc } from "@/lib/utils/instance/helpers";
 
 export default function Avatar(props: { name: string; icon?: string; className?: string }) {
     const iconSrc = convertIconToSrc(props.icon ?? null);

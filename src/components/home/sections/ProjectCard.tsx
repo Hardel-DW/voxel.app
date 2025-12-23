@@ -1,7 +1,7 @@
 import type { RecentProject } from "@/components/home/HomeStore";
 import { formatRelativeTime } from "@/lib/getGreeting";
 import { cn } from "@/lib/utils";
-import { convertIconToSrc } from "@/lib/utils/instance";
+import { convertIconToSrc } from "@/lib/utils/instance/helpers";
 
 export default function ProjectCard(props: { project: RecentProject; onOpen: () => void; onRemove: () => void }) {
     const iconSrc = convertIconToSrc(props.project.icon ?? null);

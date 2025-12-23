@@ -1,21 +1,20 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useState } from "react";
-import { useHomeStore } from "@/components/home/HomeStore";
 import { ContentCard } from "@/components/home/sections/ContentCard";
 import Header from "@/components/home/world/header";
 import WorldRow from "@/components/home/world/WorldRow";
 import Background from "@/components/layout/Background";
 import NewsSidebar from "@/components/layout/news/NewsSidebar";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { openDatapackFromPath } from "@/components/tools/Store";
 import AsyncContent from "@/components/ui/AsyncContent";
 import Pagination, { usePaginatedLoader } from "@/components/ui/Pagination";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/ui/Tabs";
-import { TOAST, toast } from "@/components/ui/Toast";
-import { t } from "@/lib/i18n";
-import { loadDatapackFromPath } from "@/lib/utils/datapack";
-import type { PackContent, WorldInfo } from "@/lib/utils/instance";
-import { convertIconToSrc, PAGE_SIZE, scanContent, scanDatapacks, scanWorlds } from "@/lib/utils/instance";
-import { syncCounts, useCachedCounts } from "@/lib/utils/instanceCache";
+import { useCacheValue } from "@/lib/utils/cache";
+import { countsCache, syncCounts } from "@/lib/utils/instance/cache";
+import { scanContent, scanDatapacks } from "@/lib/utils/instance/content";
+import { convertIconToSrc } from "@/lib/utils/instance/helpers";
+import type { PackContent, WorldInfo } from "@/lib/utils/instance/types";
+import { PAGE_SIZE, scanWorlds } from "@/lib/utils/instance/worlds";
 
 type TabType = "worlds" | "mods" | "resourcepacks";
 export const Route = createFileRoute("/world")({
@@ -31,7 +30,7 @@ function WorldPage() {
     const navigate = useNavigate();
     const [tab, setTab] = useState<TabType>("worlds");
     const [expandedWorld, setExpandedWorld] = useState<string | null>(null);
-    const cachedCounts = useCachedCounts(path);
+    const cachedCounts = useCacheValue(countsCache, path);
     if (path && !cachedCounts) syncCounts(path);
 
     const worlds = usePaginatedLoader<WorldInfo>((page) => {
@@ -74,27 +73,20 @@ function WorldPage() {
         }
     };
 
-    const handleConfigure = async (pack: PackContent) => {
-        try {
-            const { datapack, name: n, isModded } = await loadDatapackFromPath(pack.path);
-            useConfiguratorStore.getState().setup(datapack, isModded, n);
-            useHomeStore.getState().addRecentProject({ name: n, path: pack.path, type: pack.type });
-            toast(t("studio.success.loaded", { file: n }), TOAST.SUCCESS);
-            navigate({ to: "/editor/enchantment/overview" });
-        } catch (e: unknown) {
-            toast(t("generic.dialog.error"), TOAST.ERROR, e instanceof Error ? e.message : t("studio.error.failed_to_upload"));
-        }
-    };
-
     if (worlds.total === 0 && !worlds.loading) worlds.load();
     const firstWorldIcon = worlds.items[0]?.iconPath;
     const backgroundSrc = convertIconToSrc(firstWorldIcon);
+    const handleOpenDatapack = (pack: PackContent) => openDatapackFromPath(pack.path, () => navigate({ to: "/editor/enchantment/overview" }));
 
     return (
         <div className="size-full flex relative">
             <Background />
             {backgroundSrc && (
-                <img src={backgroundSrc} alt="World background" className="absolute inset-0 size-full object-cover opacity-40 blur-sm pointer-events-none" />
+                <img
+                    src={backgroundSrc}
+                    alt="World background"
+                    className="absolute inset-0 size-full object-cover opacity-40 blur-sm pointer-events-none"
+                />
             )}
             <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent pointer-events-none" />
 
@@ -119,7 +111,7 @@ function WorldPage() {
                                         expanded={expandedWorld === world.path}
                                         datapacks={datapacks}
                                         onExpand={() => handleWorldExpand(world.path)}
-                                        onConfigure={handleConfigure}
+                                        onConfigure={handleOpenDatapack}
                                     />
                                 ))}
                             </TabPanel>
@@ -132,7 +124,7 @@ function WorldPage() {
                                         iconSrc={convertIconToSrc(pack.iconPath)}
                                         type={pack.type === "mods" ? "Mod" : "Datapack"}
                                         path={pack.path}
-                                        onConfigure={() => handleConfigure(pack)}
+                                        onConfigure={() => handleOpenDatapack(pack)}
                                     />
                                 ))}
                             </TabPanel>
@@ -145,7 +137,7 @@ function WorldPage() {
                                         iconSrc={convertIconToSrc(rp.iconPath)}
                                         type="Resource Pack"
                                         path={rp.path}
-                                        onConfigure={() => handleConfigure(rp)}
+                                        onConfigure={() => handleOpenDatapack(rp)}
                                     />
                                 ))}
                             </TabPanel>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { cn } from "@/lib/utils";
-import type { PaginatedResult } from "@/lib/utils/instance";
+import type { PaginatedResult } from "@/lib/utils/instance/types";
 
 export interface PageState<T> extends PaginatedResult<T> {
     page: number;

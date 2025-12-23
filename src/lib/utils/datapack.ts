@@ -1,6 +1,6 @@
 import { readFile } from "@tauri-apps/plugin-fs";
 import { Datapack } from "@voxelio/breeze";
-import { cachePackIcon } from "@/lib/utils/instance";
+import { cachePackIcon } from "@/lib/utils/instance/icons";
 
 export interface DatapackLoadResult {
     datapack: ReturnType<Datapack["parse"]>;

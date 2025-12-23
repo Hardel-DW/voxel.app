@@ -1,37 +1,13 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { Datapack, Logger } from "@voxelio/breeze";
 import { useHomeStore } from "@/components/home/HomeStore";
-import { useConfiguratorStore } from "@/components/tools/Store";
 import Avatar from "@/components/ui/Avatar";
-import { TOAST, toast } from "@/components/ui/Toast";
 import { t } from "@/lib/i18n";
-import { loadDatapackFromPath } from "@/lib/utils/datapack";
+import { openDatapackFromPath, useConfiguratorStore } from "../tools/Store";
 
 export default function HomeSidebar() {
     const navigate = useNavigate();
     const recentProjects = useHomeStore((s) => s.recentProjects);
     const displayedProjects = recentProjects.slice(0, 5);
-
-    function handleNewProject() {
-        const mcmeta = { pack: { pack_format: 61, description: "New Voxel Project" } };
-        const files = new Datapack({ "pack.mcmeta": new TextEncoder().encode(JSON.stringify(mcmeta)) }).getFiles();
-        const logger = new Logger(files);
-        useConfiguratorStore.getState().setup({ files, elements: new Map(), version: 61, logger }, false, "New Project");
-        navigate({ to: "/editor/enchantment/overview" });
-    }
-
-    const openDatapack = async (path: string) => {
-        try {
-            const { datapack, name, isModded, iconPath } = await loadDatapackFromPath(path);
-            useConfiguratorStore.getState().setup(datapack, isModded, name);
-            useHomeStore.getState().addRecentProject({ name, path, type: isModded ? "mods" : "datapacks", icon: iconPath ?? undefined });
-            toast(t("studio.success.loaded", { file: name }), TOAST.SUCCESS);
-            navigate({ to: "/editor/enchantment/overview" });
-        } catch (e: unknown) {
-            const errorMessage = e instanceof Error ? e.message : t("studio.error.failed_to_upload");
-            toast(t("generic.dialog.error"), TOAST.ERROR, errorMessage);
-        }
-    };
 
     return (
         <div className="flex flex-col h-full py-3">
@@ -80,7 +56,7 @@ export default function HomeSidebar() {
                                 type="button"
                                 className="group relative size-10 rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-zinc-600/50 flex items-center justify-center overflow-hidden cursor-pointer transition-all hover:scale-105"
                                 title={project.name}
-                                onClick={() => openDatapack(project.path)}>
+                                onClick={() => openDatapackFromPath(project.path, () => navigate({ to: "/editor/enchantment/overview" }))}>
                                 <Avatar name={project.name} icon={project.icon} className="size-full" />
                                 <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors" />
                             </button>
@@ -93,7 +69,7 @@ export default function HomeSidebar() {
                     type="button"
                     className="group size-10 rounded-xl flex items-center justify-center cursor-pointer transition-all hover:bg-zinc-800/40"
                     title={t("home.nav.new_project")}
-                    onClick={handleNewProject}>
+                    onClick={() => useConfiguratorStore.getState().createNewProject()}>
                     <svg
                         className="size-4 text-zinc-500 group-hover:text-zinc-300 transition-colors"
                         viewBox="0 0 24 24"

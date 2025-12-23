@@ -2,12 +2,13 @@ import { useState } from "react";
 import GameCard from "@/components/home/client/GameCard";
 import type { GameClient } from "@/components/home/HomeStore";
 import { t } from "@/lib/i18n";
-import { syncClient, useCachedClient } from "@/lib/utils/instanceCache";
+import { useCacheValue } from "@/lib/utils/cache";
+import { instanceCache, syncClient } from "@/lib/utils/instance/cache";
 
 const SYNC_COOLDOWN = 5000;
 
 export default function ClientRow({ client, showDivider }: { client: GameClient; showDivider: boolean }) {
-    const { data, syncing } = useCachedClient(client.path);
+    const { data, syncing } = { data: useCacheValue(instanceCache, client.path), syncing: instanceCache.isSyncing(client.path) };
     const [lastSync, setLastSync] = useState(0);
 
     if (!data && !syncing) syncClient(client.path, client.type);
@@ -21,7 +22,7 @@ export default function ClientRow({ client, showDivider }: { client: GameClient;
 
     const isVanilla = client.type === "vanilla";
     const emptyLabel = isVanilla ? t("home.noWorlds") : t("home.noInstances");
-    const items = data?.items ?? [];
+    const items = data ?? [];
 
     return (
         <>
@@ -36,8 +37,17 @@ export default function ClientRow({ client, showDivider }: { client: GameClient;
                         disabled={!canSync || syncing}
                         className="p-1 rounded hover:bg-zinc-800/50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                         title={t("home.sync")}>
-                        <svg className={`size-4 text-zinc-400 ${syncing ? "animate-spin" : ""}`} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        <svg
+                            className={`size-4 text-zinc-400 ${syncing ? "animate-spin" : ""}`}
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor">
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                            />
                         </svg>
                     </button>
                 </div>

@@ -2,7 +2,7 @@ import { createRouter, RouterProvider } from "@tanstack/react-router";
 import ReactDOM from "react-dom/client";
 import Splash from "@/components/layout/Splash";
 import { initI18n } from "@/lib/i18n";
-import { initInstanceCache } from "@/lib/utils/instanceCache";
+import { initInstanceCache } from "@/lib/utils/instance/cache";
 import { routeTree } from "./routeTree.gen";
 import "./globals.css";
 

@@ -6,27 +6,24 @@ import { TOAST, toast } from "@/components/ui/Toast";
 import { useTauriFileDrop } from "@/lib/hook/useTauriFileDrop";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import { loadDatapackFromPath } from "@/lib/utils/datapack";
 
 export default function RecentProjects() {
     const navigate = useNavigate();
     const projects = useHomeStore((s) => s.recentProjects);
     const removeProject = useHomeStore((s) => s.removeRecentProject);
-    const { isDragging } = useTauriFileDrop(async (paths: string[]) => paths[0] && openDatapack(paths[0]));
 
-    const openDatapack = async (path: string, callback?: () => void) => {
+    const openDatapack = async (path: string, onError?: () => void) => {
         try {
-            const { datapack, name, isModded, iconPath } = await loadDatapackFromPath(path);
-            useConfiguratorStore.getState().setup(datapack, isModded, name);
-            useHomeStore.getState().addRecentProject({ name, path, type: isModded ? "mods" : "datapacks", icon: iconPath ?? undefined });
-            toast(t("studio.success.loaded", { file: name }), TOAST.SUCCESS);
+            await useConfiguratorStore.getState().openFromPath(path);
+            toast(t("studio.success.loaded", { file: path.split(/[/\\]/).pop() ?? path }), TOAST.SUCCESS);
             navigate({ to: "/editor/enchantment/overview" });
         } catch (e: unknown) {
-            const errorMessage = e instanceof Error ? e.message : t("studio.error.failed_to_upload");
-            toast(t("generic.dialog.error"), TOAST.ERROR, errorMessage);
-            callback?.();
+            toast(t("generic.dialog.error"), TOAST.ERROR, e instanceof Error ? e.message : t("studio.error.failed_to_upload"));
+            onError?.();
         }
     };
+
+    const { isDragging } = useTauriFileDrop(async (paths: string[]) => paths[0] && openDatapack(paths[0]));
 
     return (
         <section className="space-y-4 relative z-50 px-8">
