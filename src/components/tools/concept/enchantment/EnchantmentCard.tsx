@@ -47,6 +47,7 @@ export default function EnchantmentCard({ element }: { element: EnchantmentProps
     const { isTag, id } = getItemFromMultipleOrOne(element.supportedItems);
     const elementId = new Identifier(element.identifier).toUniqueKey();
     const resourceName = new Identifier(element.identifier).toResourceName();
+    const isVanilla = element.identifier.namespace === "minecraft";
     const tagId = Identifier.of(id.startsWith("#") ? id.slice(1) : id, "tags/item");
     const vanillaTags = data
         ? Object.entries(data).map(([key, value]) => ({ identifier: Identifier.of(key, "tags/item"), data: value }))
@@ -85,11 +86,13 @@ export default function EnchantmentCard({ element }: { element: EnchantmentProps
                     </div>
                 </div>
 
-                <SimpleSwitch
-                    elementId={elementId}
-                    action={CoreAction.setValue("mode", element.mode === "soft_delete" ? "normal" : "soft_delete")}
-                    renderer={(el) => el.mode === "normal"}
-                />
+                {!isVanilla && (
+                    <SimpleSwitch
+                        elementId={elementId}
+                        action={CoreAction.setValue("mode", element.mode === "soft_delete" ? "normal" : "soft_delete")}
+                        renderer={(el) => el.mode === "normal"}
+                    />
+                )}
             </div>
 
             <div className="pb-4">

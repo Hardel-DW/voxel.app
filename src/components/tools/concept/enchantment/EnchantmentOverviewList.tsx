@@ -19,6 +19,7 @@ export default function EnchantmentOverviewList({ element }: EnchantmentOverview
     const resourceName = new Identifier(element.identifier).toResourceName();
     const fullIdentifier = new Identifier(element.identifier).toString();
     const tagId = Identifier.of(id.startsWith("#") ? id.slice(1) : id, "tags/item");
+    const isVanilla = element.identifier.namespace === "minecraft";
 
     const vanillaTags = data
         ? Object.entries(data).map(([key, value]) => ({ identifier: Identifier.of(key, "tags/item"), data: value }))
@@ -62,11 +63,13 @@ export default function EnchantmentOverviewList({ element }: EnchantmentOverview
             </div>
 
             <div className="flex items-center gap-2 shrink-0">
-                <SimpleSwitch
-                    elementId={elementId}
-                    action={CoreAction.setValue("mode", element.mode === "soft_delete" ? "normal" : "soft_delete")}
-                    renderer={(el) => el.mode === "normal"}
-                />
+                {!isVanilla && (
+                    <SimpleSwitch
+                        elementId={elementId}
+                        action={CoreAction.setValue("mode", element.mode === "soft_delete" ? "normal" : "soft_delete")}
+                        renderer={(el) => el.mode === "normal"}
+                    />
+                )}
 
                 <div className="h-4 w-px bg-zinc-800/50 mx-2" />
 

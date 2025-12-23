@@ -22,6 +22,7 @@ export default function LootOverviewCard({ elementId, items, mode }: LootOvervie
     const firstFolder = pathParts.length > 1 ? pathParts[0] : "";
     const colorKey = firstFolder ? `${identifier.namespace}:${firstFolder}` : identifier.namespace;
     const pathColor = hueToHsl(stringToColor(colorKey), 50, 50);
+    const isVanilla = identifier.namespace === "minecraft";
 
     const handleConfigure = () => useConfiguratorStore.getState().goto(elementId);
 
@@ -56,7 +57,9 @@ export default function LootOverviewCard({ elementId, items, mode }: LootOvervie
                     )}
                 </div>
 
-                <SimpleSwitch elementId={elementId} action={CoreAction.invertBoolean("disabled")} renderer={(el) => !el.disabled} />
+                {!isVanilla && (
+                    <SimpleSwitch elementId={elementId} action={CoreAction.invertBoolean("disabled")} renderer={(el) => !el.disabled} />
+                )}
             </div>
 
             <div className="pb-4">

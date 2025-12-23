@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 import { Switch } from "@/components/ui/Switch";
 import { useLocalStorage } from "@/lib/hook/useLocalStorage";
-import Internalization from "../Internalization";
+import Internalization from "@/components/tools/Internalization";
 
 export default function StudioSidebar() {
     const hasElements = useConfiguratorStore((state) => Object.keys(state.files).length > 0);

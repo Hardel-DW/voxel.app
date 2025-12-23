@@ -17,6 +17,7 @@ export default function LootOverviewList({ elementId, items, resourceName, color
     const identifier = Identifier.fromUniqueKey(elementId);
     const pathParts = identifier.resource.split("/");
     const parentPath = pathParts.length > 1 ? pathParts.slice(0, -1).join("/") : "";
+    const isVanilla = identifier.namespace === "minecraft";
 
     return (
         <div
@@ -67,7 +68,9 @@ export default function LootOverviewList({ elementId, items, resourceName, color
                 <kbd className="px-1 py-0.5 text-[10px] text-zinc-500 bg-zinc-900/50 border border-zinc-800/50 rounded mx-4">
                     {identifier.namespace}
                 </kbd>
-                <SimpleSwitch elementId={elementId} action={CoreAction.invertBoolean("disabled")} renderer={(el) => !el.disabled} />
+                {!isVanilla && (
+                    <SimpleSwitch elementId={elementId} action={CoreAction.invertBoolean("disabled")} renderer={(el) => !el.disabled} />
+                )}
 
                 <div className="h-4 w-px bg-zinc-800/50 mx-2" />
 
