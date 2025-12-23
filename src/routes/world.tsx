@@ -48,9 +48,9 @@ function WorldPage() {
         return scanContent(path, "resourcepacks", page);
     });
 
-    const datapacks = usePaginatedLoader<PackContent>((page) => {
-        if (!expandedWorld) return Promise.resolve({ items: [], total: 0, hasMore: false });
-        return scanDatapacks(expandedWorld, page);
+    const datapacks = usePaginatedLoader<PackContent, string>((page, worldPath) => {
+        if (!worldPath) return Promise.resolve({ items: [], total: 0, hasMore: false });
+        return scanDatapacks(worldPath, page);
     });
 
     const tabs = { worlds, mods, resourcepacks } as const;
@@ -73,7 +73,7 @@ function WorldPage() {
         setExpandedWorld(isExpanding ? worldPath : null);
         if (isExpanding) {
             datapacks.reset();
-            datapacks.load();
+            datapacks.load(0, worldPath);
         }
     };
 
@@ -99,7 +99,7 @@ function WorldPage() {
             {backgroundSrc && (
                 <img
                     src={backgroundSrc}
-                    alt=""
+                    alt="World background"
                     className="absolute inset-0 size-full object-cover opacity-40 blur-sm pointer-events-none"
                 />
             )}
@@ -119,7 +119,7 @@ function WorldPage() {
 
                     <div className="flex-1 overflow-y-auto px-8 pb-8 flex flex-col gap-2">
                         <AsyncContent loading={current.loading} empty={current.items.length === 0}>
-                            <TabPanel value="worlds" className="flex flex-col gap-2">
+                            <TabPanel value="worlds" className="worlds-list flex flex-col gap-2">
                                 {worlds.items.map((world) => (
                                     <WorldRow
                                         key={world.path}

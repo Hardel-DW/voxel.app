@@ -9,12 +9,12 @@ export interface PageState<T> extends PaginatedResult<T> {
 
 const emptyPage = <T,>(): PageState<T> => ({ items: [], total: 0, hasMore: false, page: 0, loading: false });
 
-export const usePaginatedLoader = <T,>(loader: (page: number) => Promise<PaginatedResult<T>>) => {
+export const usePaginatedLoader = <T, C = undefined>(loader: (page: number, context: C) => Promise<PaginatedResult<T>>) => {
     const [state, setState] = useState<PageState<T>>(emptyPage());
 
-    const load = async (page = 0) => {
+    const load = async (page = 0, context?: C) => {
         setState((s) => ({ ...s, loading: true }));
-        const result = await loader(page);
+        const result = await loader(page, context as C);
         setState({ ...result, page, loading: false });
     };
 

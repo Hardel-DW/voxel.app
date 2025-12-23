@@ -38,6 +38,9 @@ importers:
       '@voxelio/converter':
         specifier: ^1.0.41
         version: 1.0.41
+      '@voxelio/snbt':
+        specifier: ^1.0.1
+        version: 1.0.1
       '@voxelio/zip':
         specifier: ^3.2.3
         version: 3.2.3
@@ -882,6 +885,9 @@ packages:
   '@voxelio/diff@1.0.7':
     resolution: {integrity: sha512-xjXz8YARb25VgDbxv0u581hana8vu1jvJST4+PSBLNmjXpMORCqpqSBb3fUFcIi0YnfRYqsFIREC8y6WcJ22cg==}
 
+  '@voxelio/snbt@1.0.1':
+    resolution: {integrity: sha512-dkQFyg0tEGn8/aigpUDAWRmSqFZ2YzetO+BOPb0dl1XLEEnM8djVc1fMd9WeEQYdPYJj2lGKJDa0TFABJ3rfbA==}
+
   '@voxelio/zip@3.2.3':
     resolution: {integrity: sha512-RNrLn1g6cHLSMSG6lS0lbGeDkAoWCf/+/uBMx/CaZNaUDBi/FPI3MJ+tfAq0qCOBCOZNijN6de8VRSZWmUYt5g==}
 
@@ -1138,6 +1144,9 @@ packages:
   normalize-path@3.0.0:
     resolution: {integrity: sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==}
     engines: {node: '>=0.10.0'}
+
+  pako@2.1.0:
+    resolution: {integrity: sha512-w+eufiZ1WuJYgPXbV/PO3NCMEc3xqylkKHzp8bxp1uW4qaSNQUkwmLLEc3kKsfz8lpV1F8Ht3U1Cm+9Srog2ug==}
 
   pathe@2.0.3:
     resolution: {integrity: sha512-WUjGcAqP1gQacoQe+OBJsFA7Ld4DyXuUIjZ5cc75cLHvJ7dtNsTugphxIADwspS+AraAUePCKrSVtPLFj/F88w==}
@@ -2054,6 +2063,10 @@ snapshots:
 
   '@voxelio/diff@1.0.7': {}
 
+  '@voxelio/snbt@1.0.1':
+    dependencies:
+      pako: 2.1.0
+
   '@voxelio/zip@3.2.3': {}
 
   acorn@8.15.0: {}
@@ -2275,6 +2288,8 @@ snapshots:
   node-releases@2.0.27: {}
 
   normalize-path@3.0.0: {}
+
+  pako@2.1.0: {}
 
   pathe@2.0.3: {}
 
