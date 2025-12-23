@@ -1,7 +1,6 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import HomeSidebar from "@/components/home/HomeSidebar";
-import Internalization from "@/components/tools/Internalization";
 import StudioSidebar from "@/components/tools/sidebar/Sidebar";
 
 const appWindow = getCurrentWindow();
@@ -24,7 +23,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="flex-1 flex flex-col min-w-0">
                 <header data-tauri-drag-region className="shrink-0 h-12 flex items-center justify-between select-none">
                     <div className="flex items-center gap-4 pl-4">
-                        <Internalization />
+                        {/* TODO Tabs */}
                     </div>
 
                     <div className="flex items-center h-full">
@@ -57,7 +56,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
                         </button>
                     </div>
                 </header>
-                <main className="flex-1 relative min-h-0 h-full ml-0 bg-content overflow-hidden border-t border-l border-zinc-800/50 rounded-tl-3xl">
+                <main className="flex-1 relative min-h-0 h-full ml-0 bg-content overflow-hidden border-t border-l border-zinc-950 rounded-tl-3xl">
                     {children}
                 </main>
             </div>

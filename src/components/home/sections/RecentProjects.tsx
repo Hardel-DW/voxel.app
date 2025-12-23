@@ -1,8 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
 import { useHomeStore } from "@/components/home/HomeStore";
 import ProjectCard from "@/components/home/sections/ProjectCard";
-import { useConfiguratorStore } from "@/components/tools/Store";
-import { TOAST, toast } from "@/components/ui/Toast";
+import { openDatapackFromPath } from "@/components/tools/Store";
 import { useTauriFileDrop } from "@/lib/hook/useTauriFileDrop";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
@@ -11,19 +10,7 @@ export default function RecentProjects() {
     const navigate = useNavigate();
     const projects = useHomeStore((s) => s.recentProjects);
     const removeProject = useHomeStore((s) => s.removeRecentProject);
-
-    const openDatapack = async (path: string, onError?: () => void) => {
-        try {
-            await useConfiguratorStore.getState().openFromPath(path);
-            toast(t("studio.success.loaded", { file: path.split(/[/\\]/).pop() ?? path }), TOAST.SUCCESS);
-            navigate({ to: "/editor/enchantment/overview" });
-        } catch (e: unknown) {
-            toast(t("generic.dialog.error"), TOAST.ERROR, e instanceof Error ? e.message : t("studio.error.failed_to_upload"));
-            onError?.();
-        }
-    };
-
-    const { isDragging } = useTauriFileDrop(async (paths: string[]) => paths[0] && openDatapack(paths[0]));
+    const { isDragging } = useTauriFileDrop(async (paths: string[]) => paths[0] && openDatapackFromPath(paths[0], () => navigate({ to: "/editor/enchantment/overview" })));
 
     return (
         <section className="space-y-4 relative z-50 px-8">
@@ -40,7 +27,7 @@ export default function RecentProjects() {
                             <ProjectCard
                                 key={project.path}
                                 project={project}
-                                onOpen={() => openDatapack(project.path, () => removeProject(project.path))}
+                                onOpen={() => openDatapackFromPath(project.path, () => navigate({ to: "/editor/enchantment/overview" }))}
                                 onRemove={() => removeProject(project.path)}
                             />
                         ))}

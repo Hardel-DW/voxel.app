@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/Button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 import { Switch } from "@/components/ui/Switch";
 import { useLocalStorage } from "@/lib/hook/useLocalStorage";
+import Internalization from "../Internalization";
 
 export default function StudioSidebar() {
     const hasElements = useConfiguratorStore((state) => Object.keys(state.files).length > 0);
@@ -63,6 +64,18 @@ export default function StudioSidebar() {
                                     </span>
                                 </div>
                                 <Switch isChecked={disableEffects ?? true} setIsChecked={setDisableEffects} />
+                            </div>
+
+                            <div className="group flex items-center justify-between p-3 rounded-xl hover:bg-white/5 transition-all duration-200 cursor-pointer border border-transparent hover:border-white/5">
+                                <div className="flex flex-col gap-0.5">
+                                    <span className="text-sm font-medium text-zinc-200 group-hover:text-white transition-colors">
+                                        Language
+                                    </span>
+                                    <span className="text-xs text-zinc-500 group-hover:text-zinc-400 transition-colors">
+                                        Change the language of the application
+                                    </span>
+                                </div>
+                                <Internalization />
                             </div>
                         </div>
 
