@@ -59,7 +59,9 @@ export default function EnchantmentCard({ element }: { element: EnchantmentProps
     ]);
     const items = isTag && merge.length > 0 ? new TagsProcessor(merge).getRecursiveValues(tagId) : [id];
 
-    const handleConfigure = () => useConfiguratorStore.getState().setCurrentElementId(elementId);
+    const handleConfigure = () => {
+        useConfiguratorStore.getState().openTab(elementId, "/editor/enchantment/main", resourceName);
+    };
 
     return (
         <div

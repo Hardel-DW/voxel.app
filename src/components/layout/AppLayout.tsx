@@ -1,6 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import HomeSidebar from "@/components/home/HomeSidebar";
+import EditorTabs from "@/components/layout/EditorTabs";
 import StudioSidebar from "@/components/tools/sidebar/Sidebar";
 
 const appWindow = getCurrentWindow();
@@ -23,7 +24,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
             <div className="flex-1 flex flex-col min-w-0">
                 <header data-tauri-drag-region className="shrink-0 h-12 flex items-center justify-between select-none">
                     <div className="flex items-center gap-4 pl-4">
-                        {/* TODO Tabs */}
+                        {!isHome && <EditorTabs />}
                     </div>
 
                     <div className="flex items-center h-full">

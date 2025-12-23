@@ -1,8 +1,9 @@
-import { useMatches, useNavigate } from "@tanstack/react-router";
-import { createContext, use } from "react";
+import { useMatches, useNavigate, useLocation } from "@tanstack/react-router";
+import { createContext } from "react";
 import { useEditorUiStore } from "@/components/tools/concept/EditorUiStore";
 import { useConfiguratorStore } from "@/components/tools/Store";
 import type { TreeNodeType } from "@/lib/utils/tree";
+import { Identifier } from "@voxelio/breeze";
 
 interface TreeConfig {
     overviewRoute: string;
@@ -35,15 +36,16 @@ interface TreeContextValue {
     clearSelection: () => void;
 }
 
-const TreeContext = createContext<TreeContextValue | null>(null);
+export const TreeContext = createContext<TreeContextValue | null>(null);
 
 export function TreeProvider({ config, children }: { config: TreeConfig; children: React.ReactNode }) {
     const matches = useMatches();
     const navigate = useNavigate();
+    const location = useLocation();
     const filterPath = useEditorUiStore((s) => s.filterPath);
     const setFilterPath = useEditorUiStore((s) => s.setFilterPath);
     const currentElementId = useConfiguratorStore((s) => s.currentElementId);
-    const goto = useConfiguratorStore((s) => s.goto);
+    const openTab = useConfiguratorStore((s) => s.openTab);
     const clearSelection = () => useConfiguratorStore.getState().setCurrentElementId(null);
     const isOnTab = config.tabRoutes?.some((route) => matches.map((m) => m.routeId as string).includes(route));
 
@@ -54,7 +56,9 @@ export function TreeProvider({ config, children }: { config: TreeConfig; childre
     };
 
     const selectElement = (elementId: string) => {
-        goto(elementId);
+        const route = isOnTab ? location.pathname : config.detailRoute;
+        const label = Identifier.fromUniqueKey(elementId).resource;
+        openTab(elementId, route, label);
         if (!isOnTab) {
             navigate({ to: config.detailRoute });
         }
@@ -83,12 +87,4 @@ export function TreeProvider({ config, children }: { config: TreeConfig; childre
     };
 
     return <TreeContext value={value}>{children}</TreeContext>;
-}
-
-export function useTree() {
-    const context = use(TreeContext);
-    if (!context) {
-        throw new Error("useTree must be used within TreeProvider");
-    }
-    return context;
 }

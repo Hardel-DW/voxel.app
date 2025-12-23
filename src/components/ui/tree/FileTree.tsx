@@ -1,6 +1,6 @@
 import { Identifier } from "@voxelio/breeze";
 import { useRef, useState } from "react";
-import { useTree } from "@/components/ui/tree/TreeNavigationContext";
+import { useTree } from "@/components/ui/tree/useTree";
 import { cn } from "@/lib/utils";
 import { hueToHsl, stringToColor } from "@/lib/utils/color";
 import { hasActiveDescendant, type TreeNodeType } from "@/lib/utils/tree";

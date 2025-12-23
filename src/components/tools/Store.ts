@@ -3,7 +3,7 @@ import { Datapack } from "@voxelio/breeze";
 import { compileDatapack, Identifier, isVoxelElement, Logger, sortElementsByRegistry, updateData } from "@voxelio/breeze";
 import { create } from "zustand";
 import { useHomeStore } from "@/components/home/HomeStore";
-import { loadDatapackFromPath } from "@/lib/utils/datapack";
+import { loadDatapackFromFolder, loadDatapackFromPath } from "@/lib/utils/datapack";
 import { encodeFilesRecord } from "@/lib/utils/encode";
 import { saveSession, updateSessionData, updateSessionLogger } from "@/lib/utils/sessionPersistence";
 import { TOAST, toast } from "@/components/ui/Toast";
@@ -16,7 +16,22 @@ export type RegistrySearchOptions = {
     excludeNamespaces?: string[];
 };
 
+export type SourceType = "zip" | "jar" | "folder";
+
+export interface SourceMetadata {
+    path: string;
+    type: SourceType;
+}
+
+export interface OpenTab {
+    elementId: string;
+    route: string;
+    label: string;
+}
+
 const MAX_HISTORY_SIZE = 20;
+const MAX_TABS = 10;
+
 export interface ConfiguratorState<T extends keyof Analysers> {
     name: string;
     logger?: Logger;
@@ -30,21 +45,37 @@ export interface ConfiguratorState<T extends keyof Analysers> {
     custom: Map<string, Uint8Array>;
     navigationHistory: string[];
     navigationIndex: number;
+    // Tabs system
+    openTabs: OpenTab[];
+    activeTabIndex: number;
+    // Source tracking
+    sourceMetadata: SourceMetadata | null;
+    isDirty: boolean;
+    // Navigation actions
     goto: (id: string) => void;
     back: () => void;
     forward: () => void;
+    // Tab actions
+    openTab: (elementId: string, route: string, label: string) => void;
+    closeTab: (index: number) => void;
+    switchTab: (index: number) => void;
+    // File actions
     addFile: (key: string, value: Uint8Array) => void;
     getSortedIdentifiers: (registry: string) => string[];
     setName: (name: string) => void;
     setCurrentElementId: (id: string | null) => void;
     setIsModded: (isModded: boolean) => void;
     handleChange: (action: Action, identifier?: string, value?: ActionValue) => void;
-    setup: (updates: ParseDatapackResult<GetAnalyserVoxel<T>>, isModded: boolean, name: string) => void;
+    setup: (updates: ParseDatapackResult<GetAnalyserVoxel<T>>, isModded: boolean, name: string, source?: SourceMetadata) => void;
     compile: () => Datapack;
     getLengthByRegistry: (registry: string) => number;
     getConcept: (pathname: string) => CONCEPT_KEY | null;
     getRegistry: <R extends DataDrivenElement>(registry: string, options?: RegistrySearchOptions) => DataDrivenRegistryElement<R>[];
     createNewProject: () => void;
+    // Dirty state
+    markDirty: () => void;
+    markClean: () => void;
+    setSourceMetadata: (source: SourceMetadata | null) => void;
 }
 
 const createConfiguratorStore = <T extends keyof Analysers>() =>
@@ -60,6 +91,12 @@ const createConfiguratorStore = <T extends keyof Analysers>() =>
         registryCache: new Map(),
         navigationHistory: [],
         navigationIndex: -1,
+        // Tabs
+        openTabs: [],
+        activeTabIndex: -1,
+        // Source
+        sourceMetadata: null,
+        isDirty: false,
         goto: (id) => {
             const { navigationHistory, navigationIndex } = get();
             const truncated = navigationHistory.slice(0, navigationIndex + 1);
@@ -77,6 +114,39 @@ const createConfiguratorStore = <T extends keyof Analysers>() =>
             if (navigationIndex >= navigationHistory.length - 1) return;
             const newIndex = navigationIndex + 1;
             set({ navigationIndex: newIndex, currentElementId: navigationHistory[newIndex] });
+        },
+        openTab: (elementId, route, label) => {
+            const { openTabs } = get();
+            const existingIndex = openTabs.findIndex((tab) => tab.elementId === elementId);
+            if (existingIndex !== -1) {
+                set({ activeTabIndex: existingIndex, currentElementId: elementId });
+                return;
+            }
+            const newTab: OpenTab = { elementId, route, label };
+            const updatedTabs = [...openTabs, newTab].slice(-MAX_TABS);
+            set({ openTabs: updatedTabs, activeTabIndex: updatedTabs.length - 1, currentElementId: elementId });
+        },
+        closeTab: (index) => {
+            const { openTabs, activeTabIndex } = get();
+            if (index < 0 || index >= openTabs.length) return;
+            const updatedTabs = openTabs.toSpliced(index, 1);
+            if (updatedTabs.length === 0) {
+                set({ openTabs: [], activeTabIndex: -1, currentElementId: null });
+                return;
+            }
+
+            const newActiveIndex = index === activeTabIndex
+                ? Math.min(index, updatedTabs.length - 1)
+                : index < activeTabIndex ? activeTabIndex - 1 : activeTabIndex;
+
+            const newCurrentElement = updatedTabs[newActiveIndex]?.elementId ?? null;
+            set({ openTabs: updatedTabs, activeTabIndex: newActiveIndex, currentElementId: newCurrentElement });
+        },
+        switchTab: (index) => {
+            const { openTabs } = get();
+            if (index < 0 || index >= openTabs.length) return;
+            const tab = openTabs[index];
+            set({ activeTabIndex: index, currentElementId: tab.elementId });
         },
         addFile: (key, value) => {
             const custom = get().custom.set(key, value);
@@ -106,11 +176,20 @@ const createConfiguratorStore = <T extends keyof Analysers>() =>
             );
 
             if (!updatedElement || !isVoxelElement(updatedElement)) return;
-            set((state) => ({ elements: state.elements.set(elementId, updatedElement), registryCache: new Map() }));
+            set((s) => ({ elements: s.elements.set(elementId, updatedElement), registryCache: new Map(), isDirty: true }));
             updateSessionLogger(state.logger);
         },
-        setup: (updates, isModded, name) => {
-            set({ ...updates, sortedIdentifiers: sortElementsByRegistry(updates.elements), isModded, name });
+        setup: (updates, isModded, name, source) => {
+            set({
+                ...updates,
+                sortedIdentifiers: sortElementsByRegistry(updates.elements),
+                isModded,
+                name,
+                sourceMetadata: source ?? null,
+                isDirty: false,
+                openTabs: [],
+                activeTabIndex: -1
+            });
             const exportState = useExportStore.getState();
             saveSession(get(), exportState);
         },
@@ -142,7 +221,10 @@ const createConfiguratorStore = <T extends keyof Analysers>() =>
             const files = new Datapack({ "pack.mcmeta": new TextEncoder().encode(JSON.stringify(mcmeta)) }).getFiles();
             const logger = new Logger(files);
             get().setup({ files, elements: new Map(), version: 61, logger }, false, "New Project");
-        }
+        },
+        markDirty: () => set({ isDirty: true }),
+        markClean: () => set({ isDirty: false }),
+        setSourceMetadata: (source) => set({ sourceMetadata: source })
     }));
 
 export const useConfiguratorStore = createConfiguratorStore();
@@ -167,12 +249,20 @@ const buildCacheKey = (registry: string, options?: { path?: string; excludeNames
 
 export const openDatapackFromPath = async (path: string, onSuccess: () => void) => {
     try {
-        const { datapack, name, isModded, iconPath } = await loadDatapackFromPath(path);
-        useConfiguratorStore.getState().setup(datapack, isModded, name);
-        useHomeStore.getState().addRecentProject({ name, path, type: isModded ? "mods" : "datapacks", icon: iconPath ?? undefined });
+        const isDir = !path.endsWith(".zip") && !path.endsWith(".jar");
+        const { datapack, name, isModded, iconPath } = isDir
+            ? await loadDatapackFromFolder(path)
+            : await loadDatapackFromPath(path);
+
+        const sourceType: SourceType = isDir ? "folder" : isModded ? "jar" : "zip";
+        const projectType = isDir ? "folder" : isModded ? "mods" : "datapacks";
+        const sourceMetadata: SourceMetadata = { path, type: sourceType };
+        useConfiguratorStore.getState().setup(datapack, isModded, name, sourceMetadata);
+        useHomeStore.getState().addRecentProject({ name, path, type: projectType, icon: iconPath ?? undefined });
         onSuccess();
         toast(t("studio.success.loaded", { file: name }), TOAST.SUCCESS);
     } catch (e: unknown) {
+        console.error("[openDatapackFromPath] Error:", e);
         toast(t("generic.dialog.error"), TOAST.ERROR, e instanceof Error ? e.message : t("studio.error.failed_to_upload"));
     }
 };
