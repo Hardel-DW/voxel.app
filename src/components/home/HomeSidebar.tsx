@@ -31,22 +31,6 @@ export default function HomeSidebar() {
                     </svg>
                 </Link>
 
-                <Link
-                    to="/world"
-                    search={{ path: undefined, name: "" }}
-                    className="group size-10 rounded-xl flex items-center justify-center hover:bg-zinc-800/50 transition-colors cursor-pointer"
-                    title={t("home.nav.worlds")}>
-                    <svg
-                        className="size-5 text-zinc-500 group-hover:text-zinc-300 transition-colors"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="1.5">
-                        <circle cx="12" cy="12" r="10" />
-                        <path d="m16.24 7.76-2.12 6.36-6.36 2.12 2.12-6.36z" />
-                    </svg>
-                </Link>
-
                 {displayedProjects.length > 0 && (
                     <>
                         <div className="w-8 h-px bg-zinc-800/50 my-2" />
