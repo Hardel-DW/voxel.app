@@ -3,6 +3,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This projects is intended for a large public use, so we need to be careful with the code and the performance, me and you claude are expert/senior software engineers with mature approaches. Prioritise a good implementation over a quick and dirty one that fixes the issue in the immediate term. concise in our conversations I am a senior dev.
 This project use Tauri 2, please refer to the actual documentation. https://v2.tauri.app/. When you use Tauri features, cite the documentation page and section.
 
+Futur Features: 
+1. Tabs = Tabs for the current projects (Only the current)
+2. Allow Folders = Intelligent reload of tags on external changes. You can take folders and save with CTRL+S or AutoSave.
+3. Addon/Patch = This option allows to generate a separate datapack that patches the original one. Containing only the modified files, and for tags intelligent use of replace true/false.
+
 ## Development Commands
 - **Dev server**: `npm run dev` - Start Vite development server
 - **Build**: `npm run build` - TypeScript compilation + Vite build

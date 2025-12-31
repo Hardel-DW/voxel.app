@@ -5,6 +5,7 @@ import StudioDialog from "@/components/tools/concept/home/StudioDialog";
 import ItemTooltip from "@/components/tools/elements/gui/ItemTooltip";
 import EditorLoading from "@/components/tools/loading/EditorLoading";
 import NotFoundStudio from "@/components/tools/NotFoundStudio";
+import { useSaveShortcut } from "@/lib/hook/useSaveShortcut";
 import { getQueryClient } from "@/lib/utils/query";
 
 export const Route = createFileRoute("/editor")({
@@ -15,6 +16,7 @@ export const Route = createFileRoute("/editor")({
 
 function EditorLayout() {
     const queryClient = getQueryClient();
+    useSaveShortcut();
 
     return (
         <main className="flex-1 relative min-h-0 ml-0 bg-content overflow-hidden border-t border-zinc-800/50 rounded-tl-3xl h-full">

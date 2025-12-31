@@ -3,12 +3,14 @@ import { persist } from "zustand/middleware";
 import { removeCachedIcon } from "@/lib/utils/instance/icons";
 import type { ClientType } from "@/lib/utils/instance/types";
 
+export type ProjectType = "datapacks" | "mods" | "resourcepacks" | "folder";
+
 export interface RecentProject {
     name: string;
     path: string;
     icon?: string;
     lastOpened: number;
-    type: "datapacks" | "mods" | "resourcepacks";
+    type: ProjectType;
 }
 
 export interface GameClient {
