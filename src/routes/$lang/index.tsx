@@ -8,7 +8,7 @@ import { getGreeting } from "@/lib/getGreeting";
 import { useTranslate } from "@/lib/i18n";
 import { useHomeStore } from "@/lib/store/HomeStore";
 
-export const Route = createFileRoute("/")({
+export const Route = createFileRoute("/$lang/")({
     component: HomePage
 });
 

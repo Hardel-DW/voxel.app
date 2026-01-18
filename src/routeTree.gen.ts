@@ -13,8 +13,7 @@ import { Route as WorldRouteImport } from './routes/world'
 import { Route as EditorRouteImport } from './routes/editor'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LangRouteImport } from './routes/$lang'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as LangStudioIndexRouteImport } from './routes/$lang/studio/index'
+import { Route as LangIndexRouteImport } from './routes/$lang/index'
 import { Route as LangStudioEditorRouteImport } from './routes/$lang/studio/editor'
 import { Route as LangStudioEditorRecipeRouteImport } from './routes/$lang/studio/editor/recipe'
 import { Route as LangStudioEditorLoot_tableRouteImport } from './routes/$lang/studio/editor/loot_table'
@@ -62,14 +61,9 @@ const LangRoute = LangRouteImport.update({
   path: '/$lang',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
+const LangIndexRoute = LangIndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LangStudioIndexRoute = LangStudioIndexRouteImport.update({
-  id: '/studio/',
-  path: '/studio/',
   getParentRoute: () => LangRoute,
 } as any)
 const LangStudioEditorRoute = LangStudioEditorRouteImport.update({
@@ -226,13 +220,12 @@ const LangStudioEditorChangesDiffRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
   '/$lang': typeof LangRouteWithChildren
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRoute
   '/world': typeof WorldRoute
+  '/$lang/': typeof LangIndexRoute
   '/$lang/studio/editor': typeof LangStudioEditorRouteWithChildren
-  '/$lang/studio/': typeof LangStudioIndexRoute
   '/$lang/studio/editor/changes': typeof LangStudioEditorChangesRouteWithChildren
   '/$lang/studio/editor/enchantment': typeof LangStudioEditorEnchantmentRouteWithChildren
   '/$lang/studio/editor/github': typeof LangStudioEditorGithubRoute
@@ -260,13 +253,11 @@ export interface FileRoutesByFullPath {
   '/$lang/studio/editor/recipe/overview': typeof LangStudioEditorRecipeOverviewRoute
 }
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '/$lang': typeof LangRouteWithChildren
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRoute
   '/world': typeof WorldRoute
+  '/$lang': typeof LangIndexRoute
   '/$lang/studio/editor': typeof LangStudioEditorRouteWithChildren
-  '/$lang/studio': typeof LangStudioIndexRoute
   '/$lang/studio/editor/changes': typeof LangStudioEditorChangesRouteWithChildren
   '/$lang/studio/editor/enchantment': typeof LangStudioEditorEnchantmentRouteWithChildren
   '/$lang/studio/editor/github': typeof LangStudioEditorGithubRoute
@@ -295,13 +286,12 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
-  '/': typeof IndexRoute
   '/$lang': typeof LangRouteWithChildren
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRoute
   '/world': typeof WorldRoute
+  '/$lang/': typeof LangIndexRoute
   '/$lang/studio/editor': typeof LangStudioEditorRouteWithChildren
-  '/$lang/studio/': typeof LangStudioIndexRoute
   '/$lang/studio/editor/changes': typeof LangStudioEditorChangesRouteWithChildren
   '/$lang/studio/editor/enchantment': typeof LangStudioEditorEnchantmentRouteWithChildren
   '/$lang/studio/editor/github': typeof LangStudioEditorGithubRoute
@@ -331,13 +321,12 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    | '/'
     | '/$lang'
     | '/auth'
     | '/editor'
     | '/world'
+    | '/$lang/'
     | '/$lang/studio/editor'
-    | '/$lang/studio/'
     | '/$lang/studio/editor/changes'
     | '/$lang/studio/editor/enchantment'
     | '/$lang/studio/editor/github'
@@ -365,13 +354,11 @@ export interface FileRouteTypes {
     | '/$lang/studio/editor/recipe/overview'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/'
-    | '/$lang'
     | '/auth'
     | '/editor'
     | '/world'
+    | '/$lang'
     | '/$lang/studio/editor'
-    | '/$lang/studio'
     | '/$lang/studio/editor/changes'
     | '/$lang/studio/editor/enchantment'
     | '/$lang/studio/editor/github'
@@ -399,13 +386,12 @@ export interface FileRouteTypes {
     | '/$lang/studio/editor/recipe/overview'
   id:
     | '__root__'
-    | '/'
     | '/$lang'
     | '/auth'
     | '/editor'
     | '/world'
+    | '/$lang/'
     | '/$lang/studio/editor'
-    | '/$lang/studio/'
     | '/$lang/studio/editor/changes'
     | '/$lang/studio/editor/enchantment'
     | '/$lang/studio/editor/github'
@@ -434,7 +420,6 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
   LangRoute: typeof LangRouteWithChildren
   AuthRoute: typeof AuthRoute
   EditorRoute: typeof EditorRoute
@@ -471,18 +456,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
+    '/$lang/': {
+      id: '/$lang/'
       path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/$lang/studio/': {
-      id: '/$lang/studio/'
-      path: '/studio'
-      fullPath: '/$lang/studio/'
-      preLoaderRoute: typeof LangStudioIndexRouteImport
+      fullPath: '/$lang/'
+      preLoaderRoute: typeof LangIndexRouteImport
       parentRoute: typeof LangRoute
     }
     '/$lang/studio/editor': {
@@ -787,19 +765,18 @@ const LangStudioEditorRouteWithChildren =
   LangStudioEditorRoute._addFileChildren(LangStudioEditorRouteChildren)
 
 interface LangRouteChildren {
+  LangIndexRoute: typeof LangIndexRoute
   LangStudioEditorRoute: typeof LangStudioEditorRouteWithChildren
-  LangStudioIndexRoute: typeof LangStudioIndexRoute
 }
 
 const LangRouteChildren: LangRouteChildren = {
+  LangIndexRoute: LangIndexRoute,
   LangStudioEditorRoute: LangStudioEditorRouteWithChildren,
-  LangStudioIndexRoute: LangStudioIndexRoute,
 }
 
 const LangRouteWithChildren = LangRoute._addFileChildren(LangRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
   LangRoute: LangRouteWithChildren,
   AuthRoute: AuthRoute,
   EditorRoute: EditorRoute,
