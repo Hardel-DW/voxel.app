@@ -22,7 +22,7 @@ function computeDiffLines(original: string, compiled: string, status: CodeDiffPr
 
 export default function CodeDiff({ original, compiled, status }: CodeDiffProps) {
     const diffLines = computeDiffLines(original, compiled, status);
-    const cleanupRef = useRef<() => void>(() => { });
+    const cleanupRef = useRef<() => void>(() => {});
 
     const handleRef = (el: HTMLPreElement | null) => {
         if (el) {

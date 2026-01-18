@@ -1,8 +1,8 @@
 import type { Action, ActionValue } from "@voxelio/breeze";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { type BaseComponent, useElementLocks, useElementProperty } from "@/lib/hook/useBreezeElement";
-import type { Lock, LockRenderer } from "@/lib/utils/lock";
 import { useNavigationStore } from "@/lib/store/NavigationStore";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
+import type { Lock, LockRenderer } from "@/lib/utils/lock";
 
 export type BaseRender = (el: any) => unknown;
 export type ActionOrBuilder = Action | ((value: any) => Action);

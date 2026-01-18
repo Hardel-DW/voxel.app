@@ -1,8 +1,8 @@
-import { watch, readFile, type UnwatchFn, type WatchEvent } from "@tauri-apps/plugin-fs";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
+import { readFile, type UnwatchFn, type WatchEvent, watch } from "@tauri-apps/plugin-fs";
 import { Datapack } from "@voxelio/breeze";
-import { toast, TOAST } from "@/components/ui/Toast";
+import { TOAST, toast } from "@/components/ui/Toast";
 import { t } from "@/lib/i18n";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 
 type WatchCallback = (event: WatchEvent) => void;
 

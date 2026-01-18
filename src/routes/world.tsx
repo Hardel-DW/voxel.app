@@ -5,10 +5,10 @@ import Header from "@/components/home/world/header";
 import WorldRow from "@/components/home/world/WorldRow";
 import Background from "@/components/layout/Background";
 import NewsSidebar from "@/components/layout/news/NewsSidebar";
-import { openDatapackFromPath } from "@/lib/store/ProjectStore";
 import AsyncContent from "@/components/ui/AsyncContent";
 import Pagination, { usePaginatedLoader } from "@/components/ui/Pagination";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/ui/Tabs";
+import { openDatapackFromPath } from "@/lib/store/ProjectStore";
 import { useCacheValue } from "@/lib/utils/cache";
 import { countsCache, syncCounts } from "@/lib/utils/instance/cache";
 import { scanContent, scanDatapacks } from "@/lib/utils/instance/content";
@@ -76,7 +76,8 @@ function WorldPage() {
     if (worlds.total === 0 && !worlds.loading) worlds.load();
     const firstWorldIcon = worlds.items[0]?.iconPath;
     const backgroundSrc = convertIconToSrc(firstWorldIcon);
-    const handleOpenDatapack = (pack: PackContent) => openDatapackFromPath(pack.path, () => navigate({ to: "/editor/enchantment/overview" }));
+    const handleOpenDatapack = (pack: PackContent) =>
+        openDatapackFromPath(pack.path, () => navigate({ to: "/editor/enchantment/overview" }));
 
     return (
         <div className="size-full flex relative">

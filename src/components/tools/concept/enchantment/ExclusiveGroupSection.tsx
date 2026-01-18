@@ -4,13 +4,13 @@ import ErrorPlaceholder from "@/components/tools/elements/error/ErrorPlaceholder
 import ToolCategory from "@/components/tools/elements/ToolCategory";
 import ToolGrid from "@/components/tools/elements/ToolGrid";
 import ToolListOption, { type ToolListOptionAction } from "@/components/tools/elements/ToolListOption";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import Loader from "@/components/ui/Loader";
 import { exclusiveSetGroups } from "@/lib/data/exclusive";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
 import { t } from "@/lib/i18n";
-import { isMinecraft } from "@/lib/utils/lock";
 import { useNavigationStore } from "@/lib/store/NavigationStore";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
+import { isMinecraft } from "@/lib/utils/lock";
 
 export function ExclusiveGroupSection() {
     const { data, isLoading, isError } = useRegistry<FetchedRegistry<TagType>>("summary", "tags/enchantment");

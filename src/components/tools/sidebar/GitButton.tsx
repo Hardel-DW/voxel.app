@@ -1,4 +1,3 @@
-
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { useGitHubAuth } from "@/lib/hook/useGitHubAuth";
@@ -29,8 +28,7 @@ export default function GitButton() {
                 variant="transparent"
                 size="square"
                 className="border-0 select-none aspect-square shrink-0"
-                to="/editor/github"
-            >
+                to="/editor/github">
                 <img src="/icons/company/github.svg" alt="Git" className="size-6 invert opacity-70" />
             </Button>
         );

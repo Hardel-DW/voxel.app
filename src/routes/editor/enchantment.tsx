@@ -1,5 +1,6 @@
 import { createFileRoute, Link, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
 import { Identifier } from "@voxelio/breeze";
+import { buildEnchantmentTree } from "@/components/tools/concept/enchantment/buildEnchantmentTree";
 import { EditorHeader } from "@/components/tools/concept/layout/EditorHeader";
 import { EditorSidebar } from "@/components/tools/concept/layout/EditorSidebar";
 import { useDynamicIsland } from "@/components/tools/floatingbar/FloatingBarContext";
@@ -14,7 +15,6 @@ import { useElementsIdByType } from "@/lib/hook/useElementsByType";
 import { t } from "@/lib/i18n";
 import { useEditorUiStore } from "@/lib/store/EditorUiStore";
 import { useNavigationStore } from "@/lib/store/NavigationStore";
-import { buildEnchantmentTree } from "@/components/tools/concept/enchantment/buildEnchantmentTree";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 
 const concept = "enchantment";

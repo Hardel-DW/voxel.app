@@ -6,8 +6,8 @@ import ToolSection from "@/components/tools/elements/ToolSection";
 import ToolSwitch from "@/components/tools/elements/ToolSwitch";
 import { useElementProperty } from "@/lib/hook/useBreezeElement";
 import { t } from "@/lib/i18n";
-import { isMinecraft } from "@/lib/utils/lock";
 import { useNavigationStore } from "@/lib/store/NavigationStore";
+import { isMinecraft } from "@/lib/utils/lock";
 
 export const Route = createFileRoute("/editor/enchantment/technical")({
     component: EnchantmentTechnicalPage

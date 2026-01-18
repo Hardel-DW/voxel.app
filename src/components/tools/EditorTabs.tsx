@@ -37,8 +37,8 @@ function TabItem({ tab, index, isActive }: { tab: OpenTab; index: number; isActi
             index === activeTabIndex
                 ? Math.min(index, updatedTabs.length - 1)
                 : index < activeTabIndex
-                    ? activeTabIndex - 1
-                    : activeTabIndex;
+                  ? activeTabIndex - 1
+                  : activeTabIndex;
 
         const nextTab = updatedTabs[newActiveIndex];
         if (nextTab) navigate({ to: nextTab.route });

@@ -8,10 +8,10 @@ import { Toolbar } from "@/components/tools/floatingbar/Toolbar";
 import { ToolbarNavigation } from "@/components/tools/floatingbar/ToolbarNavigation";
 import { ToolbarSearch } from "@/components/tools/floatingbar/ToolbarSearch";
 import { ToolGrab } from "@/components/tools/floatingbar/ToolGrab";
-import { getCurrentElement, useConfiguratorStore } from "@/lib/store/StudioStore";
 import { useFlattenedLootItems } from "@/lib/hook/useFlattenedLootItems";
 import { t } from "@/lib/i18n";
 import { useNavigationStore } from "@/lib/store/NavigationStore";
+import { getCurrentElement, useConfiguratorStore } from "@/lib/store/StudioStore";
 
 export const Route = createFileRoute("/editor/loot_table/main")({
     component: LootMainPage

@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type { EnchantmentProps, SlotRegistryType } from "@voxelio/breeze";
 import { EnchantmentAction } from "@voxelio/breeze";
-import { SLOT_CONFIGS } from "@/lib/data/slots";
 import ToolGrid from "@/components/tools/elements/ToolGrid";
 import ToolSection from "@/components/tools/elements/ToolSection";
 import ToolSlot from "@/components/tools/elements/ToolSlot";
+import { SLOT_CONFIGS } from "@/lib/data/slots";
 import { t } from "@/lib/i18n";
 
 export const Route = createFileRoute("/editor/enchantment/slots")({

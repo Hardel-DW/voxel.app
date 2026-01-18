@@ -2,9 +2,9 @@ import { useMatches, useNavigate } from "@tanstack/react-router";
 import { Identifier } from "@voxelio/breeze";
 import { createContext } from "react";
 import { useEditorUiStore } from "@/lib/store/EditorUiStore";
+import { useNavigationStore } from "@/lib/store/NavigationStore";
 import { useTabsStore } from "@/lib/store/TabsStore";
 import type { TreeNodeType } from "@/lib/utils/tree";
-import { useNavigationStore } from "@/lib/store/NavigationStore";
 
 interface TreeConfig {
     overviewRoute: string;

@@ -2,6 +2,7 @@ import { createFileRoute, Outlet, useLocation, useNavigate } from "@tanstack/rea
 import { Identifier } from "@voxelio/breeze";
 import { EditorHeader } from "@/components/tools/concept/layout/EditorHeader";
 import { EditorSidebar } from "@/components/tools/concept/layout/EditorSidebar";
+import { buildLootTableTree } from "@/components/tools/concept/loot/buildLootTableTree";
 import { useDynamicIsland } from "@/components/tools/floatingbar/FloatingBarContext";
 import NotFoundStudio from "@/components/tools/NotFoundStudio";
 import { TreeSidebar } from "@/components/tools/sidebar/TreeSidebar";
@@ -11,7 +12,6 @@ import { CONCEPTS } from "@/lib/data/elements";
 import { useElementsIdByType } from "@/lib/hook/useElementsByType";
 import { useEditorUiStore } from "@/lib/store/EditorUiStore";
 import { useNavigationStore } from "@/lib/store/NavigationStore";
-import { buildLootTableTree } from "@/components/tools/concept/loot/buildLootTableTree";
 
 const concept = "loot_table";
 const conceptData = CONCEPTS.find((c) => c.registry === "loot_table");

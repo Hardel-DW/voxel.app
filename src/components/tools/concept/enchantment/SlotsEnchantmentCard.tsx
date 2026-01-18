@@ -3,12 +3,12 @@ import type { EnchantmentProps, TagType } from "@voxelio/breeze";
 import { CoreAction, getItemFromMultipleOrOne, Identifier, SlotManager, TagsProcessor } from "@voxelio/breeze";
 import SimpleSwitch from "@/components/tools/elements/SimpleSwitch";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
 import { t } from "@/lib/i18n";
-import SlotGrid from "./SlotGrid";
 import { useNavigationStore } from "@/lib/store/NavigationStore";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
+import SlotGrid from "./SlotGrid";
 
 const SLOT_IMAGES = {
     mainhand: "/images/features/slots/mainhand.webp",

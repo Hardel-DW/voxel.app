@@ -1,4 +1,3 @@
-
 import { useNavigationStore } from "@/lib/store/NavigationStore";
 
 export function ToolbarNavigation() {

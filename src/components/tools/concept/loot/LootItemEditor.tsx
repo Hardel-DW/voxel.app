@@ -3,12 +3,12 @@ import { useState } from "react";
 import ItemSelector from "@/components/tools/elements/gui/ItemSelector";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
 import { useDynamicIsland } from "@/components/tools/floatingbar/FloatingBarContext";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import Counter from "@/components/ui/Counter";
 import { useClickOutside } from "@/lib/hook/useClickOutside";
 import useRegistry from "@/lib/hook/useRegistry";
-import { cn } from "@/lib/utils";
 import { useNavigationStore } from "@/lib/store/NavigationStore";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
+import { cn } from "@/lib/utils";
 
 interface LootItemEditorProps {
     item: LootItem;

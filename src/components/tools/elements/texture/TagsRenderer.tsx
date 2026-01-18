@@ -1,9 +1,9 @@
 import type { DataDrivenRegistryElement, TagType } from "@voxelio/breeze";
 import { Identifier, TagsProcessor } from "@voxelio/breeze";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { useAnimationStore } from "@/lib/hook/useAnimationStore";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { clsx } from "@/lib/utils";
 import LoadingSlot from "../gui/LoadingSlot";
 

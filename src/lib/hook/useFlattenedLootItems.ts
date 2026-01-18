@@ -10,9 +10,9 @@ import {
     type TagType
 } from "@voxelio/breeze";
 import { useShallow } from "zustand/shallow";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
 import { mergeRegistries } from "@/lib/registry";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 
 function computeAllFlattened(
     lootTables: LootTableProps[],

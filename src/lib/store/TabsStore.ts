@@ -47,8 +47,8 @@ export const useTabsStore = create<TabsState>((set, get) => ({
             index === activeTabIndex
                 ? Math.min(index, updatedTabs.length - 1)
                 : index < activeTabIndex
-                    ? activeTabIndex - 1
-                    : activeTabIndex;
+                  ? activeTabIndex - 1
+                  : activeTabIndex;
 
         set({ openTabs: updatedTabs, activeTabIndex: newActiveIndex });
         useNavigationStore.getState().setCurrentElementId(updatedTabs[newActiveIndex].elementId ?? null);

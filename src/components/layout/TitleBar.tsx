@@ -1,5 +1,5 @@
-import { t } from "@/lib/i18n";
 import { getCurrentWindow } from "@tauri-apps/api/window";
+import { t } from "@/lib/i18n";
 
 const appWindow = getCurrentWindow();
 

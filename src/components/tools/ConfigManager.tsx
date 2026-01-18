@@ -1,7 +1,7 @@
 import type { PropsWithChildren } from "react";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { Button } from "@/components/ui/Button";
 import { t } from "@/lib/i18n";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import RestoreLastSession from "./RestoreLastSession";
 
 export default function ConfigManager(props: PropsWithChildren) {

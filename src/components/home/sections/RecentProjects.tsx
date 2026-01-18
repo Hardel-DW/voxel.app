@@ -1,16 +1,18 @@
 import { useNavigate } from "@tanstack/react-router";
-import { useHomeStore } from "@/lib/store/HomeStore";
 import ProjectCard from "@/components/home/sections/ProjectCard";
-import { openDatapackFromPath } from "@/lib/store/ProjectStore";
 import { useTauriFileDrop } from "@/lib/hook/useTauriFileDrop";
 import { t } from "@/lib/i18n";
+import { useHomeStore } from "@/lib/store/HomeStore";
+import { openDatapackFromPath } from "@/lib/store/ProjectStore";
 import { cn } from "@/lib/utils";
 
 export default function RecentProjects() {
     const navigate = useNavigate();
     const projects = useHomeStore((s) => s.recentProjects);
     const removeProject = useHomeStore((s) => s.removeRecentProject);
-    const { isDragging } = useTauriFileDrop(async (paths: string[]) => paths[0] && openDatapackFromPath(paths[0], () => navigate({ to: "/editor/enchantment/overview" })));
+    const { isDragging } = useTauriFileDrop(
+        async (paths: string[]) => paths[0] && openDatapackFromPath(paths[0], () => navigate({ to: "/editor/enchantment/overview" }))
+    );
 
     return (
         <section className="space-y-4 relative z-50 px-8">

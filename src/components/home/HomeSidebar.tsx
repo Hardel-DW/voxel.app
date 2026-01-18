@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useHomeStore } from "@/lib/store/HomeStore";
 import Avatar from "@/components/ui/Avatar";
 import { t } from "@/lib/i18n";
+import { useHomeStore } from "@/lib/store/HomeStore";
 import { openDatapackFromPath, useProjectStore } from "@/lib/store/ProjectStore";
 
 export default function HomeSidebar() {

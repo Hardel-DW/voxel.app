@@ -6,9 +6,9 @@ import { Switch } from "@/components/ui/Switch";
 import { useElementLocks } from "@/lib/hook/useBreezeElement";
 import type { ActionOrBuilder, BaseRender } from "@/lib/hook/useInteractiveLogic";
 import { useActionHandler, useRenderer } from "@/lib/hook/useInteractiveLogic";
+import { useNavigationStore } from "@/lib/store/NavigationStore";
 import { cn } from "@/lib/utils";
 import type { Condition, Lock } from "@/lib/utils/lock";
-import { useNavigationStore } from "@/lib/store/NavigationStore";
 
 export type ToolListOptionAction = {
     title: string;
@@ -57,7 +57,7 @@ function ActionItem(props: ToolListOptionAction & { elementId?: string; lock: { 
                 </div>
                 <span className="text-xs text-zinc-500">{props.description}</span>
             </div>
-            <Switch id="action-switch" isChecked={isChecked ?? false} setIsChecked={() => { }} disabled={props.lock.isLocked} />
+            <Switch id="action-switch" isChecked={isChecked ?? false} setIsChecked={() => {}} disabled={props.lock.isLocked} />
         </label>
     );
 }

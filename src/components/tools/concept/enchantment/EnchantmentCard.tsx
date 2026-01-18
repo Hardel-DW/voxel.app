@@ -4,9 +4,9 @@ import { CoreAction, getItemFromMultipleOrOne, Identifier, TagsProcessor } from 
 import OverviewCase from "@/components/tools/concept/enchantment/EnchantmentOverviewCase";
 import SimpleSwitch from "@/components/tools/elements/SimpleSwitch";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
 import { t } from "@/lib/i18n";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { useTabsStore } from "@/lib/store/TabsStore";
 
 const findOptions = [

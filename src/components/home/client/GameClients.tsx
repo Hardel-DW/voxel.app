@@ -1,7 +1,7 @@
 import AddGameClientDialog from "@/components/home/client/AddGameClientDialog";
 import ClientRow from "@/components/home/client/ClientRow";
-import { useHomeStore } from "@/lib/store/HomeStore";
 import { t } from "@/lib/i18n";
+import { useHomeStore } from "@/lib/store/HomeStore";
 
 export default function GameClients() {
     const gameClients = useHomeStore((s) => s.gameClients);

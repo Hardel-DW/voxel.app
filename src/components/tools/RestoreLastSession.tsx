@@ -1,11 +1,11 @@
 import { useNavigate } from "@tanstack/react-router";
 import { Datapack } from "@voxelio/breeze";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
-import { useGithubStore } from "@/lib/store/GithubStore";
 import { Button } from "@/components/ui/Button";
-import { t } from "@/lib/i18n";
-import { hasSession, restoreSession } from "@/lib/utils/sessionPersistence";
 import { TOAST, toast } from "@/components/ui/Toast";
+import { t } from "@/lib/i18n";
+import { useGithubStore } from "@/lib/store/GithubStore";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
+import { hasSession, restoreSession } from "@/lib/utils/sessionPersistence";
 
 export default function RestoreLastSession({ className }: { className?: string }) {
     const navigate = useNavigate();

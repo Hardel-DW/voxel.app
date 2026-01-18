@@ -107,5 +107,5 @@ function GithubInitPage() {
                 </div>
             </div>
         </div>
-    )
+    );
 }

@@ -2,8 +2,6 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Datapack } from "@voxelio/breeze";
 import { useState } from "react";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
-import { useGithubStore } from "@/lib/store/GithubStore";
 import { Button } from "@/components/ui/Button";
 import {
     Dialog,
@@ -22,6 +20,8 @@ import { GitHub, type Repository } from "@/lib/github/GitHub";
 import { RepositoryManager } from "@/lib/github/RepositoryManager";
 import { useGitHubAuth, useGitHubRepos } from "@/lib/hook/useGitHubAuth";
 import { t } from "@/lib/i18n";
+import { useGithubStore } from "@/lib/store/GithubStore";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { cn } from "@/lib/utils";
 
 export default function RepositoryOpener() {

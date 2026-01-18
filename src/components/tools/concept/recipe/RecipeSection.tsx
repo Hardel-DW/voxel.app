@@ -2,10 +2,10 @@ import { CoreAction, isVoxel, RecipeAction, type RecipeProps } from "@voxelio/br
 import { useState } from "react";
 import RecipeRenderer from "@/components/tools/concept/recipe/RecipeRenderer";
 import RecipeSelector from "@/components/tools/concept/recipe/RecipeSelector";
-import { getBlockByRecipeType, getFirstTypeFromSelection, RECIPE_BLOCKS } from "@/lib/data/recipeConfig";
 import ToolCounter from "@/components/tools/elements/ToolCounter";
-import { getCurrentElement, useConfiguratorStore } from "@/lib/store/StudioStore";
 import { Tab, TabList, Tabs } from "@/components/ui/Tabs";
+import { getBlockByRecipeType, getFirstTypeFromSelection, RECIPE_BLOCKS } from "@/lib/data/recipeConfig";
+import { getCurrentElement, useConfiguratorStore } from "@/lib/store/StudioStore";
 
 const TAB_CONFIGS: Record<string, { label: string; value: string }[]> = {
     "minecraft:crafting_table": [

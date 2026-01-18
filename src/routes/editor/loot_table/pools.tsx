@@ -8,11 +8,11 @@ import { useDynamicIsland } from "@/components/tools/floatingbar/FloatingBarCont
 import { Toolbar } from "@/components/tools/floatingbar/Toolbar";
 import { ToolbarNavigation } from "@/components/tools/floatingbar/ToolbarNavigation";
 import { ToolGrab } from "@/components/tools/floatingbar/ToolGrab";
-import { getCurrentElement, useConfiguratorStore } from "@/lib/store/StudioStore";
-import { useNavigationStore } from "@/lib/store/NavigationStore";
 import { Button } from "@/components/ui/Button";
 import useRegistry from "@/lib/hook/useRegistry";
 import { t } from "@/lib/i18n";
+import { useNavigationStore } from "@/lib/store/NavigationStore";
+import { getCurrentElement, useConfiguratorStore } from "@/lib/store/StudioStore";
 
 export const Route = createFileRoute("/editor/loot_table/pools")({
     component: PoolsPage

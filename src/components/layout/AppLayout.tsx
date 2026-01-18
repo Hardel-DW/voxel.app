@@ -23,9 +23,7 @@ export default function AppLayout({ children }: { children: React.ReactNode }) {
 
             <div className="flex-1 flex flex-col min-w-0">
                 <header data-tauri-drag-region className="shrink-0 h-12 flex items-center justify-between select-none">
-                    <div className="flex items-center gap-4 pl-4">
-                        {!isHome && <EditorTabs />}
-                    </div>
+                    <div className="flex items-center gap-4 pl-4">{!isHome && <EditorTabs />}</div>
 
                     <div className="flex items-center h-full">
                         <button

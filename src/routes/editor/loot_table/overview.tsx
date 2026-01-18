@@ -1,12 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Identifier } from "@voxelio/breeze";
-import { useEditorUiStore } from "@/lib/store/EditorUiStore";
 import LootOverviewCard from "@/components/tools/concept/loot/LootOverviewCard";
 import { TextInput } from "@/components/ui/TextInput";
 import { useElementsByType } from "@/lib/hook/useElementsByType";
 import { useFlattenedLootCache } from "@/lib/hook/useFlattenedLootItems";
 import { useInfiniteScroll } from "@/lib/hook/useInfiniteScroll";
 import { t } from "@/lib/i18n";
+import { useEditorUiStore } from "@/lib/store/EditorUiStore";
 import { cn } from "@/lib/utils";
 import { matchesPath } from "@/lib/utils/tree";
 

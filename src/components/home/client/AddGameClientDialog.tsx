@@ -1,7 +1,6 @@
 import { invoke } from "@tauri-apps/api/core";
 import { open } from "@tauri-apps/plugin-dialog";
 import { useState } from "react";
-import { useHomeStore } from "@/lib/store/HomeStore";
 import { Button } from "@/components/ui/Button";
 import {
     Dialog,
@@ -14,6 +13,7 @@ import {
     DialogTrigger
 } from "@/components/ui/Dialog";
 import { t } from "@/lib/i18n";
+import { useHomeStore } from "@/lib/store/HomeStore";
 import { cn } from "@/lib/utils";
 import { getPresetById, LAUNCHER_PRESETS, scanLauncherInstances } from "@/lib/utils/instance/launchers";
 import type { ClientType } from "@/lib/utils/instance/types";

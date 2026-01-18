@@ -1,14 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Identifier } from "@voxelio/breeze";
-import { useEditorUiStore } from "@/lib/store/EditorUiStore";
 import EnchantmentCard from "@/components/tools/concept/enchantment/EnchantmentCard";
 import EnchantmentOverviewList from "@/components/tools/concept/enchantment/EnchantmentOverviewList";
 import { viewMatchers } from "@/components/tools/concept/enchantment/viewMatchers";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { TextInput } from "@/components/ui/TextInput";
 import { useElementsByType } from "@/lib/hook/useElementsByType";
 import { useInfiniteScroll } from "@/lib/hook/useInfiniteScroll";
 import { t } from "@/lib/i18n";
+import { useEditorUiStore } from "@/lib/store/EditorUiStore";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/editor/enchantment/overview")({

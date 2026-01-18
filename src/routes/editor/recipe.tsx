@@ -2,6 +2,7 @@ import { createFileRoute, Outlet, useLocation, useNavigate } from "@tanstack/rea
 import { Identifier } from "@voxelio/breeze";
 import { EditorHeader } from "@/components/tools/concept/layout/EditorHeader";
 import { EditorSidebar } from "@/components/tools/concept/layout/EditorSidebar";
+import { buildRecipeTree } from "@/components/tools/concept/recipe/buildRecipeTree";
 import { useDynamicIsland } from "@/components/tools/floatingbar/FloatingBarContext";
 import NotFoundStudio from "@/components/tools/NotFoundStudio";
 import { TreeSidebar } from "@/components/tools/sidebar/TreeSidebar";
@@ -10,7 +11,6 @@ import { CONCEPTS } from "@/lib/data/elements";
 import { RECIPE_BLOCKS } from "@/lib/data/recipeConfig";
 import { useElementsIdByType } from "@/lib/hook/useElementsByType";
 import { useEditorUiStore } from "@/lib/store/EditorUiStore";
-import { buildRecipeTree } from "@/components/tools/concept/recipe/buildRecipeTree";
 import { useNavigationStore } from "@/lib/store/NavigationStore";
 
 const concept = "recipe";

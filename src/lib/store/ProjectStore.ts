@@ -1,10 +1,10 @@
-import { create } from "zustand";
 import { Datapack, Logger } from "@voxelio/breeze";
-import { useConfiguratorStore } from "@/lib/store/StudioStore";
-import { useHomeStore } from "@/lib/store/HomeStore";
-import { loadDatapackFromFolder, loadDatapackFromPath } from "@/lib/utils/datapack";
+import { create } from "zustand";
 import { TOAST, toast } from "@/components/ui/Toast";
 import { t } from "@/lib/i18n";
+import { useHomeStore } from "@/lib/store/HomeStore";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
+import { loadDatapackFromFolder, loadDatapackFromPath } from "@/lib/utils/datapack";
 
 export type SourceType = "zip" | "jar" | "folder";
 
@@ -40,9 +40,7 @@ export const useProjectStore = create<ProjectState>((set) => ({
 export const openDatapackFromPath = async (path: string, onSuccess: () => void) => {
     try {
         const isDir = !path.endsWith(".zip") && !path.endsWith(".jar");
-        const { datapack, name, isModded, iconPath } = isDir
-            ? await loadDatapackFromFolder(path)
-            : await loadDatapackFromPath(path);
+        const { datapack, name, isModded, iconPath } = isDir ? await loadDatapackFromFolder(path) : await loadDatapackFromPath(path);
 
         const sourceType: SourceType = isDir ? "folder" : isModded ? "jar" : "zip";
         const projectType = isDir ? "folder" : isModded ? "mods" : "datapacks";

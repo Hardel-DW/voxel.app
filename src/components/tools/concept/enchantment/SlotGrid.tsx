@@ -1,8 +1,8 @@
 import type { EnchantmentProps, SlotRegistryType } from "@voxelio/breeze";
 import { EnchantmentAction } from "@voxelio/breeze";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
-import { SlotButton } from "./SlotButton";
 import { SLOT_CONFIGS } from "../../../../lib/data/slots";
+import { SlotButton } from "./SlotButton";
 
 export default function SlotGrid(props: { element: EnchantmentProps; elementId: string }) {
     const handleSlotToggle = (slotId: SlotRegistryType) => {

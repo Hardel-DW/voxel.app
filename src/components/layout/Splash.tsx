@@ -58,7 +58,9 @@ export default function Splash() {
                     </div>
 
                     <div className="absolute bottom-20 flex flex-col items-center gap-3 w-64 opacity-100 transition-opacity duration-500 delay-500 starting:opacity-0">
-                        <p className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest animate-pulse">{t("tauri:splash.loading")}</p>
+                        <p className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest animate-pulse">
+                            {t("tauri:splash.loading")}
+                        </p>
                     </div>
                 </div>
             </div>

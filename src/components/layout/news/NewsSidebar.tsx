@@ -45,7 +45,9 @@ export default function NewsSidebar() {
                             </div>
                         </div>
                         <div className="space-y-3">
-                            <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider px-1">{t("tauri:home.news.title")}</h3>
+                            <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider px-1">
+                                {t("tauri:home.news.title")}
+                            </h3>
                             {NEWS_ITEMS.map((item) => (
                                 <NewsCard key={`${item.id}-${item.title}`} item={item} />
                             ))}
@@ -58,7 +60,9 @@ export default function NewsSidebar() {
                                 <svg className="size-4 text-red-400" viewBox="0 0 16 16" fill="currentColor">
                                     <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748z" />
                                 </svg>
-                                <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider">{t("tauri:home.support.title")}</span>
+                                <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider">
+                                    {t("tauri:home.support.title")}
+                                </span>
                             </div>
                             <p className="text-xs text-zinc-500 mb-3">{t("tauri:home.support.description")}</p>
                             <a
