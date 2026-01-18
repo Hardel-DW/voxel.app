@@ -944,5 +944,7 @@
     "tauri:home.loading": "Loading...",
     "tauri:home.news.type.update": "Update",
     "tauri:home.news.type.feature": "Feature",
-    "tauri:home.news.type.announcement": "Announcement"
+    "tauri:home.news.type.announcement": "Announcement",
+    "tauri:generic.loading": "Loading...",
+    "tauri:generic.no_items": "No items found"
 }

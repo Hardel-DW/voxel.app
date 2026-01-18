@@ -23,6 +23,7 @@ import { Route as EditorRecipeMainRouteImport } from './routes/editor/recipe/mai
 import { Route as EditorLoot_tablePoolsRouteImport } from './routes/editor/loot_table/pools'
 import { Route as EditorLoot_tableOverviewRouteImport } from './routes/editor/loot_table/overview'
 import { Route as EditorLoot_tableMainRouteImport } from './routes/editor/loot_table/main'
+import { Route as EditorEnchantmentYggdrasilRouteImport } from './routes/editor/enchantment/yggdrasil'
 import { Route as EditorEnchantmentTechnicalRouteImport } from './routes/editor/enchantment/technical'
 import { Route as EditorEnchantmentSlotsRouteImport } from './routes/editor/enchantment/slots'
 import { Route as EditorEnchantmentSimulationRouteImport } from './routes/editor/enchantment/simulation'
@@ -31,6 +32,7 @@ import { Route as EditorEnchantmentMainRouteImport } from './routes/editor/encha
 import { Route as EditorEnchantmentItemsRouteImport } from './routes/editor/enchantment/items'
 import { Route as EditorEnchantmentFindRouteImport } from './routes/editor/enchantment/find'
 import { Route as EditorEnchantmentExclusiveRouteImport } from './routes/editor/enchantment/exclusive'
+import { Route as EditorEnchantmentDntRouteImport } from './routes/editor/enchantment/dnt'
 import { Route as EditorChangesVoxelRouteImport } from './routes/editor/changes/voxel'
 import { Route as EditorChangesPatchRouteImport } from './routes/editor/changes/patch'
 import { Route as EditorChangesMainRouteImport } from './routes/editor/changes/main'
@@ -108,6 +110,12 @@ const EditorLoot_tableMainRoute = EditorLoot_tableMainRouteImport.update({
   path: '/main',
   getParentRoute: () => EditorLoot_tableRoute,
 } as any)
+const EditorEnchantmentYggdrasilRoute =
+  EditorEnchantmentYggdrasilRouteImport.update({
+    id: '/yggdrasil',
+    path: '/yggdrasil',
+    getParentRoute: () => EditorEnchantmentRoute,
+  } as any)
 const EditorEnchantmentTechnicalRoute =
   EditorEnchantmentTechnicalRouteImport.update({
     id: '/technical',
@@ -152,6 +160,11 @@ const EditorEnchantmentExclusiveRoute =
     path: '/exclusive',
     getParentRoute: () => EditorEnchantmentRoute,
   } as any)
+const EditorEnchantmentDntRoute = EditorEnchantmentDntRouteImport.update({
+  id: '/dnt',
+  path: '/dnt',
+  getParentRoute: () => EditorEnchantmentRoute,
+} as any)
 const EditorChangesVoxelRoute = EditorChangesVoxelRouteImport.update({
   id: '/voxel',
   path: '/voxel',
@@ -193,6 +206,7 @@ export interface FileRoutesByFullPath {
   '/editor/changes/main': typeof EditorChangesMainRoute
   '/editor/changes/patch': typeof EditorChangesPatchRoute
   '/editor/changes/voxel': typeof EditorChangesVoxelRoute
+  '/editor/enchantment/dnt': typeof EditorEnchantmentDntRoute
   '/editor/enchantment/exclusive': typeof EditorEnchantmentExclusiveRoute
   '/editor/enchantment/find': typeof EditorEnchantmentFindRoute
   '/editor/enchantment/items': typeof EditorEnchantmentItemsRoute
@@ -201,6 +215,7 @@ export interface FileRoutesByFullPath {
   '/editor/enchantment/simulation': typeof EditorEnchantmentSimulationRoute
   '/editor/enchantment/slots': typeof EditorEnchantmentSlotsRoute
   '/editor/enchantment/technical': typeof EditorEnchantmentTechnicalRoute
+  '/editor/enchantment/yggdrasil': typeof EditorEnchantmentYggdrasilRoute
   '/editor/loot_table/main': typeof EditorLoot_tableMainRoute
   '/editor/loot_table/overview': typeof EditorLoot_tableOverviewRoute
   '/editor/loot_table/pools': typeof EditorLoot_tablePoolsRoute
@@ -222,6 +237,7 @@ export interface FileRoutesByTo {
   '/editor/changes/main': typeof EditorChangesMainRoute
   '/editor/changes/patch': typeof EditorChangesPatchRoute
   '/editor/changes/voxel': typeof EditorChangesVoxelRoute
+  '/editor/enchantment/dnt': typeof EditorEnchantmentDntRoute
   '/editor/enchantment/exclusive': typeof EditorEnchantmentExclusiveRoute
   '/editor/enchantment/find': typeof EditorEnchantmentFindRoute
   '/editor/enchantment/items': typeof EditorEnchantmentItemsRoute
@@ -230,6 +246,7 @@ export interface FileRoutesByTo {
   '/editor/enchantment/simulation': typeof EditorEnchantmentSimulationRoute
   '/editor/enchantment/slots': typeof EditorEnchantmentSlotsRoute
   '/editor/enchantment/technical': typeof EditorEnchantmentTechnicalRoute
+  '/editor/enchantment/yggdrasil': typeof EditorEnchantmentYggdrasilRoute
   '/editor/loot_table/main': typeof EditorLoot_tableMainRoute
   '/editor/loot_table/overview': typeof EditorLoot_tableOverviewRoute
   '/editor/loot_table/pools': typeof EditorLoot_tablePoolsRoute
@@ -252,6 +269,7 @@ export interface FileRoutesById {
   '/editor/changes/main': typeof EditorChangesMainRoute
   '/editor/changes/patch': typeof EditorChangesPatchRoute
   '/editor/changes/voxel': typeof EditorChangesVoxelRoute
+  '/editor/enchantment/dnt': typeof EditorEnchantmentDntRoute
   '/editor/enchantment/exclusive': typeof EditorEnchantmentExclusiveRoute
   '/editor/enchantment/find': typeof EditorEnchantmentFindRoute
   '/editor/enchantment/items': typeof EditorEnchantmentItemsRoute
@@ -260,6 +278,7 @@ export interface FileRoutesById {
   '/editor/enchantment/simulation': typeof EditorEnchantmentSimulationRoute
   '/editor/enchantment/slots': typeof EditorEnchantmentSlotsRoute
   '/editor/enchantment/technical': typeof EditorEnchantmentTechnicalRoute
+  '/editor/enchantment/yggdrasil': typeof EditorEnchantmentYggdrasilRoute
   '/editor/loot_table/main': typeof EditorLoot_tableMainRoute
   '/editor/loot_table/overview': typeof EditorLoot_tableOverviewRoute
   '/editor/loot_table/pools': typeof EditorLoot_tablePoolsRoute
@@ -283,6 +302,7 @@ export interface FileRouteTypes {
     | '/editor/changes/main'
     | '/editor/changes/patch'
     | '/editor/changes/voxel'
+    | '/editor/enchantment/dnt'
     | '/editor/enchantment/exclusive'
     | '/editor/enchantment/find'
     | '/editor/enchantment/items'
@@ -291,6 +311,7 @@ export interface FileRouteTypes {
     | '/editor/enchantment/simulation'
     | '/editor/enchantment/slots'
     | '/editor/enchantment/technical'
+    | '/editor/enchantment/yggdrasil'
     | '/editor/loot_table/main'
     | '/editor/loot_table/overview'
     | '/editor/loot_table/pools'
@@ -312,6 +333,7 @@ export interface FileRouteTypes {
     | '/editor/changes/main'
     | '/editor/changes/patch'
     | '/editor/changes/voxel'
+    | '/editor/enchantment/dnt'
     | '/editor/enchantment/exclusive'
     | '/editor/enchantment/find'
     | '/editor/enchantment/items'
@@ -320,6 +342,7 @@ export interface FileRouteTypes {
     | '/editor/enchantment/simulation'
     | '/editor/enchantment/slots'
     | '/editor/enchantment/technical'
+    | '/editor/enchantment/yggdrasil'
     | '/editor/loot_table/main'
     | '/editor/loot_table/overview'
     | '/editor/loot_table/pools'
@@ -341,6 +364,7 @@ export interface FileRouteTypes {
     | '/editor/changes/main'
     | '/editor/changes/patch'
     | '/editor/changes/voxel'
+    | '/editor/enchantment/dnt'
     | '/editor/enchantment/exclusive'
     | '/editor/enchantment/find'
     | '/editor/enchantment/items'
@@ -349,6 +373,7 @@ export interface FileRouteTypes {
     | '/editor/enchantment/simulation'
     | '/editor/enchantment/slots'
     | '/editor/enchantment/technical'
+    | '/editor/enchantment/yggdrasil'
     | '/editor/loot_table/main'
     | '/editor/loot_table/overview'
     | '/editor/loot_table/pools'
@@ -463,6 +488,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EditorLoot_tableMainRouteImport
       parentRoute: typeof EditorLoot_tableRoute
     }
+    '/editor/enchantment/yggdrasil': {
+      id: '/editor/enchantment/yggdrasil'
+      path: '/yggdrasil'
+      fullPath: '/editor/enchantment/yggdrasil'
+      preLoaderRoute: typeof EditorEnchantmentYggdrasilRouteImport
+      parentRoute: typeof EditorEnchantmentRoute
+    }
     '/editor/enchantment/technical': {
       id: '/editor/enchantment/technical'
       path: '/technical'
@@ -517,6 +549,13 @@ declare module '@tanstack/react-router' {
       path: '/exclusive'
       fullPath: '/editor/enchantment/exclusive'
       preLoaderRoute: typeof EditorEnchantmentExclusiveRouteImport
+      parentRoute: typeof EditorEnchantmentRoute
+    }
+    '/editor/enchantment/dnt': {
+      id: '/editor/enchantment/dnt'
+      path: '/dnt'
+      fullPath: '/editor/enchantment/dnt'
+      preLoaderRoute: typeof EditorEnchantmentDntRouteImport
       parentRoute: typeof EditorEnchantmentRoute
     }
     '/editor/changes/voxel': {
@@ -578,6 +617,7 @@ const EditorChangesRouteWithChildren = EditorChangesRoute._addFileChildren(
 )
 
 interface EditorEnchantmentRouteChildren {
+  EditorEnchantmentDntRoute: typeof EditorEnchantmentDntRoute
   EditorEnchantmentExclusiveRoute: typeof EditorEnchantmentExclusiveRoute
   EditorEnchantmentFindRoute: typeof EditorEnchantmentFindRoute
   EditorEnchantmentItemsRoute: typeof EditorEnchantmentItemsRoute
@@ -586,9 +626,11 @@ interface EditorEnchantmentRouteChildren {
   EditorEnchantmentSimulationRoute: typeof EditorEnchantmentSimulationRoute
   EditorEnchantmentSlotsRoute: typeof EditorEnchantmentSlotsRoute
   EditorEnchantmentTechnicalRoute: typeof EditorEnchantmentTechnicalRoute
+  EditorEnchantmentYggdrasilRoute: typeof EditorEnchantmentYggdrasilRoute
 }
 
 const EditorEnchantmentRouteChildren: EditorEnchantmentRouteChildren = {
+  EditorEnchantmentDntRoute: EditorEnchantmentDntRoute,
   EditorEnchantmentExclusiveRoute: EditorEnchantmentExclusiveRoute,
   EditorEnchantmentFindRoute: EditorEnchantmentFindRoute,
   EditorEnchantmentItemsRoute: EditorEnchantmentItemsRoute,
@@ -597,6 +639,7 @@ const EditorEnchantmentRouteChildren: EditorEnchantmentRouteChildren = {
   EditorEnchantmentSimulationRoute: EditorEnchantmentSimulationRoute,
   EditorEnchantmentSlotsRoute: EditorEnchantmentSlotsRoute,
   EditorEnchantmentTechnicalRoute: EditorEnchantmentTechnicalRoute,
+  EditorEnchantmentYggdrasilRoute: EditorEnchantmentYggdrasilRoute,
 }
 
 const EditorEnchantmentRouteWithChildren =

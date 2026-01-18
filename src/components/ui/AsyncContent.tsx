@@ -9,7 +9,7 @@ interface AsyncContentProps {
 }
 
 export default function AsyncContent({ loading, empty, loadingText, emptyText, children }: AsyncContentProps) {
-    if (loading && empty) return <p className="text-zinc-500 text-center py-8">{loadingText ?? t("generic.loading")}</p>;
-    if (empty) return <p className="text-zinc-500 text-center py-8">{emptyText ?? t("generic.noItems")}</p>;
+    if (loading && empty) return <p className="text-zinc-500 text-center py-8">{loadingText ?? t("tauri:generic.loading")}</p>;
+    if (empty) return <p className="text-zinc-500 text-center py-8">{emptyText ?? t("tauri:generic.no_items")}</p>;
     return <>{children}</>;
 }

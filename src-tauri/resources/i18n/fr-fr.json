@@ -945,5 +945,7 @@
     "tauri:home.loading": "Chargement...",
     "tauri:home.news.type.update": "Mise à jour",
     "tauri:home.news.type.feature": "Fonctionnalité",
-    "tauri:home.news.type.announcement": "Annonce"
+    "tauri:home.news.type.announcement": "Annonce",
+    "tauri:generic.loading": "Chargement...",
+    "tauri:generic.no_items": "Aucun item trouvé"
 }
