@@ -6,17 +6,18 @@ type ViewMode = "diff" | "voxel" | "patch" | "edit";
 interface DiffHeaderProps {
     name: string;
     file: string;
+    lang: string;
     currentView: ViewMode;
 }
 
 const viewRoutes = {
-    diff: "/editor/changes/diff",
-    voxel: "/editor/changes/voxel",
-    patch: "/editor/changes/patch",
-    edit: "/editor/changes/edit"
+    diff: "/$lang/studio/editor/changes/diff",
+    voxel: "/$lang/studio/editor/changes/voxel",
+    patch: "/$lang/studio/editor/changes/patch",
+    edit: "/$lang/studio/editor/changes/edit"
 } as const;
 
-export function DiffHeader({ name, file, currentView }: DiffHeaderProps) {
+export function DiffHeader({ name, file, lang, currentView }: DiffHeaderProps) {
     const views: ViewMode[] = ["diff", "voxel", "patch", "edit"];
 
     return (
@@ -38,6 +39,7 @@ export function DiffHeader({ name, file, currentView }: DiffHeaderProps) {
                         <Link
                             key={mode}
                             to={viewRoutes[mode]}
+                            params={{ lang }}
                             search={{ file }}
                             className={cn(
                                 "p-1.5 cursor-pointer rounded transition-colors text-zinc-500 hover:text-zinc-300 hover:bg-zinc-800/50",

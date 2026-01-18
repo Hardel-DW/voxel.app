@@ -1,11 +1,7 @@
-import type React from "react";
+import type { HTMLAttributes, PropsWithChildren } from "react";
 import { cn } from "@/lib/utils";
 
-interface SimpleCardProps extends React.HTMLAttributes<HTMLDivElement> {
-    children: React.ReactNode;
-}
-
-export default function SimpleCard({ children, className, ...props }: SimpleCardProps) {
+export default function SimpleCard({ children, className, ...props }: PropsWithChildren<HTMLAttributes<HTMLDivElement>>) {
     return (
         <div
             className={cn(

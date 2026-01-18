@@ -3,7 +3,6 @@ import { EnchantmentCategory } from "@/components/tools/concept/enchantment/Ench
 import ErrorPlaceholder from "@/components/tools/elements/error/ErrorPlaceholder";
 import Loader from "@/components/ui/Loader";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
-import { t } from "@/lib/i18n";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 
 export function ExclusiveSingleSection() {
@@ -14,11 +13,11 @@ export function ExclusiveSingleSection() {
 
     return (
         <>
-            <EnchantmentCategory title={t("enchantment.exclusive.custom.title")} identifiers={identifiers} />
+            <EnchantmentCategory title="enchantment:exclusive.custom.title" identifiers={identifiers} />
             {isLoading && <Loader />}
             {isError && <ErrorPlaceholder error={new Error("Erreur de chargement du registre.")} />}
             {vanillaIdentifiers.length > 0 && (
-                <EnchantmentCategory title={t("enchantment.exclusive.vanilla.title")} identifiers={vanillaIdentifiers} />
+                <EnchantmentCategory title="enchantment:exclusive.vanilla.title" identifiers={vanillaIdentifiers} />
             )}
         </>
     );

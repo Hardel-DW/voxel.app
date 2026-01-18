@@ -20,7 +20,7 @@ export type ToolSectionSelectorSection = BaseComponent & {
 };
 
 export default function ToolSectionSelector(props: ToolSectionSelectorSection) {
-    const search = useSearch({ from: "/editor" }) as Record<string, string | undefined>;
+    const search = useSearch({ from: "/$lang/studio/editor" }) as Record<string, string | undefined>;
     const urlValue = props.searchParam && props.useUrlSync ? search[props.searchParam] : null;
     const currentValue = urlValue || props.value || props.defaultValue || props.elements?.[0]?.id || "";
 

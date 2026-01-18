@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate, useParams } from "@tanstack/react-router";
 import { useState } from "react";
 import { ContentCard } from "@/components/home/sections/ContentCard";
 import Header from "@/components/home/world/header";
@@ -7,7 +7,7 @@ import Background from "@/components/layout/Background";
 import NewsSidebar from "@/components/layout/news/NewsSidebar";
 import AsyncContent from "@/components/ui/AsyncContent";
 import Pagination, { usePaginatedLoader } from "@/components/ui/Pagination";
-import { Tab, TabList, TabPanel, Tabs } from "@/components/ui/Tabs";
+import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/Tabs";
 import { openDatapackFromPath } from "@/lib/store/ProjectStore";
 import { useCacheValue } from "@/lib/utils/cache";
 import { countsCache, syncCounts } from "@/lib/utils/instance/cache";
@@ -28,6 +28,7 @@ export const Route = createFileRoute("/world")({
 function WorldPage() {
     const { path, name } = Route.useSearch();
     const navigate = useNavigate();
+    const { lang } = useParams({ from: "/$lang" });
     const [tab, setTab] = useState<TabType>("worlds");
     const [expandedWorld, setExpandedWorld] = useState<string | null>(null);
     const cachedCounts = useCacheValue(countsCache, path);
@@ -77,7 +78,7 @@ function WorldPage() {
     const firstWorldIcon = worlds.items[0]?.iconPath;
     const backgroundSrc = convertIconToSrc(firstWorldIcon);
     const handleOpenDatapack = (pack: PackContent) =>
-        openDatapackFromPath(pack.path, () => navigate({ to: "/editor/enchantment/overview" }));
+        openDatapackFromPath(pack.path, () => navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } }));
 
     return (
         <div className="size-full flex relative">
@@ -92,19 +93,15 @@ function WorldPage() {
             <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent pointer-events-none" />
 
             <main className="relative z-10 flex-1 flex flex-col min-w-0">
-                <Header name={name} path={path} total={current.total} iconSrc={backgroundSrc} onBack={() => navigate({ to: "/" })} />
-                <Tabs value={tab} onChange={handleTabChange} className="flex-1 flex flex-col min-h-0">
-                    <div className="px-8 py-3">
-                        <TabList>
-                            <Tab value="worlds">Worlds ({cachedCounts?.worlds ?? worlds.total})</Tab>
-                            <Tab value="mods">Mods & Packs ({cachedCounts ? cachedCounts.mods + cachedCounts.datapacks : mods.total})</Tab>
-                            <Tab value="resourcepacks">Resources ({cachedCounts?.resourcepacks ?? resourcepacks.total})</Tab>
-                        </TabList>
-                    </div>
+                <Header name={name} path={path} total={current.total} iconSrc={backgroundSrc} onBack={() => navigate({ to: "/$lang", params: { lang } })} />
+                <Tabs value={tab} onValueChange={handleTabChange} className="flex-1 flex flex-col min-h-0">
+                    <TabsTrigger value="worlds">Worlds ({cachedCounts?.worlds ?? worlds.total})</TabsTrigger>
+                    <TabsTrigger value="mods">Mods & Packs ({cachedCounts ? cachedCounts.mods + cachedCounts.datapacks : mods.total})</TabsTrigger>
+                    <TabsTrigger value="resourcepacks">Resources ({cachedCounts?.resourcepacks ?? resourcepacks.total})</TabsTrigger>
 
                     <div className="flex-1 overflow-y-auto px-8 pb-8 flex flex-col gap-2">
                         <AsyncContent loading={current.loading} empty={current.items.length === 0}>
-                            <TabPanel value="worlds" className="worlds-list flex flex-col gap-2">
+                            <TabsContent value="worlds" className="worlds-list flex flex-col gap-2">
                                 {worlds.items.map((world) => (
                                     <WorldRow
                                         key={world.path}
@@ -115,9 +112,9 @@ function WorldPage() {
                                         onConfigure={handleOpenDatapack}
                                     />
                                 ))}
-                            </TabPanel>
+                            </TabsContent>
 
-                            <TabPanel value="mods" className="flex flex-col gap-2">
+                            <TabsContent value="mods" className="flex flex-col gap-2">
                                 {mods.items.map((pack) => (
                                     <ContentCard
                                         key={pack.path}
@@ -128,9 +125,9 @@ function WorldPage() {
                                         onConfigure={() => handleOpenDatapack(pack)}
                                     />
                                 ))}
-                            </TabPanel>
+                            </TabsContent>
 
-                            <TabPanel value="resourcepacks" className="flex flex-col gap-2">
+                            <TabsContent value="resourcepacks" className="flex flex-col gap-2">
                                 {resourcepacks.items.map((rp) => (
                                     <ContentCard
                                         key={rp.path}
@@ -141,7 +138,7 @@ function WorldPage() {
                                         onConfigure={() => handleOpenDatapack(rp)}
                                     />
                                 ))}
-                            </TabPanel>
+                            </TabsContent>
 
                             <Pagination
                                 page={current.page}

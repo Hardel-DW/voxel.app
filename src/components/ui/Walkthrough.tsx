@@ -4,7 +4,7 @@ import Portal from "@/components/ui/Portal";
 interface WalkthroughStep {
     title: string;
     description: string;
-    target?: string; // CSS selector (e.g., "#my-id", ".my-class")
+    target?: string;
     position?: "top" | "bottom" | "left" | "right";
     image?: string;
     imagePosition?: "top-right" | "top" | "top-left" | "right" | "middle" | "left" | "bottom-right" | "bottom" | "bottom-left";
@@ -26,8 +26,6 @@ function StepIndicator({ current, total }: { current: number; total: number }) {
 export default function Walkthrough({ steps }: { steps: WalkthroughStep[] }) {
     const [isOpen, setIsOpen] = useState(false);
     const [currentStep, setCurrentStep] = useState(0);
-
-    // Refs
     const highlightRef = useRef<HTMLDivElement>(null);
     const imageRef = useRef<HTMLDivElement>(null);
     const contentRef = useRef<HTMLDivElement>(null);
@@ -61,7 +59,6 @@ export default function Walkthrough({ steps }: { steps: WalkthroughStep[] }) {
         }
     }
 
-    // Récupérer la position de l'image
     function getImagePosition(rect: DOMRect, position?: string) {
         const margin = 20;
         const imageWidth = 300;
@@ -109,7 +106,6 @@ export default function Walkthrough({ steps }: { steps: WalkthroughStep[] }) {
         return positions[position || "right"] || positions.right;
     }
 
-    // Mettre à jour les positions des éléments
     function updateElementPositions(rect: DOMRect, step: WalkthroughStep) {
         if (!highlightRef.current) return;
 
@@ -141,7 +137,6 @@ export default function Walkthrough({ steps }: { steps: WalkthroughStep[] }) {
                 const isInViewport =
                     rect.top >= 0 && rect.left >= 0 && rect.bottom <= window.innerHeight && rect.right <= window.innerWidth;
 
-                // Si l'élément n'est pas visible, on scrolle jusqu'à lui
                 if (!isInViewport) {
                     targetElement.scrollIntoView({
                         behavior: "smooth",
@@ -162,7 +157,6 @@ export default function Walkthrough({ steps }: { steps: WalkthroughStep[] }) {
         }
     }
 
-    // Toujours afficher le bouton trigger
     return (
         <>
             <button
@@ -188,17 +182,14 @@ export default function Walkthrough({ steps }: { steps: WalkthroughStep[] }) {
             {isOpen && (
                 <Portal>
                     <div className="fixed inset-0 z-50">
-                        {/* Overlay de fond */}
                         <div className="absolute inset-0 bg-black/50" />
 
-                        {/* Highlight de l'élément cible */}
                         <div
                             ref={highlightRef}
                             className="absolute border-2 border-white/50 rounded-lg transition-all duration-300"
                             style={{ display: "none" }}
                         />
 
-                        {/* Container de l'image */}
                         <div ref={imageRef} className="absolute transition-all duration-300" style={{ display: "none" }}>
                             {steps[currentStep].image && (
                                 <img
@@ -209,7 +200,6 @@ export default function Walkthrough({ steps }: { steps: WalkthroughStep[] }) {
                             )}
                         </div>
 
-                        {/* Contenu du walkthrough */}
                         <div
                             ref={contentRef}
                             className="fixed bottom-0 left-1/2 -translate-x-1/2 w-[90%] max-w-2xl mb-8 p-6 bg-zinc-900/80 backdrop-blur-md rounded-2xl border border-zinc-800 transition-all duration-300">

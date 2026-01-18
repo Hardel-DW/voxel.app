@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 
 export function SidebarLink(props: {
     to: string;
+    params: { lang: string };
     icon: string;
     count: number;
     disabled?: boolean;
@@ -27,7 +28,7 @@ export function SidebarLink(props: {
     if (props.disabled) return content;
 
     return (
-        <Link to={props.to} onClick={props.onClick}>
+        <Link to={props.to} params={props.params} onClick={props.onClick}>
             {content}
         </Link>
     );

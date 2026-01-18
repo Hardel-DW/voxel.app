@@ -1,8 +1,10 @@
 import { useState } from "react";
-import ToolInventory from "@/components/tools/elements/ToolInventory";
+import ItemsSelector from "@/components/tools/concept/recipe/ItemsSelector";
 import { TextInput } from "@/components/ui/TextInput";
+import { useTranslate } from "@/lib/i18n";
 
 export default function RecipeInventory() {
+    const t = useTranslate();
     const [search, setSearch] = useState("");
 
     return (
@@ -13,16 +15,21 @@ export default function RecipeInventory() {
                 <div className="px-6 pt-6 shrink-0">
                     <div className="flex justify-between items-center gap-4">
                         <div className="shrink-0">
-                            <h2 className="text-xl font-bold text-white">Inventory</h2>
-                            <p className="text-sm text-zinc-400">Select items for your recipe</p>
+                            <h2 className="text-xl font-bold text-white">{t("recipe:inventory.title")}</h2>
+                            <p className="text-sm text-zinc-400">{t("recipe:inventory.description")}</p>
                         </div>
-                        <TextInput className="min-w-64" placeholder="Search" value={search} onChange={(e) => setSearch(e.target.value)} />
+                        <TextInput
+                            className="min-w-64"
+                            placeholder={t("recipe:inventory.search")}
+                            value={search}
+                            onChange={(e) => setSearch(e.target.value)}
+                        />
                     </div>
                     <hr className="my-4" />
                 </div>
 
                 <div className="flex-1 overflow-y-auto px-6 pb-6 pt-2">
-                    <ToolInventory search={search} />
+                    <ItemsSelector search={search} />
                 </div>
             </div>
 

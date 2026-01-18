@@ -1,6 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/Dropdown";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 interface ToolbarDropdownOption {
@@ -22,6 +22,7 @@ interface ToolbarDropdownProps {
 }
 
 export function ToolbarDropdown({ icon, tooltip, value, options, onChange, disabled, className, params }: ToolbarDropdownProps) {
+    const t = useTranslate();
     const selectedOption = options.find((opt) => opt.value === value);
 
     return (
@@ -36,9 +37,9 @@ export function ToolbarDropdown({ icon, tooltip, value, options, onChange, disab
                         "h-10 px-3 select-none user-select-none hover:bg-zinc-800/50 rounded-full cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center justify-center gap-2 border border-zinc-700/50",
                         className
                     )}>
-                    <img src={icon} alt="" className="w-4 h-4 invert opacity-75 select-none user-select-none" />
+                    <img src={icon} alt="Icon" className="w-4 h-4 invert opacity-75 select-none user-select-none" />
                     <span className="text-xs text-zinc-300 font-medium whitespace-nowrap">
-                        {selectedOption?.label ? selectedOption.label : t("select.label")}
+                        {t(selectedOption?.label ? selectedOption.label : "select.label")}
                     </span>
                 </button>
             </DropdownMenuTrigger>
@@ -49,8 +50,8 @@ export function ToolbarDropdown({ icon, tooltip, value, options, onChange, disab
                             {value === option.value && <img src="/icons/valid.svg" alt="Selected" className="h-4 w-4 shrink-0" />}
                             {value !== option.value && <div className="h-4 w-4 shrink-0" />}
                             <div className="flex flex-col">
-                                <span className="font-medium">{option.label}</span>
-                                {option.description && <span className="text-xs text-zinc-400">{option.description}</span>}
+                                <span className="font-medium">{t(option.label)}</span>
+                                {option.description && <span className="text-xs text-zinc-400">{t(option.description)}</span>}
                             </div>
                         </div>
                     );

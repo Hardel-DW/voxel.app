@@ -1,7 +1,9 @@
 import { Button } from "@/components/ui/Button";
 import LineSetup from "@/components/ui/line/LineSetup";
+import { useTranslate } from "@/lib/i18n";
 
 export default function NotFound() {
+    const t = useTranslate();
     return (
         <div className="fixed inset-0 z-9999 flex items-center overflow-hidden bg-zinc-950">
             <div className="fixed -z-50 -top-16 -right-16 size-72 rounded-full blur-3xl bg-linear-to-br from-red-900/20 to-blue-900/20" />
@@ -33,12 +35,10 @@ export default function NotFound() {
             </div>
 
             <div className="relative z-10 px-8 py-12 w-full max-w-3xl mx-auto">
-                <h1 className="text-6xl font-bold text-white mb-4">Page not found</h1>
-                <p className="text-xl text-zinc-400 mb-12">
-                    This page does not exist, please go back to the home page or contact the support if you think this is an error.
-                </p>
+                <h1 className="text-6xl font-bold text-white mb-4">{t("notfound.title")}</h1>
+                <p className="text-xl text-zinc-400 mb-12">{t("notfound.description")}</p>
                 <Button to="/" variant="black" className="w-full shimmer-neutral-950 border-zinc-800 hover:shimmer-neutral-900">
-                    Go to home
+                    {t("notfound.button")}
                 </Button>
             </div>
         </div>

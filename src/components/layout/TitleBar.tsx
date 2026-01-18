@@ -1,9 +1,11 @@
 import { getCurrentWindow } from "@tauri-apps/api/window";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 
 const appWindow = getCurrentWindow();
 
 export default function TitleBar() {
+    const t = useTranslate();
+
     return (
         <div className="fixed top-0 left-0 right-0 flex flex-col select-none z-1000">
             <div data-tauri-drag-region className="h-8 flex items-center justify-between">

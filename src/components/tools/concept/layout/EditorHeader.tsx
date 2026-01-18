@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { EditorBreadcrumb } from "@/components/tools/concept/layout/EditorBreadcrumb";
 import { EditorHeaderTabs } from "@/components/tools/concept/layout/EditorHeaderTabs";
 import { useActiveConcept } from "@/lib/hook/useActiveConcept";
+import { useTranslate } from "@/lib/i18n";
 import { hueToHsl, stringToColor } from "@/lib/utils/color";
 
 interface EditorHeaderProps {
@@ -15,11 +16,12 @@ interface EditorHeaderProps {
 }
 
 export function EditorHeader({ fallbackTitle, identifier, filterPath, isOverview, onBack, children }: EditorHeaderProps) {
-    const { tabs, activeTab, showTabs } = useActiveConcept();
+    const t = useTranslate();
+    const { tabs, activeTab, lang, showTabs } = useActiveConcept();
     const title = isOverview
         ? filterPath
             ? Identifier.toDisplay(filterPath.split("/").pop() || "")
-            : "All"
+            : t("editor.all")
         : identifier
           ? new Identifier(identifier).toResourceName()
           : fallbackTitle;
@@ -61,7 +63,7 @@ export function EditorHeader({ fallbackTitle, identifier, filterPath, isOverview
                 {showTabs && (
                     <nav className="flex items-center gap-1 mt-6 -mb-2">
                         {tabs.map((tab) => (
-                            <EditorHeaderTabs key={tab.id} tab={tab} isActive={activeTab?.id === tab.id} />
+                            <EditorHeaderTabs key={tab.id} tab={tab} lang={lang} isActive={activeTab?.id === tab.id} />
                         ))}
                     </nav>
                 )}

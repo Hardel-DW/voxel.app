@@ -8,38 +8,38 @@ export interface RecipeBlockConfig {
 export const RECIPE_BLOCKS: RecipeBlockConfig[] = [
     {
         id: "minecraft:barrier",
-        name: "All",
+        name: "recipe:block.all",
         recipeTypes: [],
         isSpecial: true
     },
     {
         id: "minecraft:campfire",
-        name: "Campfire",
+        name: "recipe:block.campfire",
         recipeTypes: ["minecraft:campfire_cooking"]
     },
     {
         id: "minecraft:furnace",
-        name: "Furnace",
+        name: "recipe:block.furnace",
         recipeTypes: ["minecraft:smelting"]
     },
     {
         id: "minecraft:blast_furnace",
-        name: "Blast Furnace",
+        name: "recipe:block.blast_furnace",
         recipeTypes: ["minecraft:blasting"]
     },
     {
         id: "minecraft:smoker",
-        name: "Smoker",
+        name: "recipe:block.smoker",
         recipeTypes: ["minecraft:smoking"]
     },
     {
         id: "minecraft:stonecutter",
-        name: "Stonecutter",
+        name: "recipe:block.stonecutter",
         recipeTypes: ["minecraft:stonecutting"]
     },
     {
         id: "minecraft:crafting_table",
-        name: "Crafting Table",
+        name: "recipe:block.crafting_table",
         recipeTypes: [
             "minecraft:crafting_shapeless",
             "minecraft:crafting_shaped",
@@ -60,57 +60,15 @@ export const RECIPE_BLOCKS: RecipeBlockConfig[] = [
     },
     {
         id: "minecraft:smithing_table",
-        name: "Smithing Table",
+        name: "recipe:block.smithing_table",
         recipeTypes: ["minecraft:smithing_transform", "minecraft:smithing_trim"]
     }
 ];
 
-export function getBlockConfig(blockId: string): RecipeBlockConfig | undefined {
-    return RECIPE_BLOCKS.find((block) => block.id === blockId);
-}
-
-export function getBlockByRecipeType(recipeType: string): RecipeBlockConfig {
-    return RECIPE_BLOCKS.find((block) => block.recipeTypes.includes(recipeType)) ?? RECIPE_BLOCKS[0];
-}
-
-export function canBlockHandleRecipeType(blockId: string, recipeType: string): boolean {
-    if (blockId === "minecraft:barrier") return true;
-
-    const config = getBlockConfig(blockId);
-    return config?.recipeTypes.some((type) => recipeType.includes(type)) ?? false;
-}
-
-export function getAllBlockIds(includeSpecial: boolean = true): string[] {
-    return RECIPE_BLOCKS.filter((block) => includeSpecial || !block.isSpecial).map((block) => block.id);
-}
-
-export function getAllRecipeTypes(): string[] {
-    return RECIPE_BLOCKS.filter((block) => !block.isSpecial) // Exclus barrier
-        .flatMap((block) => block.recipeTypes);
-}
-
-export function isBlockId(selection: string): boolean {
-    return RECIPE_BLOCKS.some((block) => block.id === selection);
-}
-
-export function getFirstTypeFromSelection(selection: string): string {
-    if (selection === "minecraft:barrier") return getAllRecipeTypes()[0];
-    const blockConfig = getBlockConfig(selection);
-    return blockConfig?.recipeTypes[0] || selection;
-}
-
-export function getDisplayBlockId(selection: string): string {
-    return isBlockId(selection) ? selection : getBlockByRecipeType(selection).id;
-}
-
-export function getDisplayName(selection: string): string {
-    if (isBlockId(selection)) {
-        const config = getBlockConfig(selection);
-        return config?.name || selection;
-    }
-    const cleanType = selection.replace("minecraft:", "");
-    return cleanType
-        .split("_")
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(" ");
-}
+export const canBlockHandleRecipeType = (id: string, type: string) =>
+    id === "minecraft:barrier" ? true : (getBlockConfig(id)?.recipeTypes.some((e) => type.includes(e)) ?? false);
+export const getBlockConfig = (id: string) => RECIPE_BLOCKS.find((block) => block.id === id);
+export const getBlockByRecipeType = (type: string) => RECIPE_BLOCKS.find((block) => block.recipeTypes.includes(type)) ?? RECIPE_BLOCKS[0];
+export const getAllBlockIds = (inc: boolean = true) => RECIPE_BLOCKS.filter((block) => inc || !block.isSpecial).map((block) => block.id);
+export const getAllRecipeTypes = () => RECIPE_BLOCKS.filter((block) => !block.isSpecial).flatMap((block) => block.recipeTypes);
+export const isBlockId = (id: string) => RECIPE_BLOCKS.some((block) => block.id === id);

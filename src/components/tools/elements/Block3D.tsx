@@ -1,5 +1,3 @@
-import { cn } from "@/lib/utils";
-
 interface Block3DProps {
     x?: number;
     y?: number;
@@ -35,9 +33,7 @@ export default function Block3D({ x = 0, y = 0, z = 0, type = "default" }: Block
 
     return (
         <div
-            className={cn(
-                "absolute w-8 h-8 transition-transform duration-150 starting:-translate-y-8 hidden:translate-y-8 transition-discrete"
-            )}
+            className="absolute w-8 h-8 transition-transform duration-150 starting:-translate-y-8 hidden:translate-y-8 transition-discrete"
             style={
                 {
                     transformStyle: "preserve-3d",
@@ -50,11 +46,10 @@ export default function Block3D({ x = 0, y = 0, z = 0, type = "default" }: Block
             {faces.map((face, i) => (
                 <div
                     key={i.toString()}
-                    className="absolute w-8 h-8 bg-cover bg-no-repeat"
+                    className="absolute w-8 h-8 bg-cover bg-no-repeat pixelated"
                     style={{
                         backgroundImage: `url(${face.texture})`,
-                        transform: face.transform,
-                        imageRendering: "pixelated"
+                        transform: face.transform
                     }}
                 />
             ))}

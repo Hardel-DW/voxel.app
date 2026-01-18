@@ -1,6 +1,6 @@
 import type { RecipeProps } from "@voxelio/breeze";
 import { lazy, Suspense } from "react";
-import { getBlockByRecipeType } from "../../../../lib/data/recipeConfig";
+import { getBlockByRecipeType } from "@/lib/data/recipeConfig";
 
 const CraftingTemplate = lazy(() => import("./template/CraftingTemplate"));
 const SmeltingTemplate = lazy(() => import("./template/SmeltingTemplate"));

@@ -12,7 +12,7 @@ import {
     DialogTrigger
 } from "@/components/ui/Dialog";
 import { ToggleGroup, ToggleGroupOption } from "@/components/ui/ToggleGroup";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { downloadFile } from "@/lib/utils/download";
 
@@ -22,6 +22,7 @@ function hasModManifest(files: Record<string, Uint8Array>): boolean {
 }
 
 export default function ExportButton() {
+    const t = useTranslate();
     const isModded = useConfiguratorStore((state) => state.isModded);
     const setIsModded = useConfiguratorStore((state) => state.setIsModded);
 

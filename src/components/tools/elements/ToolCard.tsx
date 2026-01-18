@@ -1,6 +1,7 @@
 import RenderGuard from "@/components/tools/elements/RenderGuard";
 import type { BaseInteractiveComponent } from "@/lib/hook/useInteractiveLogic";
 import { useInteractiveLogic } from "@/lib/hook/useInteractiveLogic";
+import { useTranslate } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export type ToolInlineType = BaseInteractiveComponent & {
@@ -9,7 +10,8 @@ export type ToolInlineType = BaseInteractiveComponent & {
     image: string;
 };
 
-export default function ToolInlineSlot(props: ToolInlineType & { index?: number }) {
+export default function ToolInlineSlot(props: ToolInlineType) {
+    const t = useTranslate();
     const { value, lock, handleChange } = useInteractiveLogic<ToolInlineType, boolean>({ component: props });
     if (value === null) return null;
 
@@ -33,7 +35,7 @@ export default function ToolInlineSlot(props: ToolInlineType & { index?: number 
                     </div>
                 )}
 
-                {lock.isLocked && <span className="absolute top-0 p-4 text-xs text-zinc-400 font-light">{lock.text}</span>}
+                {lock.isLocked && <span className="absolute top-0 p-4 text-xs text-zinc-400 font-light">{t(lock.text)}</span>}
 
                 <div className="stack h-full rounded-2xl overflow-hidden">
                     <div className="pb-2 self-end px-4 relative z-20">

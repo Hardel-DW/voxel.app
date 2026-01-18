@@ -1,6 +1,7 @@
 import RenderGuard from "@/components/tools/elements/RenderGuard";
 import type { BaseInteractiveComponent } from "@/lib/hook/useInteractiveLogic";
 import { useInteractiveLogic } from "@/lib/hook/useInteractiveLogic";
+import { useTranslate } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export type ToolInlineType = BaseInteractiveComponent & {
@@ -10,6 +11,7 @@ export type ToolInlineType = BaseInteractiveComponent & {
 };
 
 export default function ToolInline(props: ToolInlineType) {
+    const t = useTranslate();
     const { value, lock, handleChange } = useInteractiveLogic<ToolInlineType, boolean>({ component: props });
     if (value === null) return null;
 
@@ -31,7 +33,7 @@ export default function ToolInline(props: ToolInlineType) {
                     <div className="flex items-center gap-4">
                         {props.image && (
                             <div className="shrink-0">
-                                <img src={props.image} alt="" className="w-8 h-8 object-contain pixelated" />
+                                <img src={props.image} alt="Icon" className="w-8 h-8 object-contain pixelated" />
                             </div>
                         )}
                         <div className="flex flex-col">
@@ -41,9 +43,9 @@ export default function ToolInline(props: ToolInlineType) {
                     </div>
 
                     <div className="flex gap-4 items-center">
-                        {lock.isLocked && <span className="text-xs text-zinc-400 font-light w-max flex items-center">{lock.text}</span>}
+                        {lock.isLocked && <span className="text-xs text-zinc-400 font-light w-max flex items-center">{t(lock.text)}</span>}
                         {value && !lock.isLocked && <img src="/icons/check.svg" alt="checkbox" className="w-6 h-6 invert" />}
-                        {lock.isLocked && <img src="/icons/tools/lock.svg" alt="checkbox" className="w-6 h-6 invert" />}
+                        {lock.isLocked && <img src="/icons/tools/lock.svg" alt="checkbox" className="w-6 h-6" />}
                     </div>
                 </div>
                 <div className="absolute inset-0 -z-10 brightness-15 top-0">

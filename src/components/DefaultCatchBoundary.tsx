@@ -1,8 +1,11 @@
 import type { ErrorComponentProps } from "@tanstack/react-router";
-import { t } from "@/lib/i18n";
-import SimpleLayout from "./SimpleLayout";
-import { Button } from "./ui/Button";
+import { useTranslate } from "@/lib/i18n";
+import SimpleLayout from "@/components/layout/SimpleLayout";
+import { Button } from "@/components/ui/Button";
+
 export default function DefaultCatchBoundary({ error }: ErrorComponentProps) {
+    const t = useTranslate();
+
     return (
         <SimpleLayout>
             <div className="relative z-10 px-8 py-12 w-full max-w-3xl mx-auto">

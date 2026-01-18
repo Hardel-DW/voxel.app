@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "@tanstack/react-router";
+import { useLocation, useNavigate, useParams } from "@tanstack/react-router";
 import { Identifier } from "@voxelio/breeze";
 import { CONCEPTS } from "@/lib/data/elements";
 import { type OpenTab, useTabsStore } from "@/lib/store/TabsStore";
@@ -10,6 +10,7 @@ function TabItem({ tab, index, isActive }: { tab: OpenTab; index: number; isActi
     const location = useLocation();
     const switchTab = useTabsStore((state) => state.switchTab);
     const closeTab = useTabsStore((state) => state.closeTab);
+    const { lang } = useParams({ from: "/$lang" });
     const icon = CONCEPTS.find((c) => tab.route.includes(`/editor/${c.registry}`))?.image.src;
 
     const handleClick = () => {
@@ -28,7 +29,7 @@ function TabItem({ tab, index, isActive }: { tab: OpenTab; index: number; isActi
             const tabConcept = getConceptFromPathname(tab.route);
             const currentConcept = getConceptFromPathname(location.pathname);
             if (tabConcept && tabConcept === currentConcept) {
-                navigate({ to: "/editor/enchantment/overview" });
+                navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } });
             }
             return;
         }

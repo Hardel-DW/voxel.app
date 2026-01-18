@@ -1,6 +1,6 @@
 import type { NewsItem } from "@/components/layout/news/NewsCard";
 import NewsCard from "@/components/layout/news/NewsCard";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 
 const links = [
     { icon: "/icons/company/discord.svg", label: "Discord", href: "https://discord.gg/TAmVFvkHep" },
@@ -25,6 +25,8 @@ const NEWS_ITEMS: NewsItem[] = [
 ];
 
 export default function NewsSidebar() {
+    const t = useTranslate();
+
     return (
         <div className="hidden xl:block border-l border-zinc-800/30 bg-zinc-950/30 backdrop-blur-sm relative z-50">
             <div className="p-6 h-full overflow-y-auto">

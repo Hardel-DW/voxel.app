@@ -1,10 +1,13 @@
+import { useParams } from "@tanstack/react-router";
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog";
 import { useGitHubAuth } from "@/lib/hook/useGitHubAuth";
-import { t } from "@/lib/i18n";
-import { useGithubStore } from "@/lib/store/GithubStore";
+import { useTranslate } from "@/lib/i18n";
+import { useGithubStore } from "../../../lib/store/GithubStore";
 
 export default function GitButton() {
+    const t = useTranslate();
+    const { lang } = useParams({ from: "/$lang" });
     const { isAuthenticated, login } = useGitHubAuth();
     const { isGitRepository } = useGithubStore();
 
@@ -15,7 +18,8 @@ export default function GitButton() {
                 variant="transparent"
                 size="square"
                 className="border-0 select-none aspect-square shrink-0"
-                to="/editor/changes/main">
+                to="/$lang/studio/editor/changes/main"
+                params={{ lang }}>
                 <img src="/icons/company/github.svg" alt="Git" className="size-6 invert opacity-70" />
             </Button>
         );
@@ -28,7 +32,8 @@ export default function GitButton() {
                 variant="transparent"
                 size="square"
                 className="border-0 select-none aspect-square shrink-0"
-                to="/editor/github">
+                to="/$lang/studio/editor/github"
+                params={{ lang }}>
                 <img src="/icons/company/github.svg" alt="Git" className="size-6 invert opacity-70" />
             </Button>
         );

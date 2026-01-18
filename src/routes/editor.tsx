@@ -3,14 +3,12 @@ import { createFileRoute, Outlet } from "@tanstack/react-router";
 import ConfigManager from "@/components/tools/ConfigManager";
 import StudioDialog from "@/components/tools/concept/home/StudioDialog";
 import ItemTooltip from "@/components/tools/elements/gui/ItemTooltip";
-import EditorLoading from "@/components/tools/loading/EditorLoading";
 import NotFoundStudio from "@/components/tools/NotFoundStudio";
 import { useSaveShortcut } from "@/lib/hook/useSaveShortcut";
 import { getQueryClient } from "@/lib/utils/query";
 
 export const Route = createFileRoute("/editor")({
     component: EditorLayout,
-    pendingComponent: EditorLoading,
     notFoundComponent: NotFoundStudio
 });
 

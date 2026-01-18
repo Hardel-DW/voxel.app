@@ -1,5 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import { Datapack } from "@voxelio/breeze";
 import { useState } from "react";
 import { Button } from "@/components/ui/Button";
@@ -19,20 +19,21 @@ import { TOAST, toast } from "@/components/ui/Toast";
 import { GitHub, type Repository } from "@/lib/github/GitHub";
 import { RepositoryManager } from "@/lib/github/RepositoryManager";
 import { useGitHubAuth, useGitHubRepos } from "@/lib/hook/useGitHubAuth";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { useGithubStore } from "@/lib/store/GithubStore";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { cn } from "@/lib/utils";
 
 export default function RepositoryOpener() {
+    const t = useTranslate();
     const navigate = useNavigate();
+    const { lang } = useParams({ from: "/$lang" });
     const [selectedAccount, setSelectedAccount] = useState<string>("");
     const [searchQuery, setSearchQuery] = useState("");
     const [thirdPartyUrl, setThirdPartyUrl] = useState("");
     const queryClient = useQueryClient();
     const { isAuthenticated, user, token, login, isLoggingIn } = useGitHubAuth();
     const { data, isLoading: isLoadingRepos, isFetching } = useGitHubRepos(token);
-
     const manager = new RepositoryManager(user, data);
     const accounts = manager.getAccounts();
     const selectedAccountData = manager.findAccount(selectedAccount);
@@ -51,7 +52,7 @@ export default function RepositoryOpener() {
             useConfiguratorStore.getState().setup(datapack, false, repo.name);
             useGithubStore.getState().setGitRepository(repo.owner.login, repo.name, repo.default_branch, token || "");
             toast(t("studio.import_repository.success", { name: repo.name }), TOAST.SUCCESS);
-            navigate({ to: "/editor/enchantment/overview" });
+            navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } });
         },
         onError: (e: unknown) => {
             const errorMessage = e instanceof Error ? e.message : t("studio.error.failed_to_import_repository");
@@ -96,11 +97,7 @@ export default function RepositoryOpener() {
 
                 <div className="mt-4 flex items-center gap-4 shrink-0">
                     <Button type="button" variant="ghost_border" onClick={handleRefresh} disabled={isFetching} className="shrink-0 p-2">
-                        <img
-                            src="/icons/sync.svg"
-                            alt="refresh"
-                            className={cn("w-full h-full invert", isFetching && "animate-spin invert-50")}
-                        />
+                        <img src="/icons/sync.svg" alt="refresh" className={cn("w-full h-full", isFetching && "animate-spin invert-50")} />
                     </Button>
 
                     <DropdownMenu>

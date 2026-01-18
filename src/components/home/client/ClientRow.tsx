@@ -1,6 +1,6 @@
 import { useState } from "react";
 import GameCard from "@/components/home/client/GameCard";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import type { GameClient } from "@/lib/store/HomeStore";
 import { useCacheValue } from "@/lib/utils/cache";
 import { instanceCache, syncClient } from "@/lib/utils/instance/cache";
@@ -8,6 +8,7 @@ import { instanceCache, syncClient } from "@/lib/utils/instance/cache";
 const SYNC_COOLDOWN = 5000;
 
 export default function ClientRow({ client, showDivider }: { client: GameClient; showDivider: boolean }) {
+    const t = useTranslate();
     const { data, syncing } = { data: useCacheValue(instanceCache, client.path), syncing: instanceCache.isSyncing(client.path) };
     const [lastSync, setLastSync] = useState(0);
 

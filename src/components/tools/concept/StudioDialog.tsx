@@ -1,6 +1,6 @@
 import { Dialog, DialogCloseButton, DialogContent, DialogFooter, DialogHeader, DialogHero } from "@/components/ui/Dialog";
 import { MultiStep, MultiStepControl, MultiStepItem } from "@/components/ui/MultiStep";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 
 const DIALOG_STEPS = [
     { id: "home", listCount: 3 },
@@ -12,6 +12,8 @@ const DIALOG_STEPS = [
 ];
 
 export default function StudioDialog() {
+    const t = useTranslate();
+
     return (
         <Dialog id="studio-dialog">
             <DialogContent reminder defaultOpen className="sm:max-w-[800px]">

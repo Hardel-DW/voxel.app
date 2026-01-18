@@ -1,6 +1,5 @@
 import { EnchantmentAction, type EnchantmentProps, type Identifier } from "@voxelio/breeze";
 import ToolCategory from "@/components/tools/elements/ToolCategory";
-import ToolGrid from "@/components/tools/elements/ToolGrid";
 import ToolInline from "@/components/tools/elements/ToolInline";
 
 interface EnchantmentCategoryProps {
@@ -11,7 +10,7 @@ interface EnchantmentCategoryProps {
 export function EnchantmentCategory({ title, identifiers }: EnchantmentCategoryProps) {
     return (
         <ToolCategory title={title}>
-            <ToolGrid>
+            <div className="grid max-xl:grid-cols-1 gap-4 grid-auto-64">
                 {identifiers.map((identifier) => (
                     <ToolInline
                         key={identifier.toUniqueKey()}
@@ -25,7 +24,7 @@ export function EnchantmentCategory({ title, identifiers }: EnchantmentCategoryP
                         }
                     />
                 ))}
-            </ToolGrid>
+            </div>
         </ToolCategory>
     );
 }

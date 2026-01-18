@@ -1,16 +1,16 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import { Identifier, type RecipeProps } from "@voxelio/breeze";
 import RecipeRenderer from "@/components/tools/concept/recipe/RecipeRenderer";
 import ErrorPlaceholder from "@/components/tools/elements/error/ErrorPlaceholder";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { useTabsStore } from "@/lib/store/TabsStore";
 
 export default function RecipeOverviewCard(props: { element: RecipeProps; elementId: string }) {
+    const t = useTranslate();
+    const { lang } = useParams({ from: "/$lang" });
     const label = Identifier.fromUniqueKey(props.elementId).resource;
-    const handleConfigure = () => {
-        useTabsStore.getState().openTab(props.elementId, "/editor/recipe/main", label);
-    };
+    const handleConfigure = () => useTabsStore.getState().openTab(props.elementId, "/$lang/studio/editor/recipe/main", label);
 
     return (
         <ErrorBoundary fallback={(e) => <ErrorPlaceholder error={e} />}>
@@ -20,7 +20,8 @@ export default function RecipeOverviewCard(props: { element: RecipeProps; elemen
 
                     <div className="pt-4 border-t border-zinc-800/50 mt-auto">
                         <Link
-                            to="/editor/recipe/main"
+                            to="/$lang/studio/editor/recipe/main"
+                            params={{ lang }}
                             onClick={handleConfigure}
                             className="w-full cursor-pointer bg-zinc-800/30 hover:bg-zinc-700/50 border border-zinc-700/50 rounded-lg px-3 py-2 text-xs font-medium text-zinc-300 transition-colors block text-center">
                             {t("configure")}

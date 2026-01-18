@@ -1,10 +1,12 @@
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 
 interface ErrorPlaceholderProps {
     error?: Error;
 }
 
 export default function ErrorPlaceholder({ error }: ErrorPlaceholderProps) {
+    const t = useTranslate();
+
     return (
         <div className="bg-blue-50/5 ring-0 ring-zinc-700 relative transition-all p-6 rounded-xl">
             <div className="flex flex-col items-center justify-between gap-4 h-full">
@@ -15,7 +17,6 @@ export default function ErrorPlaceholder({ error }: ErrorPlaceholderProps) {
 
                 <div className="h-16 w-16 flex items-center justify-center">
                     <svg className="h-12 w-12 text-red-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <title>{t("error")}</title>
                         <path
                             strokeLinecap="round"
                             strokeLinejoin="round"

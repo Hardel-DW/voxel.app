@@ -1,7 +1,6 @@
 import RecipeSlot from "@/components/tools/concept/recipe/RecipeSlot";
 import RecipeTemplateBase from "@/components/tools/concept/recipe/RecipeTemplateBase";
 
-// Items ARE ALWAYS an array. And Tags ARE ALWAYS a string. A tags can't be in an array. !!!
 interface CraftingTemplateProps {
     slots: Record<string, string[] | string>; // "0" -> ["minecraft:diamond"], "1" -> "#minecraft:logs"
     result: {

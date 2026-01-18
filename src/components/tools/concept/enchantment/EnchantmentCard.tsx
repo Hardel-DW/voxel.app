@@ -1,41 +1,41 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import type { EnchantmentProps, TagType } from "@voxelio/breeze";
 import { CoreAction, getItemFromMultipleOrOne, Identifier, TagsProcessor } from "@voxelio/breeze";
 import OverviewCase from "@/components/tools/concept/enchantment/EnchantmentOverviewCase";
 import SimpleSwitch from "@/components/tools/elements/SimpleSwitch";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { useTabsStore } from "@/lib/store/TabsStore";
 
 const findOptions = [
     {
-        title: t("enchantment.overview.enchanting_table"),
+        title: "enchantment:overview.enchanting_table",
         image: "/images/features/block/enchanting_table.webp",
         tag: "#minecraft:in_enchanting_table",
         lock_value: "#minecraft:non_treasure"
     },
     {
-        title: t("enchantment.overview.chest"),
+        title: "enchantment:overview.chest",
         image: "/images/features/block/chest.webp",
         tag: "#minecraft:on_random_loot",
         lock_value: "#minecraft:non_treasure"
     },
     {
-        title: t("enchantment.overview.tradeable"),
+        title: "enchantment:overview.tradeable",
         image: "/images/features/item/enchanted_book.webp",
         tag: "#minecraft:on_traded_equipment",
         lock_value: "#minecraft:non_treasure"
     },
     {
-        title: t("enchantment.overview.tradeable_equipment"),
+        title: "enchantment:overview.tradeable_equipment",
         image: "/images/features/item/enchanted_item.webp",
         tag: "#minecraft:tradeable",
         lock_value: "#minecraft:non_treasure"
     },
     {
-        title: t("enchantment.overview.price_doubled"),
+        title: "enchantment:overview.price_doubled",
         image: "/images/features/title/doubled.webp",
         tag: "#minecraft:double_trade_price",
         lock_value: "#minecraft:treasure"
@@ -43,6 +43,8 @@ const findOptions = [
 ];
 
 export default function EnchantmentCard({ element }: { element: EnchantmentProps }) {
+    const t = useTranslate();
+    const { lang } = useParams({ from: "/$lang" });
     const { data } = useRegistry<FetchedRegistry<TagType>>("summary", "tags/item");
     const datapackTags = useConfiguratorStore((state) => state.getRegistry<TagType>("tags/item"));
     const { isTag, id } = getItemFromMultipleOrOne(element.supportedItems);
@@ -60,9 +62,7 @@ export default function EnchantmentCard({ element }: { element: EnchantmentProps
     ]);
     const items = isTag && merge.length > 0 ? new TagsProcessor(merge).getRecursiveValues(tagId) : [id];
 
-    const handleConfigure = () => {
-        useTabsStore.getState().openTab(elementId, "/editor/enchantment/main", resourceName);
-    };
+    const handleConfigure = () => useTabsStore.getState().openTab(elementId, "/$lang/studio/editor/enchantment/main", resourceName);
 
     return (
         <div
@@ -84,7 +84,7 @@ export default function EnchantmentCard({ element }: { element: EnchantmentProps
                     <div className="flex flex-col justify-center flex-1 min-w-0">
                         <h3 className="text-sm font-semibold truncate">{resourceName}</h3>
                         <p className="text-[10px] tracking-wider minecraft-font text-zinc-400">
-                            {t("enchantment.overview.level")} {element.maxLevel}
+                            {t("enchantment:overview.level")} {element.maxLevel}
                         </p>
                     </div>
                 </div>
@@ -116,7 +116,8 @@ export default function EnchantmentCard({ element }: { element: EnchantmentProps
 
             <div className="pt-4 border-t border-zinc-800/50 mt-auto">
                 <Link
-                    to="/editor/enchantment/main"
+                    to="/$lang/studio/editor/enchantment/main"
+                    params={{ lang }}
                     onClick={handleConfigure}
                     className="w-full cursor-pointer bg-zinc-900/40 hover:bg-zinc-800/50 border border-zinc-800/40 rounded-lg px-3 py-2 text-xs font-medium text-zinc-300 transition-[background-color] duration-150 block text-center">
                     {t("configure")}

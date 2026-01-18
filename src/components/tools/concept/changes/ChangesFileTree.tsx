@@ -1,7 +1,7 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import type { FileStatus } from "@voxelio/breeze";
 import { useState } from "react";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { useChangesTreeStore, useIsSelected } from "@/lib/store/ChangesTreeStore";
 import { cn } from "@/lib/utils";
 import { buildFileTree, type FileTreeNode } from "@/lib/utils/tree";
@@ -13,6 +13,8 @@ interface ChangesFileTreeProps {
 }
 
 export function ChangesFileTree({ diff, allFiles, selectedFile }: ChangesFileTreeProps) {
+    const t = useTranslate();
+    const { lang } = useParams({ from: "/$lang" });
     const [showAll, setShowAll] = useState(false);
     const setSelectedFile = useChangesTreeStore((s) => s.setSelectedFile);
     const storeSelectedFile = useChangesTreeStore((s) => s.selectedFile);
@@ -41,7 +43,7 @@ export function ChangesFileTree({ diff, allFiles, selectedFile }: ChangesFileTre
                     <span className="text-xs">{t("git.no_changes")}</span>
                 </div>
             ) : (
-                sortedEntries(tree.children).map(([name, node]) => <TreeNode key={name} name={name} node={node} depth={0} />)
+                sortedEntries(tree.children).map(([name, node]) => <TreeNode key={name} name={name} node={node} depth={0} lang={lang} />)
             )}
         </div>
     );
@@ -57,6 +59,7 @@ interface TreeNodeProps {
     name: string;
     node: FileTreeNode;
     depth: number;
+    lang: string;
     forceOpen?: boolean;
 }
 
@@ -66,7 +69,7 @@ function hasSingleFolderChild(node: FileTreeNode): boolean {
     return child !== undefined && !child.filePath;
 }
 
-function TreeNode({ name, node, depth, forceOpen = false }: TreeNodeProps) {
+function TreeNode({ name, node, depth, lang, forceOpen = false }: TreeNodeProps) {
     const [isOpen, setIsOpen] = useState(forceOpen);
     const isSelected = useIsSelected(node.filePath);
     const isFile = !!node.filePath;
@@ -131,7 +134,7 @@ function TreeNode({ name, node, depth, forceOpen = false }: TreeNodeProps) {
     return (
         <div className="w-full select-none">
             {node.filePath ? (
-                <Link to="/editor/changes/diff" search={{ file: node.filePath }}>
+                <Link to="/$lang/studio/editor/changes/diff" params={{ lang }} search={{ file: node.filePath }}>
                     {rowContent}
                 </Link>
             ) : (
@@ -148,6 +151,7 @@ function TreeNode({ name, node, depth, forceOpen = false }: TreeNodeProps) {
                             name={childName}
                             node={childNode}
                             depth={depth + 1}
+                            lang={lang}
                             forceOpen={hasSingleFolderChild(node)}
                         />
                     ))}

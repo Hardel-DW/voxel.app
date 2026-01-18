@@ -1,13 +1,15 @@
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import { Datapack } from "@voxelio/breeze";
 import { Button } from "@/components/ui/Button";
 import { TOAST, toast } from "@/components/ui/Toast";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { useGithubStore } from "@/lib/store/GithubStore";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { hasSession, restoreSession } from "@/lib/utils/sessionPersistence";
 
 export default function RestoreLastSession({ className }: { className?: string }) {
+    const t = useTranslate();
+    const { lang } = useParams({ from: "/$lang" });
     const navigate = useNavigate();
     if (!hasSession()) return null;
 
@@ -15,7 +17,7 @@ export default function RestoreLastSession({ className }: { className?: string }
         try {
             const session = restoreSession();
             if (!session) {
-                toast("No session found", TOAST.ERROR);
+                toast(t("session.not_found"), TOAST.ERROR);
                 return;
             }
 
@@ -33,11 +35,11 @@ export default function RestoreLastSession({ className }: { className?: string }
 
             useGithubStore.getState().setInitializing(session.isInitializing);
 
-            toast("Session restored successfully", TOAST.SUCCESS);
-            navigate({ to: "/editor/enchantment/overview" });
+            toast(t("session.restored"), TOAST.SUCCESS);
+            navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } });
         } catch (e: unknown) {
-            const errorMessage = e instanceof Error ? e.message : "Failed to restore session";
-            toast("Error", TOAST.ERROR, errorMessage);
+            const errorMessage = e instanceof Error ? e.message : t("session.restore_failed");
+            toast(t("error"), TOAST.ERROR, errorMessage);
         }
     };
 

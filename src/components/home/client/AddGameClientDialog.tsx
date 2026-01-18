@@ -12,7 +12,7 @@ import {
     DialogTitle,
     DialogTrigger
 } from "@/components/ui/Dialog";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { useHomeStore } from "@/lib/store/HomeStore";
 import { cn } from "@/lib/utils";
 import { getPresetById, LAUNCHER_PRESETS, scanLauncherInstances } from "@/lib/utils/instance/launchers";
@@ -21,6 +21,7 @@ import type { ClientType } from "@/lib/utils/instance/types";
 type ValidationState = { status: "idle" } | { status: "validating" } | { status: "valid"; count: number } | { status: "invalid" };
 
 export default function AddGameClientDialog() {
+    const t = useTranslate();
     const [preset, setPreset] = useState<ClientType>("vanilla");
     const [path, setPath] = useState("");
     const [validation, setValidation] = useState<ValidationState>({ status: "idle" });

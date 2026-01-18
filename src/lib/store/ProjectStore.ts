@@ -1,7 +1,5 @@
 import { Datapack, Logger } from "@voxelio/breeze";
 import { create } from "zustand";
-import { TOAST, toast } from "@/components/ui/Toast";
-import { t } from "@/lib/i18n";
 import { useHomeStore } from "@/lib/store/HomeStore";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { loadDatapackFromFolder, loadDatapackFromPath } from "@/lib/utils/datapack";
@@ -52,9 +50,7 @@ export const openDatapackFromPath = async (path: string, onSuccess: () => void) 
         useHomeStore.getState().addRecentProject({ name, path, type: projectType, icon: iconPath ?? undefined });
 
         onSuccess();
-        toast(t("studio.success.loaded", { file: name }), TOAST.SUCCESS);
     } catch (e: unknown) {
         console.error("[openDatapackFromPath] Error:", e);
-        toast(t("generic.dialog.error"), TOAST.ERROR, e instanceof Error ? e.message : t("studio.error.failed_to_upload"));
     }
 };

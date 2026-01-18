@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/Button";
 import { TextInput } from "@/components/ui/TextInput";
 import { useClickOutside } from "@/lib/hook/useClickOutside";
 import { useInfiniteScroll } from "@/lib/hook/useInfiniteScroll";
+import { useTranslate } from "@/lib/i18n";
 import { clsx } from "@/lib/utils";
 
 interface ItemSelectorProps {
@@ -14,6 +15,7 @@ interface ItemSelectorProps {
 }
 
 export default function ItemSelector({ currentItem, onItemSelect, items }: ItemSelectorProps) {
+    const t = useTranslate();
     const [searchTerm, setSearchTerm] = useState("");
     const { collapse } = useDynamicIsland();
     const containerRef = useClickOutside(collapse);
@@ -28,7 +30,7 @@ export default function ItemSelector({ currentItem, onItemSelect, items }: ItemS
         <div ref={containerRef} className="grid grid-rows-[auto_1fr_auto] h-full overflow-hidden">
             {/* Header */}
             <div className="pb-4 border-b border-zinc-800/50">
-                <TextInput placeholder="Search item..." value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
+                <TextInput placeholder={t("item_selector.search")} value={searchTerm} onChange={(e) => setSearchTerm(e.target.value)} />
             </div>
 
             {/* Body - scrollable */}
@@ -61,9 +63,9 @@ export default function ItemSelector({ currentItem, onItemSelect, items }: ItemS
 
             {/* Footer */}
             <div className="pt-4 border-t border-zinc-800/50 flex justify-between items-center">
-                <span className="text-xs font-medium text-zinc-400">Select an item</span>
+                <span className="text-xs font-medium text-zinc-400">{t("item_selector.select")}</span>
                 <Button onClick={collapse} variant="ghost_border" size="sm">
-                    Cancel
+                    {t("item_selector.cancel")}
                 </Button>
             </div>
         </div>

@@ -18,90 +18,90 @@ export type Tab = {
 export const CONCEPTS: Concept[] = [
     {
         registry: "enchantment",
-        title: "Enchantment",
+        title: "studio.concept.enchantment",
         image: {
             src: "/images/features/item/enchanted_book.webp",
             alt: "Enchantment"
         },
-        overview: "/editor/enchantment/overview",
+        overview: "/$lang/studio/editor/enchantment/overview",
         tabs: [
             {
                 id: "global",
-                text: "enchantment.section.global",
-                url: "/editor/enchantment/main"
+                text: "enchantment:section.global",
+                url: "/$lang/studio/editor/enchantment/main"
             },
             {
                 id: "find",
-                text: "enchantment.section.find",
-                url: "/editor/enchantment/find"
+                text: "enchantment:section.find",
+                url: "/$lang/studio/editor/enchantment/find"
             },
             {
                 id: "slots",
-                text: "enchantment.section.slots",
-                url: "/editor/enchantment/slots"
+                text: "enchantment:section.slots",
+                url: "/$lang/studio/editor/enchantment/slots"
             },
             {
                 id: "items",
-                text: "enchantment.section.supported",
-                url: "/editor/enchantment/items"
+                text: "enchantment:section.supported",
+                url: "/$lang/studio/editor/enchantment/items"
             },
             {
                 id: "exclusive",
-                text: "enchantment.section.exclusive",
-                url: "/editor/enchantment/exclusive"
+                text: "enchantment:section.exclusive",
+                url: "/$lang/studio/editor/enchantment/exclusive"
             },
             {
                 id: "technical",
-                text: "enchantment.section.technical",
-                url: "/editor/enchantment/technical"
+                text: "enchantment:section.technical",
+                url: "/$lang/studio/editor/enchantment/technical"
             }
         ]
     },
     {
         registry: "loot_table",
-        title: "Loot Table",
+        title: "studio.concept.loot_table",
         image: {
             src: "/images/features/item/bundle_close.webp",
             alt: "Loot Table"
         },
-        overview: "/editor/loot_table/overview",
+        overview: "/$lang/studio/editor/loot_table/overview",
         tabs: [
             {
                 id: "main",
-                text: "loot.section.main",
-                url: "/editor/loot_table/main"
+                text: "loot:section.main",
+                url: "/$lang/studio/editor/loot_table/main"
             },
             {
                 id: "pools",
-                text: "loot.section.pools",
-                url: "/editor/loot_table/pools"
+                text: "loot:section.pools",
+                url: "/$lang/studio/editor/loot_table/pools"
             }
         ]
     },
     {
         registry: "recipe",
-        title: "Recipe",
+        title: "studio.concept.recipe",
         image: {
             src: "/images/features/block/crafting_table.webp",
             alt: "Recipe"
         },
-        overview: "/editor/recipe/overview",
+        overview: "/$lang/studio/editor/recipe/overview",
         tabs: [
             {
                 id: "main",
-                text: "recipe.section.main",
-                url: "/editor/recipe/main"
+                text: "recipe:section.main",
+                url: "/$lang/studio/editor/recipe/main"
             }
         ]
     },
     {
         registry: "structure",
-        title: "Structure",
+        title: "studio.concept.structure",
         image: {
             src: "/images/features/block/jigsaw.webp",
             alt: "Structure"
         },
-        overview: "/editor/structure/overview",
+        overview: "/$lang/studio/editor/structure/overview",
         tabs: []
     }
 ];

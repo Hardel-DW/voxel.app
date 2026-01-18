@@ -1,6 +1,8 @@
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 
 export function DiffEmptyState({ file }: { file: string | undefined }) {
+    const t = useTranslate();
+
     if (!file) {
         return (
             <div className="flex-1 flex items-center justify-center text-zinc-500 flex-col gap-4">

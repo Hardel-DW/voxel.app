@@ -1,13 +1,16 @@
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 
 export function getGreeting(): string {
     const hour = new Date().getHours();
+    const t = useTranslate();
+
     if (hour < 12) return t("tauri:home.greeting.morning");
     if (hour < 18) return t("tauri:home.greeting.afternoon");
     return t("tauri:home.greeting.evening");
 }
 
 export function formatRelativeTime(timestamp: number): string {
+    const t = useTranslate();
     const now = Date.now();
     const diff = now - timestamp;
     const minutes = Math.floor(diff / 60000);

@@ -1,4 +1,4 @@
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import TitleBar from "./TitleBar";
 
 const GridBackground = () => (
@@ -9,6 +9,8 @@ const GridBackground = () => (
 );
 
 export default function Splash() {
+    const t = useTranslate();
+
     return (
         <>
             <TitleBar />

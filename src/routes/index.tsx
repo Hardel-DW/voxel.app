@@ -3,19 +3,18 @@ import GameClients from "@/components/home/client/GameClients";
 import RecentProjects from "@/components/home/sections/RecentProjects";
 import Background from "@/components/layout/Background";
 import NewsSidebar from "@/components/layout/news/NewsSidebar";
-import StudioLoading from "@/components/tools/loading/StudioLoading";
 import { TextInput } from "@/components/ui/TextInput";
 import { getGreeting } from "@/lib/getGreeting";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { useHomeStore } from "@/lib/store/HomeStore";
 
 export const Route = createFileRoute("/")({
-    component: HomePage,
-    pendingComponent: StudioLoading
+    component: HomePage
 });
 
 function HomePage() {
     const projectCount = useHomeStore((s) => s.recentProjects.length);
+    const t = useTranslate();
 
     return (
         <div className="size-full flex">

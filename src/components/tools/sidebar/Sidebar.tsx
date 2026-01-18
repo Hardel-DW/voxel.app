@@ -5,10 +5,11 @@ import SidebarCard from "@/components/tools/sidebar/SidebarCard";
 import { Button } from "@/components/ui/Button";
 import { Dialog, DialogBody, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/Dialog";
 import { CONCEPTS } from "@/lib/data/elements";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 
 export default function StudioSidebar() {
+    const t = useTranslate();
     const hasElements = useConfiguratorStore((state) => Object.keys(state.files).length > 0);
     if (!hasElements) return null;
 

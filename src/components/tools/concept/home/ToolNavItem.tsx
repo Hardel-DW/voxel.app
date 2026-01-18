@@ -1,7 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import type { CONCEPT_KEY } from "@/lib/data/elements";
 import { CONCEPTS } from "@/lib/data/elements";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 interface ToolNavItemProps {
@@ -17,6 +17,7 @@ interface ToolNavItemProps {
 
 export function ToolNavItem({ title, description, image, href, alignRight, comingSoon, elementsCount, index }: ToolNavItemProps) {
     const location = useLocation();
+    const t = useTranslate();
 
     const targetConcept = CONCEPTS.find((concept) => concept.registry === (href as CONCEPT_KEY));
     const targetRoute = targetConcept?.overview || location.pathname;

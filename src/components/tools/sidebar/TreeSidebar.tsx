@@ -2,9 +2,10 @@ import { SidebarButton } from "@/components/tools/sidebar/SidebarButton";
 import { SidebarUpdated } from "@/components/tools/sidebar/SidebarUpdated";
 import { FileTree } from "@/components/ui/tree/FileTree";
 import { useTree } from "@/components/ui/tree/useTree";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 
 export function TreeSidebar() {
+    const t = useTranslate();
     const { tree, isAllActive, selectAll } = useTree();
 
     return (

@@ -1,16 +1,18 @@
-import { Link, useLocation } from "@tanstack/react-router";
+import { Link, useLocation, useParams } from "@tanstack/react-router";
 import type { CONCEPT_KEY } from "@/lib/data/elements";
 import { cn } from "@/lib/utils";
 import { getConceptFromPathname } from "@/lib/utils/concept";
 
 export default function SidebarCard(props: { image: { src: string; alt: string }; registry: CONCEPT_KEY; overview: string }) {
     const currentConcept = useLocation({ select: (loc) => getConceptFromPathname(loc.pathname) });
+    const { lang } = useParams({ from: "/$lang" });
     const isSelected = currentConcept === props.registry;
 
     return (
         <div className="relative mx-auto w-14">
             <Link
                 to={props.overview}
+                params={{ lang }}
                 disabled={isSelected}
                 className={cn(
                     "block relative rounded-2xl overflow-hidden transition-colors duration-300 ease-spring border-0 h-14 bg-transparent border-zinc-800",

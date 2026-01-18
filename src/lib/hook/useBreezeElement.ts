@@ -17,9 +17,9 @@ export const useElementCondition = (condition: Condition | undefined, elementId?
 export const useElementLocks = (locks: Lock[] | undefined, elementId?: string | null): LockRenderer => {
     const lockState = useConfiguratorStore(
         useShallow((state) => {
-            if (!locks) return { isLocked: false };
+            if (!locks) return { isLocked: false, text: "" };
             const element = elementId ? state.elements.get(elementId) : getCurrentElement(state);
-            if (!element) return { isLocked: false };
+            if (!element) return { isLocked: false, text: "" };
             return checkLocks(locks, element);
         })
     );

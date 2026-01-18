@@ -1,4 +1,4 @@
-import { useMatches, useNavigate } from "@tanstack/react-router";
+import { useMatches, useNavigate, useParams } from "@tanstack/react-router";
 import { Identifier } from "@voxelio/breeze";
 import { createContext } from "react";
 import { useEditorUiStore } from "@/lib/store/EditorUiStore";
@@ -47,6 +47,7 @@ export function TreeProvider({ config, children }: { config: TreeConfig; childre
     const openTab = useTabsStore((s) => s.openTab);
     const clearSelection = () => useNavigationStore.getState().setCurrentElementId(null);
     const isOnTab = config.tabRoutes?.some((route) => matches.map((m) => m.routeId as string).includes(route));
+    const { lang } = useParams({ from: "/$lang" });
 
     if (isOnTab && !currentElementId) {
         const activeTab = useTabsStore.getState().getActiveTab();
@@ -62,7 +63,7 @@ export function TreeProvider({ config, children }: { config: TreeConfig; childre
         }
         setFilterPath(path);
         clearSelection();
-        navigate({ to: config.overviewRoute });
+        navigate({ to: config.overviewRoute, params: { lang } });
     };
 
     const selectElement = (elementId: string) => {
@@ -73,14 +74,14 @@ export function TreeProvider({ config, children }: { config: TreeConfig; childre
         const label = Identifier.fromUniqueKey(elementId).resource;
         openTab(elementId, config.detailRoute, label);
         if (!isOnTab) {
-            navigate({ to: config.detailRoute });
+            navigate({ to: config.detailRoute, params: { lang } });
         }
     };
 
     const selectAll = () => {
         setFilterPath("");
         clearSelection();
-        navigate({ to: config.overviewRoute });
+        navigate({ to: config.overviewRoute, params: { lang } });
     };
 
     const activeElementId = config.selectedElementId !== undefined ? config.selectedElementId : currentElementId;

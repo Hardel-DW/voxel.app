@@ -1,4 +1,4 @@
-import { getLocale, t } from "@/lib/i18n";
+import { useI18n, useTranslate } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export interface NewsItem {
@@ -11,7 +11,9 @@ export interface NewsItem {
 }
 
 export default function NewsCard({ item }: { item: NewsItem }) {
-    const formattedDate = new Intl.DateTimeFormat(getLocale(), { dateStyle: "medium" }).format(new Date(item.date));
+    const t = useTranslate();
+    const locale = useI18n((s) => s.locale);
+    const formattedDate = new Intl.DateTimeFormat(locale, { dateStyle: "medium" }).format(new Date(item.date));
 
     return (
         <div className="rounded-xl border border-zinc-800/50 bg-zinc-900/40 overflow-hidden hover:border-zinc-700/50 transition-colors">

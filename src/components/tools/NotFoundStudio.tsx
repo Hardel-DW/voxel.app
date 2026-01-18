@@ -1,8 +1,10 @@
 import LineSetup from "@/components/ui/line/LineSetup";
+import { useTranslate } from "@/lib/i18n";
 
 export default function NotFoundStudio() {
+    const t = useTranslate();
     return (
-        <div className="h-full w-full flex items-center justify-center overflow-hidden relative">
+        <div className="h-full w-full flex items-center justify-center overflow-hidden relative bg-sidebar">
             <div className="z-10 absolute inset-0 scale-110">
                 <svg
                     className="size-full stroke-white/10 [stroke-dasharray:5_6] [stroke-dashoffset:10] stroke-2"
@@ -19,10 +21,8 @@ export default function NotFoundStudio() {
             <LineSetup />
 
             <div className="relative z-10 px-8 py-12 w-full max-w-3xl mx-auto">
-                <h1 className="text-4xl font-bold text-white mb-2">This page is coming soon</h1>
-                <p className="text-lg text-zinc-500 font-light leading-normal">
-                    This page is currently under development. We are working hard to bring you this feature. Please check back later.
-                </p>
+                <h1 className="text-4xl font-bold text-white mb-2">{t("studio.coming_soon.title")}</h1>
+                <p className="text-lg text-zinc-500 font-light leading-normal">{t("studio.coming_soon.description")}</p>
             </div>
         </div>
     );

@@ -1,17 +1,19 @@
-import { useNavigate } from "@tanstack/react-router";
+import { useNavigate, useParams } from "@tanstack/react-router";
 import ProjectCard from "@/components/home/sections/ProjectCard";
 import { useTauriFileDrop } from "@/lib/hook/useTauriFileDrop";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { useHomeStore } from "@/lib/store/HomeStore";
 import { openDatapackFromPath } from "@/lib/store/ProjectStore";
 import { cn } from "@/lib/utils";
 
 export default function RecentProjects() {
     const navigate = useNavigate();
+    const t = useTranslate();
+    const { lang } = useParams({ from: "/$lang" });
     const projects = useHomeStore((s) => s.recentProjects);
     const removeProject = useHomeStore((s) => s.removeRecentProject);
     const { isDragging } = useTauriFileDrop(
-        async (paths: string[]) => paths[0] && openDatapackFromPath(paths[0], () => navigate({ to: "/editor/enchantment/overview" }))
+        async (paths: string[]) => paths[0] && openDatapackFromPath(paths[0], () => navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } }))
     );
 
     return (
@@ -29,7 +31,7 @@ export default function RecentProjects() {
                             <ProjectCard
                                 key={project.path}
                                 project={project}
-                                onOpen={() => openDatapackFromPath(project.path, () => navigate({ to: "/editor/enchantment/overview" }))}
+                                onOpen={() => openDatapackFromPath(project.path, () => navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } }))}
                                 onRemove={() => removeProject(project.path)}
                             />
                         ))}

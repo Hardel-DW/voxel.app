@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from "@tanstack/react-router";
-import SimpleLayout from "@/components/SimpleLayout";
+import SimpleLayout from "@/components/layout/SimpleLayout";
 import { handleGitHubCallback } from "@/lib/api/callback";
 
 export const Route = createFileRoute("/auth")({

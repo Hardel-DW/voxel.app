@@ -1,7 +1,7 @@
 import type { BaseInteractiveComponent } from "@/lib/hook/useInteractiveLogic";
 import { useInteractiveLogic } from "@/lib/hook/useInteractiveLogic";
+import { useTranslate } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-
 export type ToolSlotType = BaseInteractiveComponent & {
     description?: string;
     title: string;
@@ -12,6 +12,7 @@ export type ToolSlotType = BaseInteractiveComponent & {
 };
 
 export default function ToolSlot(props: ToolSlotType & { index?: number }) {
+    const t = useTranslate();
     const { value, lock, handleChange } = useInteractiveLogic<ToolSlotType, boolean>({ component: props });
     if (value === null) return null;
 
@@ -41,11 +42,11 @@ export default function ToolSlot(props: ToolSlotType & { index?: number }) {
 
             {lock.isLocked && (
                 <div className="absolute p-4 top-0 right-0">
-                    <img src="/icons/tools/lock.svg" alt="checkbox" className="w-6 h-6 invert" />
+                    <img src="/icons/tools/lock.svg" alt="checkbox" className="w-6 h-6" />
                 </div>
             )}
 
-            {lock.isLocked && <span className="absolute p-4 bottom-0 right-0 text-xs text-zinc-400 font-light">{lock.text}</span>}
+            {lock.isLocked && <span className="absolute p-4 bottom-0 right-0 text-xs text-zinc-400 font-light">{t(lock.text)}</span>}
 
             <div className="flex flex-col items-center justify-between h-full">
                 <div

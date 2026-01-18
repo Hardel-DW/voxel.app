@@ -6,6 +6,7 @@ import { useDynamicIsland } from "@/components/tools/floatingbar/FloatingBarCont
 import Counter from "@/components/ui/Counter";
 import { useClickOutside } from "@/lib/hook/useClickOutside";
 import useRegistry from "@/lib/hook/useRegistry";
+import { useTranslate } from "@/lib/i18n";
 import { useNavigationStore } from "@/lib/store/NavigationStore";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { cn } from "@/lib/utils";
@@ -15,6 +16,7 @@ interface LootItemEditorProps {
 }
 
 export default function LootItemEditor({ item }: LootItemEditorProps) {
+    const t = useTranslate();
     const countRange = calculateItemCountRange(item.functions);
     const [name, setName] = useState(item.name);
     const [weight, setWeight] = useState(item.weight ?? 1);
@@ -83,18 +85,17 @@ export default function LootItemEditor({ item }: LootItemEditorProps) {
             <div className="flex items-center justify-between pb-4 border-b border-zinc-800/50">
                 <div className="flex items-center gap-3">
                     <div className="size-8 rounded-lg bg-zinc-800/50 flex items-center justify-center">
-                        <img src="/icons/pencil.svg" alt="" className="size-4 invert opacity-60" />
+                        <img src="/icons/pencil.svg" alt="Pencil" className="size-4 invert opacity-60" />
                     </div>
                     <div>
-                        <h3 className="text-sm font-semibold text-zinc-100">Edit Loot Item</h3>
+                        <h3 className="text-sm font-semibold text-zinc-100">{t("loot:editor.title")}</h3>
                         <p className="text-xs text-zinc-500">{identifier.toResourceName()}</p>
                     </div>
                 </div>
                 <button
                     type="button"
                     onClick={handleDelete}
-                    className="size-9 flex items-center justify-center text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer"
-                    title="Delete item">
+                    className="size-9 flex items-center justify-center text-zinc-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors cursor-pointer">
                     <svg className="size-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                         <path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2m3 0v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6h14zM10 11v6m4-6v6" />
                     </svg>
@@ -118,14 +119,16 @@ export default function LootItemEditor({ item }: LootItemEditorProps) {
                             <div className="absolute inset-0 bg-purple-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity" />
                             <TextureRenderer id={name} size={48} className="size-12 relative" />
                         </div>
-                        <span className="text-xs text-zinc-500 group-hover:text-zinc-300 transition-colors font-medium">Change</span>
+                        <span className="text-xs text-zinc-500 group-hover:text-zinc-300 transition-colors font-medium">
+                            {t("loot:editor.change_item")}
+                        </span>
                     </button>
 
                     <div className="flex flex-col gap-5 flex-1">
                         <div className="flex items-center justify-between">
                             <div className="flex flex-col">
-                                <span className="text-sm font-medium text-zinc-200">Weight</span>
-                                <span className="text-xs text-zinc-500">Drop priority</span>
+                                <span className="text-sm font-medium text-zinc-200">{t("loot:editor.weight_label")}</span>
+                                <span className="text-xs text-zinc-500">{t("loot:editor.weight_description")}</span>
                             </div>
                             <Counter value={weight} min={1} max={999} step={1} onChange={handleWeightChange} />
                         </div>
@@ -134,8 +137,8 @@ export default function LootItemEditor({ item }: LootItemEditorProps) {
 
                         <div className="flex items-center justify-between gap-4">
                             <div className="flex flex-col">
-                                <span className="text-sm font-medium text-zinc-200">Count</span>
-                                <span className="text-xs text-zinc-500">Min / Max quantity</span>
+                                <span className="text-sm font-medium text-zinc-200">{t("loot:editor.count_label")}</span>
+                                <span className="text-xs text-zinc-500">{t("loot:editor.count_description")}</span>
                             </div>
                             <div className="flex items-center gap-2">
                                 <Counter value={countMin} min={1} max={64} step={1} onChange={handleCountMinChange} />
@@ -149,12 +152,12 @@ export default function LootItemEditor({ item }: LootItemEditorProps) {
 
             {/* Footer */}
             <div className="pt-4 border-t border-zinc-800/50 flex justify-between items-center">
-                <span className="text-xs font-medium text-zinc-400">Edit item properties</span>
+                <span className="text-xs font-medium text-zinc-400">{t("loot:editor.footer_text")}</span>
                 <button
                     type="button"
                     onClick={collapse}
                     className="px-4 py-2 text-sm text-zinc-400 hover:text-zinc-200 bg-zinc-900/50 hover:bg-zinc-800 border border-zinc-800 rounded-lg transition-colors cursor-pointer">
-                    Close
+                    {t("loot:editor.close")}
                 </button>
             </div>
         </div>

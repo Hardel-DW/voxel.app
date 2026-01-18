@@ -2,18 +2,18 @@ import type { VoxelElement } from "@voxelio/breeze";
 
 export type Condition = (el: any) => boolean;
 export type Lock = { text: string; condition: Condition };
-export type LockRenderer = { isLocked: boolean; text?: string };
+export type LockRenderer = { isLocked: boolean; text: string };
 
 export function checkLocks(locks: Lock[] | undefined, element: VoxelElement): LockRenderer {
-    if (!locks) return { isLocked: false };
+    if (!locks) return { isLocked: false, text: "" };
 
     for (const lock of locks) {
         if (lock.condition(element)) {
-            return { isLocked: true, text: lock.text };
+            return { isLocked: true, text: lock.text ?? "" };
         }
     }
 
-    return { isLocked: false };
+    return { isLocked: false, text: "" };
 }
 
 export class LockEntryBuilder {

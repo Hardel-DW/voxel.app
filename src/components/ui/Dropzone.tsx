@@ -49,6 +49,7 @@ export default function Dropzone({ dropzone, onFileUpload, children, id, disable
             onFileUpload(files);
         }
     };
+
     return (
         <label
             htmlFor={fileInputId}
@@ -57,8 +58,9 @@ export default function Dropzone({ dropzone, onFileUpload, children, id, disable
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
             className={cn(
-                "group relative flex flex-col backdrop-blur-xs items-center transition-[border-color] duration-300 justify-center w-full h-full py-12 px-6 rounded-xl border bg-zinc-900/30 cursor-pointer border-zinc-800 border-dashed",
-                "hover:bg-zinc-900/70 hover:border-zinc-500",
+                "group relative flex flex-col items-center justify-center w-full h-full p-6 transition-all duration-300 rounded-3xl border-2 border-dashed cursor-pointer",
+                "border-zinc-700/50 bg-zinc-900/20 backdrop-blur-sm",
+                "hover:bg-zinc-800/30 hover:border-zinc-500",
                 isDragging && "bg-zinc-800/30 border-zinc-500",
                 disabled && "opacity-50 cursor-not-allowed",
                 className

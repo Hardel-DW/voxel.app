@@ -1,10 +1,11 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import type { FlattenedLootItem } from "@voxelio/breeze";
 import { CoreAction, Identifier } from "@voxelio/breeze";
 import LootDetailsPopover from "@/components/tools/concept/loot/LootDetailsPopover";
 import LootOverviewList from "@/components/tools/concept/loot/LootOverviewList";
 import SimpleSwitch from "@/components/tools/elements/SimpleSwitch";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
+import { useTranslate } from "@/lib/i18n";
 import { useTabsStore } from "@/lib/store/TabsStore";
 import { hueToHsl, stringToColor } from "@/lib/utils/color";
 
@@ -15,6 +16,8 @@ interface LootOverviewCardProps {
 }
 
 export default function LootOverviewCard({ elementId, items, mode }: LootOverviewCardProps) {
+    const t = useTranslate();
+    const { lang } = useParams({ from: "/$lang" });
     const identifier = Identifier.fromUniqueKey(elementId);
     const resourceName = identifier.toResourceName();
     const pathParts = identifier.resource.split("/");
@@ -24,9 +27,7 @@ export default function LootOverviewCard({ elementId, items, mode }: LootOvervie
     const pathColor = hueToHsl(stringToColor(colorKey), 50, 50);
     const isVanilla = identifier.namespace === "minecraft";
 
-    const handleConfigure = () => {
-        useTabsStore.getState().openTab(elementId, "/editor/loot_table/main", resourceName);
-    };
+    const handleConfigure = () => useTabsStore.getState().openTab(elementId, "/$lang/studio/editor/loot_table/main", resourceName);
 
     if (mode === "list") {
         return <LootOverviewList elementId={elementId} items={items} resourceName={resourceName} color={pathColor} />;
@@ -75,7 +76,7 @@ export default function LootOverviewCard({ elementId, items, mode }: LootOvervie
                         <button
                             type="button"
                             className="text-xs bg-zinc-900/60 border border-zinc-800 px-2 py-2 rounded-lg cursor-pointer hover:bg-zinc-800/60 transition-colors">
-                            See Details
+                            {t("loot:card.see_details")}
                         </button>
                     </LootDetailsPopover>
                 </div>
@@ -83,10 +84,11 @@ export default function LootOverviewCard({ elementId, items, mode }: LootOvervie
 
             <div className="pt-4 border-t border-zinc-800/50 mt-auto">
                 <Link
-                    to="/editor/loot_table/main"
+                    to="/$lang/studio/editor/loot_table/main"
+                    params={{ lang }}
                     onClick={handleConfigure}
                     className="w-full cursor-pointer bg-zinc-900/40 hover:bg-zinc-800/50 border border-zinc-800/40 rounded-lg px-3 py-2 text-xs font-medium text-zinc-300 transition-[background-color] duration-150 block text-center">
-                    Configure
+                    {t("loot:card.configure")}
                 </Link>
             </div>
         </div>

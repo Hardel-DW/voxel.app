@@ -1,111 +1,115 @@
-import { createContext, type ReactNode, use, useEffect, useRef, useState } from "react";
+import React, { createContext, useContext, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
-interface TabsContextValue {
+interface TabsContextType {
     value: string;
-    onChange: (value: string) => void;
-    registerRef: (value: string, el: HTMLButtonElement | null) => void;
-    refs: Map<string, HTMLButtonElement>;
+    onValueChange: (value: string) => void;
+    updateIndicator: (button: HTMLButtonElement) => void;
+    containerRef: React.RefObject<HTMLDivElement | null>;
+    indicatorRef: React.RefObject<HTMLDivElement | null>;
 }
 
-const TabsContext = createContext<TabsContextValue | null>(null);
-const useTabs = () => {
-    const ctx = use(TabsContext);
-    if (!ctx) throw new Error("Component must be used within Tabs");
-    return ctx;
-};
+const TabsContext = createContext<TabsContextType | null>(null);
 
-export function Tabs({
-    value,
-    onChange,
-    children,
-    className
-}: {
-    value: string;
-    onChange: (v: string) => void;
-    children: ReactNode;
+export interface TabsProps {
+    defaultValue?: string;
+    value?: string;
+    onValueChange?: (value: string) => void;
     className?: string;
-}) {
-    const refs = useRef(new Map<string, HTMLButtonElement>()).current;
-    const registerRef = (v: string, el: HTMLButtonElement | null) => (el ? refs.set(v, el) : refs.delete(v));
-
-    return (
-        <TabsContext value={{ value, onChange, registerRef, refs }}>
-            <div className={className}>{children}</div>
-        </TabsContext>
-    );
+    children: React.ReactNode;
 }
 
-export function TabList({ children, className }: { children: ReactNode; className?: string }) {
-    const { value, refs } = useTabs();
+export function Tabs({ defaultValue, value: controlledValue, onValueChange, className, children }: TabsProps) {
+    const [internalValue, setInternalValue] = useState(defaultValue ?? "");
+    const indicatorRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-    const [indicator, setIndicator] = useState({ width: 0, x: 0 });
 
-    useEffect(() => {
-        const container = containerRef.current;
-        const el = refs.get(value);
-        if (!container || !el) return;
+    const isControlled = controlledValue !== undefined;
+    const value = isControlled ? controlledValue : internalValue;
 
-        const update = () => {
-            const cRect = container.getBoundingClientRect();
-            const eRect = el.getBoundingClientRect();
-            setIndicator({ width: eRect.width, x: eRect.left - cRect.left });
-        };
+    const updateIndicator = (button: HTMLButtonElement) => {
+        if (indicatorRef.current && containerRef.current) {
+            const rect = button.getBoundingClientRect();
+            const containerRect = containerRef.current.getBoundingClientRect();
 
-        update();
-        const observer = new ResizeObserver(update);
-        observer.observe(container);
-        return () => observer.disconnect();
-    }, [value, refs]);
+            indicatorRef.current.style.width = `${rect.width}px`;
+            indicatorRef.current.style.transform = `translateX(${rect.left - containerRect.left}px)`;
+        }
+    };
+
+    const handleValueChange = (newValue: string) => {
+        if (!isControlled) setInternalValue(newValue);
+        onValueChange?.(newValue);
+    };
 
     return (
-        <div
-            ref={containerRef}
-            className={cn(
-                "relative inline-flex items-center gap-1 p-1 rounded-full backdrop-blur-md bg-zinc-950/50 border border-zinc-800/80",
-                className
-            )}>
-            <div
-                className="absolute inset-1 rounded-full bg-white/10 transition-all duration-300 ease-out"
-                style={{ width: indicator.width, transform: `translateX(${indicator.x - 4}px)` }}
-            />
-            {children}
-        </div>
+        <TabsContext.Provider value={{ value, onValueChange: handleValueChange, updateIndicator, containerRef, indicatorRef }}>
+            <div className={className}>
+                <div
+                    ref={containerRef}
+                    className="h-fit relative w-full justify-center text-sm rounded-2xl border border-zinc-800 p-1 text-zinc-400 flex bg-transparent overflow-hidden">
+                    <div className="absolute inset-0 -z-10 hue-rotate-45 brightness-20">
+                        <img src="/images/shine.avif" alt="Shine" loading="lazy" />
+                    </div>
+                    {React.Children.toArray(children).filter((child) => React.isValidElement(child) && child.type === TabsTrigger)}
+                    <div
+                        ref={indicatorRef}
+                        className="absolute left-0 top-1 rounded-xl bg-white/10 z-0 transition-all duration-300 ease-out"
+                        style={{
+                            height: "calc(100% - 8px)"
+                        }}
+                    />
+                </div>
+                {React.Children.toArray(children).filter((child) => React.isValidElement(child) && child.type === TabsContent)}
+            </div>
+        </TabsContext.Provider>
     );
 }
 
-export function Tab({
-    value,
-    children,
-    className,
-    disabled
-}: {
-    value: string;
-    children: ReactNode;
-    className?: string;
-    disabled?: boolean;
-}) {
-    const ctx = useTabs();
+export function TabsTrigger(props: { value: string; children: React.ReactNode; className?: string; disabled?: boolean }) {
+    const context = useContext(TabsContext);
+    if (!context) throw new Error("TabsTrigger must be used within Tabs");
+
+    const isActive = props.value === context.value;
+
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        const button = event.currentTarget;
+        context.onValueChange(props.value);
+        context.updateIndicator(button);
+    };
 
     return (
         <button
             type="button"
-            ref={(el) => ctx.registerRef(value, el)}
-            onClick={() => !disabled && ctx.onChange(value)}
-            disabled={disabled}
+            onClick={handleClick}
+            disabled={props.disabled}
+            ref={(node) => {
+                if (isActive && node) {
+                    requestAnimationFrame(() => context.updateIndicator(node));
+                }
+            }}
             className={cn(
-                "relative z-10 px-4 py-1.5 text-sm font-medium rounded-full transition-colors cursor-pointer",
-                ctx.value === value ? "text-white" : "text-zinc-400 hover:text-zinc-200",
-                disabled && "opacity-50 cursor-not-allowed",
-                className
+                "text-zinc-500 flex-1 whitespace-nowrap rounded-xl px-3 py-1.5 font-medium transition-all cursor-pointer hover:text-white",
+                isActive ? "text-white" : "text-muted-foreground hover:text-foreground/80",
+                props.disabled && "pointer-events-none opacity-50",
+                props.className
             )}>
-            {children}
+            {props.children}
         </button>
     );
 }
 
-export function TabPanel({ value, children, className }: { value: string; children: ReactNode; className?: string }) {
-    const ctx = useTabs();
-    if (ctx.value !== value) return null;
+interface TabsContentProps {
+    value: string;
+    children: React.ReactNode;
+    className?: string;
+}
+
+export function TabsContent({ value, children, className }: TabsContentProps) {
+    const context = useContext(TabsContext);
+    if (!context) throw new Error("TabsContent must be used within Tabs");
+
+    if (value !== context.value) return null;
+
     return <div className={className}>{children}</div>;
 }

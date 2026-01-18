@@ -1,11 +1,13 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate, useParams } from "@tanstack/react-router";
 import Avatar from "@/components/ui/Avatar";
-import { t } from "@/lib/i18n";
+import { useTranslate } from "@/lib/i18n";
 import { useHomeStore } from "@/lib/store/HomeStore";
 import { openDatapackFromPath, useProjectStore } from "@/lib/store/ProjectStore";
 
 export default function HomeSidebar() {
     const navigate = useNavigate();
+    const t = useTranslate();
+    const { lang } = useParams({ from: "/$lang" });
     const recentProjects = useHomeStore((s) => s.recentProjects);
     const displayedProjects = recentProjects.slice(0, 5);
 
@@ -40,7 +42,7 @@ export default function HomeSidebar() {
                                 type="button"
                                 className="group relative size-10 rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-zinc-600/50 flex items-center justify-center overflow-hidden cursor-pointer transition-all hover:scale-105"
                                 title={project.name}
-                                onClick={() => openDatapackFromPath(project.path, () => navigate({ to: "/editor/enchantment/overview" }))}>
+                                onClick={() => openDatapackFromPath(project.path, () => navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } }))}>
                                 <Avatar name={project.name} icon={project.icon} className="size-full" />
                                 <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors" />
                             </button>

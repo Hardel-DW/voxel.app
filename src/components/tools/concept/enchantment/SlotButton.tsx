@@ -1,8 +1,10 @@
 import type { SlotRegistryType } from "@voxelio/breeze";
+import type { SLOT_CONFIGS } from "@/lib/data/slots";
+import { useTranslate } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
-import type { SLOT_CONFIGS } from "../../../../lib/data/slots";
 
 export function SlotButton(props: { slot: (typeof SLOT_CONFIGS)[0]; isActive: boolean; onToggle: (slotId: SlotRegistryType) => void }) {
+    const t = useTranslate();
     return (
         <button
             type="button"
@@ -13,7 +15,7 @@ export function SlotButton(props: { slot: (typeof SLOT_CONFIGS)[0]; isActive: bo
             )}>
             <div className="flex flex-col items-center justify-center h-full gap-2">
                 <img src={props.slot.image} alt={props.slot.name} className="pixelated" style={{ height: "24px" }} />
-                <span className="text-[10px] leading-tight text-center text-zinc-300">{props.slot.name}</span>
+                <span className="text-[10px] leading-tight text-center text-zinc-300">{t(props.slot.name)}</span>
             </div>
 
             <div className="absolute inset-0 -z-10 brightness-30">

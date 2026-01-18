@@ -1,7 +1,5 @@
 import { readFile, type UnwatchFn, type WatchEvent, watch } from "@tauri-apps/plugin-fs";
 import { Datapack } from "@voxelio/breeze";
-import { TOAST, toast } from "@/components/ui/Toast";
-import { t } from "@/lib/i18n";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 
 type WatchCallback = (event: WatchEvent) => void;
@@ -21,9 +19,8 @@ const reloadTagFile = async (filePath: string, basePath: string) => {
         const updatedFiles = { ...files, [relativePath]: content };
         const { elements } = new Datapack(updatedFiles).parse();
         useConfiguratorStore.setState({ files: updatedFiles, elements });
-        toast(t("studio.info.tag_reloaded"), TOAST.INFO);
     } catch {
-        toast(t("studio.error.reload_failed"), TOAST.ERROR);
+        console.error("[reloadTagFile] Error");
     }
 };
 
