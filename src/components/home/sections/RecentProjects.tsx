@@ -13,7 +13,9 @@ export default function RecentProjects() {
     const projects = useHomeStore((s) => s.recentProjects);
     const removeProject = useHomeStore((s) => s.removeRecentProject);
     const { isDragging } = useTauriFileDrop(
-        async (paths: string[]) => paths[0] && openDatapackFromPath(paths[0], () => navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } }))
+        async (paths: string[]) =>
+            paths[0] &&
+            openDatapackFromPath(paths[0], () => navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } }))
     );
 
     return (
@@ -31,7 +33,11 @@ export default function RecentProjects() {
                             <ProjectCard
                                 key={project.path}
                                 project={project}
-                                onOpen={() => openDatapackFromPath(project.path, () => navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } }))}
+                                onOpen={() =>
+                                    openDatapackFromPath(project.path, () =>
+                                        navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } })
+                                    )
+                                }
                                 onRemove={() => removeProject(project.path)}
                             />
                         ))}

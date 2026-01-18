@@ -42,7 +42,11 @@ export default function HomeSidebar() {
                                 type="button"
                                 className="group relative size-10 rounded-xl bg-zinc-800/50 border border-zinc-700/50 hover:border-zinc-600/50 flex items-center justify-center overflow-hidden cursor-pointer transition-all hover:scale-105"
                                 title={project.name}
-                                onClick={() => openDatapackFromPath(project.path, () => navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } }))}>
+                                onClick={() =>
+                                    openDatapackFromPath(project.path, () =>
+                                        navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } })
+                                    )
+                                }>
                                 <Avatar name={project.name} icon={project.icon} className="size-full" />
                                 <div className="absolute inset-0 bg-white/0 group-hover:bg-white/5 transition-colors" />
                             </button>

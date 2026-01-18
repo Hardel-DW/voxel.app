@@ -5,7 +5,7 @@ import { translate } from "@/lib/i18n";
 import { type SourceMetadata, useProjectStore } from "@/lib/store/ProjectStore";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 
-const ensureDir = async (path: string) => mkdir(await dirname(path), { recursive: true }).catch(() => { });
+const ensureDir = async (path: string) => mkdir(await dirname(path), { recursive: true }).catch(() => {});
 
 const saveArchive = async (path: string) => {
     const { compile, logger, isModded } = useConfiguratorStore.getState();

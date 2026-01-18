@@ -1,7 +1,7 @@
 import type { ErrorComponentProps } from "@tanstack/react-router";
-import { useTranslate } from "@/lib/i18n";
 import SimpleLayout from "@/components/layout/SimpleLayout";
 import { Button } from "@/components/ui/Button";
+import { useTranslate } from "@/lib/i18n";
 
 export default function DefaultCatchBoundary({ error }: ErrorComponentProps) {
     const t = useTranslate();

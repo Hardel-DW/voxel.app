@@ -93,10 +93,18 @@ function WorldPage() {
             <div className="absolute inset-0 bg-linear-to-t from-background via-background/60 to-transparent pointer-events-none" />
 
             <main className="relative z-10 flex-1 flex flex-col min-w-0">
-                <Header name={name} path={path} total={current.total} iconSrc={backgroundSrc} onBack={() => navigate({ to: "/$lang", params: { lang } })} />
+                <Header
+                    name={name}
+                    path={path}
+                    total={current.total}
+                    iconSrc={backgroundSrc}
+                    onBack={() => navigate({ to: "/$lang", params: { lang } })}
+                />
                 <Tabs value={tab} onValueChange={handleTabChange} className="flex-1 flex flex-col min-h-0">
                     <TabsTrigger value="worlds">Worlds ({cachedCounts?.worlds ?? worlds.total})</TabsTrigger>
-                    <TabsTrigger value="mods">Mods & Packs ({cachedCounts ? cachedCounts.mods + cachedCounts.datapacks : mods.total})</TabsTrigger>
+                    <TabsTrigger value="mods">
+                        Mods & Packs ({cachedCounts ? cachedCounts.mods + cachedCounts.datapacks : mods.total})
+                    </TabsTrigger>
                     <TabsTrigger value="resourcepacks">Resources ({cachedCounts?.resourcepacks ?? resourcepacks.total})</TabsTrigger>
 
                     <div className="flex-1 overflow-y-auto px-8 pb-8 flex flex-col gap-2">
