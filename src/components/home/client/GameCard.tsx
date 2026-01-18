@@ -1,4 +1,4 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useParams } from "@tanstack/react-router";
 import type { InstanceInfo, WorldInfo } from "@/lib/utils/instance/types";
 import { getVersionBackground } from "@/lib/utils/instance/worlds";
 
@@ -12,13 +12,15 @@ interface GameCardProps {
 }
 
 export default function GameCard({ data, instancePath }: GameCardProps) {
+    const { lang } = useParams({ from: "/$lang" });
     const isWorld = instancePath !== undefined;
     const searchParams = isWorld ? { path: instancePath, name: data.name, world: data.path } : { path: data.path, name: data.name };
     const imageSrc = isInstanceInfo(data) && data.iconUrl ? data.iconUrl : getVersionBackground(data.versionId);
 
     return (
         <Link
-            to="/world"
+            to="/$lang/world"
+            params={{ lang }}
             search={searchParams}
             className="group flex flex-col rounded-xl shadow-lg shadow-zinc-950/20 bg-zinc-900/40 border border-zinc-800/50 min-w-48 max-w-48 overflow-hidden cursor-pointer hover:border-zinc-700 transition-colors">
             <div className="overflow-hidden aspect-video bg-zinc-800/50">

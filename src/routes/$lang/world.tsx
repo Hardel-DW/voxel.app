@@ -100,16 +100,16 @@ function WorldPage() {
                     iconSrc={backgroundSrc}
                     onBack={() => navigate({ to: "/$lang", params: { lang } })}
                 />
-                <Tabs value={tab} onValueChange={handleTabChange} className="flex-1 flex flex-col min-h-0">
+                <Tabs defaultValue={tab} onValueChange={handleTabChange} className="flex-1 flex flex-col min-h-0 px-8 gap-4">
                     <TabsTrigger value="worlds">Worlds ({cachedCounts?.worlds ?? worlds.total})</TabsTrigger>
                     <TabsTrigger value="mods">
                         Mods & Packs ({cachedCounts ? cachedCounts.mods + cachedCounts.datapacks : mods.total})
                     </TabsTrigger>
                     <TabsTrigger value="resourcepacks">Resources ({cachedCounts?.resourcepacks ?? resourcepacks.total})</TabsTrigger>
 
-                    <div className="flex-1 overflow-y-auto px-8 pb-8 flex flex-col gap-2">
-                        <AsyncContent loading={current.loading} empty={current.items.length === 0}>
-                            <TabsContent value="worlds" className="worlds-list flex flex-col gap-2">
+                    <TabsContent value="worlds" className="flex-1 overflow-y-auto pb-8 flex flex-col gap-2">
+                        <AsyncContent loading={worlds.loading} empty={worlds.items.length === 0}>
+                            <div className="worlds-list flex flex-col gap-2">
                                 {worlds.items.map((world) => (
                                     <WorldRow
                                         key={world.path}
@@ -120,43 +120,60 @@ function WorldPage() {
                                         onConfigure={handleOpenDatapack}
                                     />
                                 ))}
-                            </TabsContent>
-
-                            <TabsContent value="mods" className="flex flex-col gap-2">
-                                {mods.items.map((pack) => (
-                                    <ContentCard
-                                        key={pack.path}
-                                        title={pack.name}
-                                        iconSrc={convertIconToSrc(pack.iconPath)}
-                                        type={pack.type === "mods" ? "Mod" : "Datapack"}
-                                        path={pack.path}
-                                        onConfigure={() => handleOpenDatapack(pack)}
-                                    />
-                                ))}
-                            </TabsContent>
-
-                            <TabsContent value="resourcepacks" className="flex flex-col gap-2">
-                                {resourcepacks.items.map((rp) => (
-                                    <ContentCard
-                                        key={rp.path}
-                                        title={rp.name}
-                                        iconSrc={convertIconToSrc(rp.iconPath)}
-                                        type="Resource Pack"
-                                        path={rp.path}
-                                        onConfigure={() => handleOpenDatapack(rp)}
-                                    />
-                                ))}
-                            </TabsContent>
-
+                            </div>
                             <Pagination
-                                page={current.page}
-                                total={current.total}
+                                page={worlds.page}
+                                total={worlds.total}
                                 pageSize={PAGE_SIZE}
-                                loading={current.loading}
-                                onPageChange={(p) => current.load(p)}
+                                loading={worlds.loading}
+                                onPageChange={(p) => worlds.load(p)}
                             />
                         </AsyncContent>
-                    </div>
+                    </TabsContent>
+
+                    <TabsContent value="mods" className="flex-1 overflow-y-auto pb-8 flex flex-col gap-2">
+                        <AsyncContent loading={mods.loading} empty={mods.items.length === 0}>
+                            {mods.items.map((pack) => (
+                                <ContentCard
+                                    key={pack.path}
+                                    title={pack.name}
+                                    iconSrc={convertIconToSrc(pack.iconPath)}
+                                    type={pack.type === "mods" ? "Mod" : "Datapack"}
+                                    path={pack.path}
+                                    onConfigure={() => handleOpenDatapack(pack)}
+                                />
+                            ))}
+                            <Pagination
+                                page={mods.page}
+                                total={mods.total}
+                                pageSize={PAGE_SIZE}
+                                loading={mods.loading}
+                                onPageChange={(p) => mods.load(p)}
+                            />
+                        </AsyncContent>
+                    </TabsContent>
+
+                    <TabsContent value="resourcepacks" className="flex-1 overflow-y-auto pb-8 flex flex-col gap-2">
+                        <AsyncContent loading={resourcepacks.loading} empty={resourcepacks.items.length === 0}>
+                            {resourcepacks.items.map((rp) => (
+                                <ContentCard
+                                    key={rp.path}
+                                    title={rp.name}
+                                    iconSrc={convertIconToSrc(rp.iconPath)}
+                                    type="Resource Pack"
+                                    path={rp.path}
+                                    onConfigure={() => handleOpenDatapack(rp)}
+                                />
+                            ))}
+                            <Pagination
+                                page={resourcepacks.page}
+                                total={resourcepacks.total}
+                                pageSize={PAGE_SIZE}
+                                loading={resourcepacks.loading}
+                                onPageChange={(p) => resourcepacks.load(p)}
+                            />
+                        </AsyncContent>
+                    </TabsContent>
                 </Tabs>
             </main>
             <NewsSidebar />

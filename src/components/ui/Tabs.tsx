@@ -11,21 +11,17 @@ interface TabsContextType {
 
 const TabsContext = createContext<TabsContextType | null>(null);
 
-export interface TabsProps {
-    defaultValue?: string;
-    value?: string;
+interface TabsProps {
+    defaultValue: string;
     onValueChange?: (value: string) => void;
     className?: string;
     children: React.ReactNode;
 }
 
-export function Tabs({ defaultValue, value: controlledValue, onValueChange, className, children }: TabsProps) {
-    const [internalValue, setInternalValue] = useState(defaultValue ?? "");
+export function Tabs({ defaultValue, onValueChange, className, children }: TabsProps) {
+    const [value, setValue] = useState(defaultValue);
     const indicatorRef = useRef<HTMLDivElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
-
-    const isControlled = controlledValue !== undefined;
-    const value = isControlled ? controlledValue : internalValue;
 
     const updateIndicator = (button: HTMLButtonElement) => {
         if (indicatorRef.current && containerRef.current) {
@@ -38,7 +34,7 @@ export function Tabs({ defaultValue, value: controlledValue, onValueChange, clas
     };
 
     const handleValueChange = (newValue: string) => {
-        if (!isControlled) setInternalValue(newValue);
+        setValue(newValue);
         onValueChange?.(newValue);
     };
 
@@ -47,10 +43,7 @@ export function Tabs({ defaultValue, value: controlledValue, onValueChange, clas
             <div className={className}>
                 <div
                     ref={containerRef}
-                    className="h-fit relative w-full justify-center text-sm rounded-2xl border border-zinc-800 p-1 text-zinc-400 flex bg-transparent overflow-hidden">
-                    <div className="absolute inset-0 -z-10 hue-rotate-45 brightness-20">
-                        <img src="/images/shine.avif" alt="Shine" loading="lazy" />
-                    </div>
+                    className="h-fit relative w-fit bg-zinc-900/70 justify-center text-sm rounded-2xl border border-zinc-800 p-1 text-zinc-400 flex overflow-hidden">
                     {React.Children.toArray(children).filter((child) => React.isValidElement(child) && child.type === TabsTrigger)}
                     <div
                         ref={indicatorRef}

@@ -14,7 +14,7 @@ export function EditorSidebar({ title, icon, linkTo, children }: EditorSidebarPr
     const { lang } = useParams({ from: "/$lang" });
 
     return (
-        <aside className="w-72 shrink-0 border-r border-zinc-800/50 bg-zinc-950/75 flex flex-col z-20">
+        <aside className="w-72 shrink-0 border-l border-r border-t border-zinc-800/50 bg-sidebar flex flex-col z-20">
             <div className="px-6 pt-6">
                 <Link
                     to={linkTo}

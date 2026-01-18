@@ -3,12 +3,12 @@ import { Button } from "@/components/ui/Button";
 import LineSetup from "@/components/ui/line/LineSetup";
 import { useTranslate } from "@/lib/i18n";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
-import { Route } from "@/routes/$lang";
 import RestoreLastSession from "./RestoreLastSession";
+import { useParams } from "@tanstack/react-router";
 
 export default function ConfigManager(props: PropsWithChildren) {
     const t = useTranslate();
-    const { lang } = Route.useParams();
+    const { lang } = useParams({ from: "/$lang" });
     const hasElements = useConfiguratorStore((state) => Object.keys(state.files).length > 0);
     if (hasElements) return props.children;
 
