@@ -9,11 +9,11 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WorldRouteImport } from './routes/world'
-import { Route as EditorRouteImport } from './routes/editor'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as LangRouteImport } from './routes/$lang'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as LangIndexRouteImport } from './routes/$lang/index'
+import { Route as LangWorldRouteImport } from './routes/$lang/world'
 import { Route as LangStudioEditorRouteImport } from './routes/$lang/studio/editor'
 import { Route as LangStudioEditorRecipeRouteImport } from './routes/$lang/studio/editor/recipe'
 import { Route as LangStudioEditorLoot_tableRouteImport } from './routes/$lang/studio/editor/loot_table'
@@ -41,16 +41,6 @@ import { Route as LangStudioEditorChangesMainRouteImport } from './routes/$lang/
 import { Route as LangStudioEditorChangesEditRouteImport } from './routes/$lang/studio/editor/changes/edit'
 import { Route as LangStudioEditorChangesDiffRouteImport } from './routes/$lang/studio/editor/changes/diff'
 
-const WorldRoute = WorldRouteImport.update({
-  id: '/world',
-  path: '/world',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const EditorRoute = EditorRouteImport.update({
-  id: '/editor',
-  path: '/editor',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -61,9 +51,19 @@ const LangRoute = LangRouteImport.update({
   path: '/$lang',
   getParentRoute: () => rootRouteImport,
 } as any)
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const LangIndexRoute = LangIndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => LangRoute,
+} as any)
+const LangWorldRoute = LangWorldRouteImport.update({
+  id: '/world',
+  path: '/world',
   getParentRoute: () => LangRoute,
 } as any)
 const LangStudioEditorRoute = LangStudioEditorRouteImport.update({
@@ -220,10 +220,10 @@ const LangStudioEditorChangesDiffRoute =
   } as any)
 
 export interface FileRoutesByFullPath {
+  '/': typeof IndexRoute
   '/$lang': typeof LangRouteWithChildren
   '/auth': typeof AuthRoute
-  '/editor': typeof EditorRoute
-  '/world': typeof WorldRoute
+  '/$lang/world': typeof LangWorldRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/studio/editor': typeof LangStudioEditorRouteWithChildren
   '/$lang/studio/editor/changes': typeof LangStudioEditorChangesRouteWithChildren
@@ -253,9 +253,9 @@ export interface FileRoutesByFullPath {
   '/$lang/studio/editor/recipe/overview': typeof LangStudioEditorRecipeOverviewRoute
 }
 export interface FileRoutesByTo {
+  '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/editor': typeof EditorRoute
-  '/world': typeof WorldRoute
+  '/$lang/world': typeof LangWorldRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/studio/editor': typeof LangStudioEditorRouteWithChildren
   '/$lang/studio/editor/changes': typeof LangStudioEditorChangesRouteWithChildren
@@ -286,10 +286,10 @@ export interface FileRoutesByTo {
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
+  '/': typeof IndexRoute
   '/$lang': typeof LangRouteWithChildren
   '/auth': typeof AuthRoute
-  '/editor': typeof EditorRoute
-  '/world': typeof WorldRoute
+  '/$lang/world': typeof LangWorldRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/studio/editor': typeof LangStudioEditorRouteWithChildren
   '/$lang/studio/editor/changes': typeof LangStudioEditorChangesRouteWithChildren
@@ -321,10 +321,10 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
+    | '/'
     | '/$lang'
     | '/auth'
-    | '/editor'
-    | '/world'
+    | '/$lang/world'
     | '/$lang/'
     | '/$lang/studio/editor'
     | '/$lang/studio/editor/changes'
@@ -354,9 +354,9 @@ export interface FileRouteTypes {
     | '/$lang/studio/editor/recipe/overview'
   fileRoutesByTo: FileRoutesByTo
   to:
+    | '/'
     | '/auth'
-    | '/editor'
-    | '/world'
+    | '/$lang/world'
     | '/$lang'
     | '/$lang/studio/editor'
     | '/$lang/studio/editor/changes'
@@ -386,10 +386,10 @@ export interface FileRouteTypes {
     | '/$lang/studio/editor/recipe/overview'
   id:
     | '__root__'
+    | '/'
     | '/$lang'
     | '/auth'
-    | '/editor'
-    | '/world'
+    | '/$lang/world'
     | '/$lang/'
     | '/$lang/studio/editor'
     | '/$lang/studio/editor/changes'
@@ -420,28 +420,13 @@ export interface FileRouteTypes {
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute
   LangRoute: typeof LangRouteWithChildren
   AuthRoute: typeof AuthRoute
-  EditorRoute: typeof EditorRoute
-  WorldRoute: typeof WorldRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/world': {
-      id: '/world'
-      path: '/world'
-      fullPath: '/world'
-      preLoaderRoute: typeof WorldRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/editor': {
-      id: '/editor'
-      path: '/editor'
-      fullPath: '/editor'
-      preLoaderRoute: typeof EditorRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -456,11 +441,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/$lang/': {
       id: '/$lang/'
       path: '/'
       fullPath: '/$lang/'
       preLoaderRoute: typeof LangIndexRouteImport
+      parentRoute: typeof LangRoute
+    }
+    '/$lang/world': {
+      id: '/$lang/world'
+      path: '/world'
+      fullPath: '/$lang/world'
+      preLoaderRoute: typeof LangWorldRouteImport
       parentRoute: typeof LangRoute
     }
     '/$lang/studio/editor': {
@@ -765,11 +764,13 @@ const LangStudioEditorRouteWithChildren =
   LangStudioEditorRoute._addFileChildren(LangStudioEditorRouteChildren)
 
 interface LangRouteChildren {
+  LangWorldRoute: typeof LangWorldRoute
   LangIndexRoute: typeof LangIndexRoute
   LangStudioEditorRoute: typeof LangStudioEditorRouteWithChildren
 }
 
 const LangRouteChildren: LangRouteChildren = {
+  LangWorldRoute: LangWorldRoute,
   LangIndexRoute: LangIndexRoute,
   LangStudioEditorRoute: LangStudioEditorRouteWithChildren,
 }
@@ -777,10 +778,9 @@ const LangRouteChildren: LangRouteChildren = {
 const LangRouteWithChildren = LangRoute._addFileChildren(LangRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   LangRoute: LangRouteWithChildren,
   AuthRoute: AuthRoute,
-  EditorRoute: EditorRoute,
-  WorldRoute: WorldRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

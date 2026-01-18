@@ -17,7 +17,7 @@ import type { PackContent, WorldInfo } from "@/lib/utils/instance/types";
 import { PAGE_SIZE, scanWorlds } from "@/lib/utils/instance/worlds";
 
 type TabType = "worlds" | "mods" | "resourcepacks";
-export const Route = createFileRoute("/world")({
+export const Route = createFileRoute("/$lang/world")({
     component: WorldPage,
     validateSearch: (search: Record<string, unknown>) => ({
         path: typeof search.path === "string" ? search.path : undefined,

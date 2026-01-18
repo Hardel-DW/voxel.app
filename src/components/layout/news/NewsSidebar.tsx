@@ -29,9 +29,9 @@ export default function NewsSidebar() {
 
     return (
         <div className="hidden xl:block border-l border-zinc-800/30 bg-zinc-950/30 backdrop-blur-sm relative z-50">
-            <div className="p-6 h-full overflow-y-auto">
-                <aside className="w-80 shrink-0 flex flex-col h-full">
-                    <div className="flex-1 overflow-y-auto space-y-6 pb-6">
+            <div className="p-6 h-full flex flex-col overflow-hidden">
+                <aside className="w-80 shrink-0 flex flex-col flex-1 min-h-0">
+                    <div className="flex-1 overflow-y-auto space-y-6 pb-6 min-h-0">
                         <div className="rounded-xl border border-zinc-800/50 bg-zinc-900/40 p-4">
                             <div className="flex items-center gap-3">
                                 <img src="/images/avatar/hardel.webp" alt="User" className="size-10 rounded-full object-cover" />
