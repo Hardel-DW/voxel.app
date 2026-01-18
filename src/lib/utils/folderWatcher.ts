@@ -1,5 +1,5 @@
 import { watch, readFile, type UnwatchFn, type WatchEvent } from "@tauri-apps/plugin-fs";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { Datapack } from "@voxelio/breeze";
 import { toast, TOAST } from "@/components/ui/Toast";
 import { t } from "@/lib/i18n";

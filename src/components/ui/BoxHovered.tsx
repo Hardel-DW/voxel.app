@@ -54,17 +54,15 @@ export function BoxHoveredContent(props: { children: ReactNode; className?: stri
     const position = useBoxPosition({ triggerRef, contentRef, open });
     const hasValidPosition = position.top > 0 && position.left > 0;
 
+    if (!open) return null;
+
     return (
         <Portal>
             <div
-                ref={(node) => {
-                    contentRef.current = node;
-                    if (node) open ? node.showPopover() : node.hidePopover();
-                }}
-                popover="manual"
+                ref={contentRef}
                 role="tooltip"
                 style={{
-                    position: "absolute",
+                    position: "fixed",
                     top: `${position.top}px`,
                     left: `${position.left}px`,
                     visibility: hasValidPosition ? "visible" : "hidden",
@@ -74,7 +72,7 @@ export function BoxHoveredContent(props: { children: ReactNode; className?: stri
                 onMouseEnter={() => setOpen(true)}
                 onMouseLeave={() => setOpen(false)}
                 className={cn(
-                    "rounded-2xl border-t border-l border-zinc-800 bg-zinc-950 p-4 text-zinc-200 shadow-2xl shadow-zinc-950 duration-150 ease-bounce",
+                    "rounded-2xl border-t border-l border-zinc-800 bg-zinc-950 p-4 text-zinc-200 shadow-2xl shadow-zinc-950 z-9999",
                     props.className
                 )}>
                 {props.children}

@@ -1,7 +1,7 @@
 import { type Enchantment, Identifier } from "@voxelio/breeze";
 import { EnchantmentCategory } from "@/components/tools/concept/enchantment/EnchantmentCategory";
 import ErrorPlaceholder from "@/components/tools/elements/error/ErrorPlaceholder";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import Loader from "@/components/ui/Loader";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
 import { t } from "@/lib/i18n";

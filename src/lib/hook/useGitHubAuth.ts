@@ -32,21 +32,21 @@ export function useGitHubAuth() {
         mutationFn: async (options?: { redirect?: boolean }) => {
             const returnTo = window.location.pathname;
             const redirect = options?.redirect ?? true;
-
-            if (!redirect) {
-                const channel = new BroadcastChannel("github-auth");
-                channel.onmessage = (event) => {
-                    if (event.data.type === "auth-success") {
-                        queryClient.invalidateQueries({ queryKey: AUTH_QUERY_KEY });
-                        channel.close();
-                    }
-                };
-            }
-
             const result = await initiateGitHubAuth(returnTo, !redirect);
+
             if (redirect) {
                 window.location.href = result.authUrl;
+                return;
             }
+
+            const channel = new BroadcastChannel("github-auth");
+            channel.onmessage = (event) => {
+                if (event.data.type === "auth-success") {
+                    queryClient.invalidateQueries({ queryKey: AUTH_QUERY_KEY });
+                    channel.close();
+                }
+            };
+            window.open(result.authUrl, "_blank", "popup,width=600,height=700");
         }
     });
 

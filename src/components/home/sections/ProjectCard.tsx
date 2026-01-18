@@ -1,4 +1,4 @@
-import type { RecentProject } from "@/components/home/HomeStore";
+import type { RecentProject } from "@/lib/store/HomeStore";
 import { formatRelativeTime } from "@/lib/getGreeting";
 import { cn } from "@/lib/utils";
 import { convertIconToSrc } from "@/lib/utils/instance/helpers";

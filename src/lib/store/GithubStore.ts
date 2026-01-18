@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { updateSessionData } from "@/lib/utils/sessionPersistence";
 
-interface ExportState {
+interface GithubState {
     isGitRepository: boolean;
     owner: string;
     repositoryName: string;
@@ -13,7 +13,7 @@ interface ExportState {
     setInitializing: (isInitializing: number | null) => void;
 }
 
-export const useExportStore = create<ExportState>((set) => ({
+export const useGithubStore = create<GithubState>((set) => ({
     isGitRepository: false,
     owner: "",
     repositoryName: "",

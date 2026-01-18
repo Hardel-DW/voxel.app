@@ -1,14 +1,14 @@
 import { useLocation } from "@tanstack/react-router";
-import { CONCEPTS } from "@/components/tools/elements";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { CONCEPTS } from "@/lib/data/elements";
+import { useNavigationStore } from "@/lib/store/NavigationStore";
+import { getConceptFromPathname } from "@/lib/utils/concept";
 
 export function useActiveConcept() {
-    const location = useLocation();
-    const getConcept = useConfiguratorStore((state) => state.getConcept);
-    const selectedElement = useConfiguratorStore((state) => state.currentElementId);
-    const currentConcept = getConcept(location.pathname);
+    const pathname = useLocation({ select: (loc) => loc.pathname });
+    const selectedElement = useNavigationStore((state) => state.currentElementId);
+    const currentConcept = getConceptFromPathname(pathname);
     const concept = CONCEPTS.find((c) => c.registry === currentConcept);
-    const activeTab = concept?.tabs.find((tab) => location.pathname === tab.url);
+    const activeTab = concept?.tabs.find((tab) => pathname === tab.url);
 
     return {
         concept,

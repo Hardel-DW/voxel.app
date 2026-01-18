@@ -1,6 +1,7 @@
 import { mkdir, writeFile } from "@tauri-apps/plugin-fs";
 import { dirname } from "@tauri-apps/api/path";
-import { useConfiguratorStore, type SourceMetadata } from "@/components/tools/Store";
+import { useProjectStore, type SourceMetadata } from "@/lib/store/ProjectStore";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { TOAST, toast } from "@/components/ui/Toast";
 import { t } from "@/lib/i18n";
 
@@ -24,7 +25,7 @@ const saveFolder = async (basePath: string) => {
 };
 
 export const saveToSource = async (): Promise<boolean> => {
-    const { sourceMetadata, markClean } = useConfiguratorStore.getState();
+    const { sourceMetadata, markClean } = useProjectStore.getState();
     if (!sourceMetadata) {
         toast(t("studio.error.no_source"), TOAST.ERROR);
         return false;
@@ -45,7 +46,7 @@ export const saveToSource = async (): Promise<boolean> => {
 export const saveToPath = async (path: string, type: SourceMetadata["type"]): Promise<boolean> => {
     try {
         await (type === "folder" ? saveFolder(path) : saveArchive(path));
-        useConfiguratorStore.getState().markClean();
+        useProjectStore.getState().markClean();
         toast(t("studio.success.saved"), TOAST.SUCCESS);
         return true;
     } catch (error) {

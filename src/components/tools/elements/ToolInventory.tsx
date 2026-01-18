@@ -1,4 +1,4 @@
-import { useSelectedItemStore } from "@/components/tools/elements/gui/SelectedItemStore";
+import { useSelectedItemStore } from "@/lib/store/SelectedItemStore";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
 import { useDragAndDrop } from "@/lib/hook/useDragAndDrop";
 import { useInfiniteScroll } from "@/lib/hook/useInfiniteScroll";

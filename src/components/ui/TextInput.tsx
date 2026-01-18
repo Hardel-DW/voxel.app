@@ -18,7 +18,8 @@ export function TextInput(props: InputHTMLAttributes<HTMLInputElement> & { disab
                 type="text"
                 className={cn(
                     "w-full pl-8 pr-4 py-2 bg-zinc-800/30 border border-zinc-800 rounded-full text-sm text-zinc-100 placeholder-zinc-400 focus:outline-none focus:border-zinc-700 focus:bg-zinc-700/20 transition-all",
-                    disableIcon && "pl-4"
+                    disableIcon && "pl-4",
+                    rest.className
                 )}
             />
         </div>

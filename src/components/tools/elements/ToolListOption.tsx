@@ -1,6 +1,5 @@
 import { Identifier } from "@voxelio/breeze";
 import RenderGuard from "@/components/tools/elements/RenderGuard";
-import { useConfiguratorStore } from "@/components/tools/Store";
 import { Button } from "@/components/ui/Button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 import { Switch } from "@/components/ui/Switch";
@@ -9,6 +8,7 @@ import type { ActionOrBuilder, BaseRender } from "@/lib/hook/useInteractiveLogic
 import { useActionHandler, useRenderer } from "@/lib/hook/useInteractiveLogic";
 import { cn } from "@/lib/utils";
 import type { Condition, Lock } from "@/lib/utils/lock";
+import { useNavigationStore } from "@/lib/store/NavigationStore";
 
 export type ToolListOptionAction = {
     title: string;
@@ -57,14 +57,14 @@ function ActionItem(props: ToolListOptionAction & { elementId?: string; lock: { 
                 </div>
                 <span className="text-xs text-zinc-500">{props.description}</span>
             </div>
-            <Switch id="action-switch" isChecked={isChecked ?? false} setIsChecked={() => {}} disabled={props.lock.isLocked} />
+            <Switch id="action-switch" isChecked={isChecked ?? false} setIsChecked={() => { }} disabled={props.lock.isLocked} />
         </label>
     );
 }
 
 const maxDisplayValues = 3;
 export default function ToolListOption(props: ToolListOptionType) {
-    const currentElementId = useConfiguratorStore((state) => props.elementId ?? state.currentElementId);
+    const currentElementId = useNavigationStore((state) => props.elementId ?? state.currentElementId);
     const lock = useElementLocks(props.lock, currentElementId);
     const isInList = useRenderer<boolean>(props.actions?.[1]?.renderer, props.elementId);
     const targetValue = useRenderer<boolean>(props.actions?.[0]?.renderer, props.elementId);

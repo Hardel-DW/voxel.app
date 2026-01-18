@@ -1,6 +1,6 @@
 import AddGameClientDialog from "@/components/home/client/AddGameClientDialog";
 import ClientRow from "@/components/home/client/ClientRow";
-import { useHomeStore } from "@/components/home/HomeStore";
+import { useHomeStore } from "@/lib/store/HomeStore";
 import { t } from "@/lib/i18n";
 
 export default function GameClients() {

@@ -7,7 +7,7 @@ export default function RecipeInventory() {
 
     return (
         <div
-            className="relative overflow-hidden bg-black/35 border-t-2 border-l-2 border-stone-900 ring-0 ring-zinc-900 transition-all hover:ring-1 rounded-xl flex flex-col"
+            className="relative overflow-hidden bg-black/35 border-t-2 border-l-2 border-zinc-900 ring-0 ring-zinc-900 transition-all hover:ring-1 rounded-xl flex flex-col"
             style={{ height: "calc(100vh - 200px)" }}>
             <div className="flex h-full flex-col">
                 <div className="px-6 pt-6 shrink-0">

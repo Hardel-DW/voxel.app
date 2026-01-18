@@ -1,6 +1,6 @@
 import { Link, useLocation } from "@tanstack/react-router";
-import type { CONCEPT_KEY } from "@/components/tools/elements";
-import { CONCEPTS } from "@/components/tools/elements";
+import type { CONCEPT_KEY } from "@/lib/data/elements";
+import { CONCEPTS } from "@/lib/data/elements";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
@@ -26,7 +26,7 @@ export function ToolNavItem({ title, description, image, href, alignRight, comin
             to={comingSoon ? location.pathname : targetRoute}
             className={cn(
                 "overflow-hidden bg-black/25 backdrop-blur-sm flex items-center relative justify-between w-full group rounded-xl p-4 transition-all duration-300 cursor-pointer ring-2 ring-zinc-900",
-                comingSoon ? "opacity-60 relative pointer-events-none" : "hover:ring-stone-900 hover:bg-black/45",
+                comingSoon ? "opacity-60 relative pointer-events-none" : "hover:ring-zinc-900 hover:bg-black/45",
                 alignRight && "ml-auto flex-row-reverse"
             )}>
             <div

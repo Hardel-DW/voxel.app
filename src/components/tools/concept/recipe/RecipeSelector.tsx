@@ -3,7 +3,7 @@ import { BoxHovered, BoxHoveredContent, BoxHoveredTrigger } from "@/components/u
 import { Button } from "@/components/ui/Button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/Dropdown";
 import { cn } from "@/lib/utils";
-import { getAllBlockIds, getDisplayBlockId, getDisplayName } from "./recipeConfig";
+import { getAllBlockIds, getDisplayBlockId, getDisplayName } from "../../../../lib/data/recipeConfig";
 
 const CRAFTING_TYPES = {
     crafting_shaped: { name: "Shaped", description: "Craft with a specific pattern" },

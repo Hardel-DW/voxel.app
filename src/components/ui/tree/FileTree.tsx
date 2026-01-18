@@ -1,5 +1,5 @@
 import { Identifier } from "@voxelio/breeze";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useTree } from "@/components/ui/tree/useTree";
 import { cn } from "@/lib/utils";
 import { hueToHsl, stringToColor } from "@/lib/utils/color";
@@ -14,44 +14,81 @@ const sortedEntries = (children: Map<string, TreeNodeType>): TreeEntry[] =>
     });
 
 export function FileTree() {
-    const { tree } = useTree();
+    const { tree, filterPath, currentElementId, elementIcon, folderIcons, disableAutoExpand, selectFolder, selectElement } = useTree();
 
     return (
         <div className="flex flex-col">
             {sortedEntries(tree.children).map(([name, node]) => (
-                <TreeNode key={name} name={name} path={name} node={node} depth={0} />
+                <TreeNode
+                    key={name}
+                    name={name}
+                    path={name}
+                    node={node}
+                    depth={0}
+                    filterPath={filterPath}
+                    currentElementId={currentElementId}
+                    elementIcon={elementIcon}
+                    folderIcons={folderIcons}
+                    disableAutoExpand={disableAutoExpand}
+                    selectFolder={selectFolder}
+                    selectElement={selectElement}
+                />
             ))}
         </div>
     );
 }
 
-function TreeNode({ name, path, node, depth }: { name: string; path: string; node: TreeNodeType; depth: number }) {
-    const { filterPath, currentElementId, elementIcon, folderIcons, disableAutoExpand, selectFolder, selectElement } = useTree();
-    const [isOpen, setIsOpen] = useState(false);
-    const prevElementIdRef = useRef(currentElementId);
+interface TreeNodeProps {
+    name: string;
+    path: string;
+    node: TreeNodeType;
+    depth: number;
+    forceOpen?: boolean;
+    filterPath: string;
+    currentElementId: string | null;
+    elementIcon?: string;
+    folderIcons?: Record<string, string>;
+    disableAutoExpand?: boolean;
+    selectFolder: (path: string) => void;
+    selectElement: (elementId: string) => void;
+}
+
+function TreeNode({
+    name,
+    path,
+    node,
+    depth,
+    forceOpen = false,
+    filterPath,
+    currentElementId,
+    elementIcon,
+    folderIcons,
+    disableAutoExpand,
+    selectFolder,
+    selectElement
+}: TreeNodeProps) {
+    const hasActiveChild = !disableAutoExpand && hasActiveDescendant(node, currentElementId);
+    const [isOpen, setIsOpen] = useState(forceOpen || hasActiveChild);
 
     const isElement = !!node.elementId;
     const hasChildren = node.children.size > 0;
     const isHighlighted = isElement ? node.elementId === currentElementId : !currentElementId && filterPath === path;
     const isEmpty = node.count === 0 && !isElement;
     const hue = stringToColor(isElement && node.elementId ? node.elementId : path);
-    const icon = isElement ? (elementIcon ?? "/images/features/item/bundle_open.webp") : (folderIcons?.[name] ?? "/icons/folder.svg");
+    const icon =
+        node.icon ?? (isElement ? (elementIcon ?? "/images/features/item/bundle_open.webp") : (folderIcons?.[name] ?? "/icons/folder.svg"));
     const isDefaultFolderIcon = !isElement && !folderIcons?.[name];
-
-    if (currentElementId !== prevElementIdRef.current) {
-        prevElementIdRef.current = currentElementId;
-        if (!disableAutoExpand && !isElement && !isOpen && hasActiveDescendant(node, currentElementId)) {
-            setIsOpen(true);
-        }
+    if (hasActiveChild && !isOpen) {
+        setIsOpen(true);
     }
 
     const handleClick = () => {
         if (isElement && node.elementId) {
             selectElement(node.elementId);
-        } else {
-            setIsOpen((prev) => !prev);
-            selectFolder(path);
+            return;
         }
+        setIsOpen((prev) => !prev);
+        selectFolder(path);
     };
 
     const handleChevronClick = (e: React.MouseEvent) => {
@@ -63,7 +100,7 @@ function TreeNode({ name, path, node, depth }: { name: string; path: string; nod
         <div className="w-full select-none">
             <div
                 className={cn(
-                    "flex items-center gap-2 px-3 py-2 rounded-lg transition-colors relative group w-full",
+                    "flex items-center gap-2 rounded-lg transition-colors relative group w-full",
                     isHighlighted ? "bg-zinc-800/80 text-white" : "text-zinc-400 hover:bg-zinc-900/50 hover:text-zinc-200",
                     depth > 0 && "mt-0.5",
                     isEmpty && !isHighlighted && "opacity-50"
@@ -84,20 +121,23 @@ function TreeNode({ name, path, node, depth }: { name: string; path: string; nod
                         <img
                             src="/icons/chevron-down.svg"
                             className={cn("size-3 transition-transform invert", !isOpen && "-rotate-90", !hasChildren && "opacity-20")}
-                            alt=""
+                            alt="Toggle folder"
                         />
                     </button>
                 )}
 
-                <button type="button" onClick={handleClick} className="flex items-center gap-2.5 flex-1 min-w-0 cursor-pointer text-left">
+                <button
+                    type="button"
+                    onClick={handleClick}
+                    className="flex items-center gap-2.5 flex-1 min-w-0 cursor-pointer text-left px-3 py-2">
                     <img
                         src={icon}
                         className={cn(
                             "size-5 object-contain",
-                            isDefaultFolderIcon && "invert opacity-60",
+                            isDefaultFolderIcon && "opacity-60",
                             isDefaultFolderIcon && isHighlighted && "opacity-100"
                         )}
-                        alt=""
+                        alt="Redirect to an element"
                     />
                     <span className="truncate text-sm font-medium">{Identifier.toDisplay(name)}</span>
                 </button>
@@ -112,7 +152,21 @@ function TreeNode({ name, path, node, depth }: { name: string; path: string; nod
             {hasChildren && isOpen && (
                 <div className="flex flex-col border-zinc-800/50 my-1 pl-1 ml-3 border-l">
                     {sortedEntries(node.children).map(([childName, childNode]) => (
-                        <TreeNode key={childName} name={childName} path={`${path}/${childName}`} node={childNode} depth={depth + 1} />
+                        <TreeNode
+                            key={childName}
+                            name={childName}
+                            path={`${path}/${childName}`}
+                            node={childNode}
+                            depth={depth + 1}
+                            forceOpen={node.children.size === 1}
+                            filterPath={filterPath}
+                            currentElementId={currentElementId}
+                            elementIcon={elementIcon}
+                            folderIcons={folderIcons}
+                            disableAutoExpand={disableAutoExpand}
+                            selectFolder={selectFolder}
+                            selectElement={selectElement}
+                        />
                     ))}
                 </div>
             )}

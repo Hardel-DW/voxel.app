@@ -1,6 +1,6 @@
 import type { SlotRegistryType } from "@voxelio/breeze";
 import { cn } from "@/lib/utils";
-import type { SLOT_CONFIGS } from "./slots";
+import type { SLOT_CONFIGS } from "../../../../lib/data/slots";
 
 export function SlotButton(props: { slot: (typeof SLOT_CONFIGS)[0]; isActive: boolean; onToggle: (slotId: SlotRegistryType) => void }) {
     return (
@@ -8,7 +8,7 @@ export function SlotButton(props: { slot: (typeof SLOT_CONFIGS)[0]; isActive: bo
             type="button"
             onClick={() => props.onToggle(props.slot.id as SlotRegistryType)}
             className={cn(
-                "bg-black/35 border-t-2 border-l-2 border-stone-900 ring-0 ring-zinc-900 select-none cursor-pointer relative transition-all hover:ring-1 p-3 rounded-xl min-h-20",
+                "bg-black/35 border-t-2 border-l-2 border-zinc-900 ring-0 ring-zinc-900 select-none cursor-pointer relative transition-all hover:ring-1 p-3 rounded-xl min-h-20",
                 props.isActive && "bg-zinc-950/25 ring-1 ring-zinc-600"
             )}>
             <div className="flex flex-col items-center justify-center h-full gap-2">

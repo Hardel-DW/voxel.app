@@ -2,8 +2,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "@tanstack/react-router";
 import { Datapack } from "@voxelio/breeze";
 import { useState } from "react";
-import { useConfiguratorStore } from "@/components/tools/Store";
-import { useExportStore } from "@/components/tools/sidebar/ExportStore";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
+import { useGithubStore } from "@/lib/store/GithubStore";
 import { Button } from "@/components/ui/Button";
 import {
     Dialog,
@@ -49,7 +49,7 @@ export default function RepositoryOpener() {
         },
         onSuccess: ({ datapack, repo }) => {
             useConfiguratorStore.getState().setup(datapack, false, repo.name);
-            useExportStore.getState().setGitRepository(repo.owner.login, repo.name, repo.default_branch, token || "");
+            useGithubStore.getState().setGitRepository(repo.owner.login, repo.name, repo.default_branch, token || "");
             toast(t("studio.import_repository.success", { name: repo.name }), TOAST.SUCCESS);
             navigate({ to: "/editor/enchantment/overview" });
         },
@@ -83,7 +83,7 @@ export default function RepositoryOpener() {
 
             <DialogContent className="sm:max-w-5xl w-full p-6 popover:flex popover:flex-col h-[80vh]">
                 <DialogHeader className="border-b border-zinc-900 shrink-0">
-                    <DialogTitle>
+                    <DialogTitle className="mb-3">
                         <div className="flex items-center gap-x-4">
                             <img src="/icons/company/github.svg" alt="GitHub" className="size-6 invert" />
                             <div className="flex flex-col">

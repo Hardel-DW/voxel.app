@@ -10,28 +10,17 @@ export default function ButtonDownload(props: { snippet: string }) {
     };
 
     useEffect(() => {
-        if (pending) {
-            setTimeout(() => setPending(false), 3000);
-        }
+        if (!pending) return;
+        const timeout = setTimeout(() => setPending(false), 3000);
+        return () => clearTimeout(timeout);
     }, [pending]);
 
     return (
-        <div
-            className={
-                "w-12 h-12 p-2 hover:bg-zinc-800/50 cursor-pointer transition bg-black/10 border border-white/10 rounded-md flex justify-center items-center"
-            }>
+        <div className="w-10 h-10 p-2 hover:bg-zinc-800/50 cursor-pointer transition bg-black/10 border border-white/10 rounded-md flex justify-center items-center">
             {pending ? (
-                <img className="invert" alt="checked" src="/icons/check.svg" width={24} height={24} />
+                <img className="invert" alt="checked" src="/icons/check.svg" />
             ) : (
-                <img
-                    onKeyDown={download}
-                    onClick={download}
-                    className="invert"
-                    alt="download"
-                    src="/icons/download.svg"
-                    width={24}
-                    height={24}
-                />
+                <img onKeyDown={download} onClick={download} className="invert" alt="download" src="/icons/download.svg" />
             )}
         </div>
     );

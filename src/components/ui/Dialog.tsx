@@ -1,7 +1,8 @@
 import type { ReactElement, ReactNode } from "react";
-import { createContext, useContext, useImperativeHandle, useRef } from "react";
+import { createContext, useContext, useImperativeHandle, useState } from "react";
 import { Button } from "@/components/ui/Button";
 import { createDisclosureContext } from "@/components/ui/DisclosureContext";
+import { PortalContainerProvider } from "@/components/ui/Portal";
 import { Trigger } from "@/components/ui/Trigger";
 import { cn } from "@/lib/utils";
 import { createLocalStorage } from "@/lib/utils/createLocalStorage";
@@ -70,14 +71,14 @@ export function DialogContent(props: {
     const dialogId = useDialogId();
     const reminderKey = props.reminder ? dialogId : `dialog-${dialogId}`;
     const storage = createLocalStorage(reminderKey, false);
-    const dialogRef = useRef<HTMLDialogElement>(null);
+    const [dialogElement, setDialogElement] = useState<HTMLDialogElement | null>(null);
     useImperativeHandle(props.ref, () => ({
         open: () => setOpen(true),
         close: () => setOpen(false)
     }));
 
     const refCallback = (element: HTMLDialogElement | null) => {
-        dialogRef.current = element;
+        if (element !== dialogElement) setDialogElement(element);
 
         if (element) {
             if (open && !element.open) element.showModal();
@@ -111,7 +112,7 @@ export function DialogContent(props: {
                 "body-hidden m-auto w-2/5 min-w-[40%] max-w-[40%] rounded-xl bg-zinc-950 shadow-lg shadow-neutral-950 p-2 border border-zinc-800 backdrop:bg-black/50 backdrop:backdrop-blur-sm",
                 props.className
             )}>
-            {props.children}
+            <PortalContainerProvider container={dialogElement}>{props.children}</PortalContainerProvider>
         </dialog>
     );
 }
@@ -124,7 +125,7 @@ export function DialogTitle(props: BaseDialogProps & { description?: ReactNode }
     const { setOpen } = useDisclosure();
 
     return (
-        <div className="flex shrink-0 items-center justify-between">
+        <div className={cn("flex shrink-0 items-center justify-between", props.className)}>
             {props.children}
             <button
                 type="button"

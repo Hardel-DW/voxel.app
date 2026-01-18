@@ -26,7 +26,7 @@ export function EditorSidebar({ title, icon, linkTo, children }: EditorSidebarPr
 
             <div className="p-4 border-t border-zinc-800/50 bg-zinc-950/90">
                 <a
-                    href="https://discord.gg/8z3tkQhay7"
+                    href="https://discord.gg/TAmVFvkHep"
                     className="bg-zinc-900/30 rounded-lg p-3 border border-zinc-800/50 flex items-center gap-3 group hover:border-zinc-700/50 transition-colors">
                     <div className="flex-1">
                         <div className="text-sm font-medium text-zinc-300 group-hover:text-white transition-colors">

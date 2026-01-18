@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Identifier } from "@voxelio/breeze";
-import { useEditorUiStore } from "@/components/tools/concept/EditorUiStore";
+import { useEditorUiStore } from "@/lib/store/EditorUiStore";
 import EnchantmentCard from "@/components/tools/concept/enchantment/EnchantmentCard";
 import EnchantmentOverviewList from "@/components/tools/concept/enchantment/EnchantmentOverviewList";
 import { viewMatchers } from "@/components/tools/concept/enchantment/viewMatchers";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { TextInput } from "@/components/ui/TextInput";
 import { useElementsByType } from "@/lib/hook/useElementsByType";
 import { useInfiniteScroll } from "@/lib/hook/useInfiniteScroll";

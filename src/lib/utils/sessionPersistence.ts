@@ -1,6 +1,6 @@
 import type { Analysers } from "@voxelio/breeze";
 import { Logger } from "@voxelio/breeze";
-import type { ConfiguratorState } from "@/components/tools/Store";
+import type { ConfiguratorState } from "@/lib/store/StudioStore";
 import { createLocalStorage } from "@/lib/utils/createLocalStorage";
 import { decodeFilesRecord, encodeFilesRecord } from "@/lib/utils/encode";
 

@@ -3,9 +3,10 @@ import type { EnchantmentProps, TagType } from "@voxelio/breeze";
 import { CoreAction, getItemFromMultipleOrOne, Identifier, TagsProcessor } from "@voxelio/breeze";
 import SimpleSwitch from "@/components/tools/elements/SimpleSwitch";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
 import { t } from "@/lib/i18n";
+import { useTabsStore } from "@/lib/store/TabsStore";
 
 interface EnchantmentOverviewListProps {
     element: EnchantmentProps;
@@ -32,7 +33,7 @@ export default function EnchantmentOverviewList({ element }: EnchantmentOverview
     const items = isTag && merge.length > 0 ? new TagsProcessor(merge).getRecursiveValues(tagId) : [id];
 
     const handleConfigure = () => {
-        useConfiguratorStore.getState().openTab(elementId, "/editor/enchantment/main", resourceName);
+        useTabsStore.getState().openTab(elementId, "/editor/enchantment/main", resourceName);
     };
 
     return (

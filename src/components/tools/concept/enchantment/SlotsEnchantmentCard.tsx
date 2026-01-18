@@ -3,11 +3,12 @@ import type { EnchantmentProps, TagType } from "@voxelio/breeze";
 import { CoreAction, getItemFromMultipleOrOne, Identifier, SlotManager, TagsProcessor } from "@voxelio/breeze";
 import SimpleSwitch from "@/components/tools/elements/SimpleSwitch";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/Popover";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
 import { t } from "@/lib/i18n";
 import SlotGrid from "./SlotGrid";
+import { useNavigationStore } from "@/lib/store/NavigationStore";
 
 const SLOT_IMAGES = {
     mainhand: "/images/features/slots/mainhand.webp",
@@ -47,17 +48,17 @@ export default function SlotsEnchantmentCard({ element }: SlotsEnchantmentCardPr
     const flattenedSlots = new SlotManager(element.slots).flatten();
 
     const handleConfigure = () => {
-        useConfiguratorStore.getState().setCurrentElementId(elementId);
+        useNavigationStore.getState().setCurrentElementId(elementId);
     };
 
     return (
         <div
             data-element-id={elementId}
-            className="overview-card bg-black/35 border-t-2 border-l-2 shadow-xl shadow-black/30 border-stone-900 select-none relative transition-all hover:ring-2 ring-zinc-900 rounded-xl p-4 h-full group flex flex-col">
+            className="overview-card bg-black/35 border-t-2 border-l-2 shadow-xl shadow-black/30 border-zinc-900 select-none relative transition-all hover:ring-2 ring-zinc-900 rounded-xl p-4 h-full group flex flex-col">
             <div className="flex items-center justify-between pb-4">
                 <div className="flex items-center gap-3 flex-1 min-w-0">
                     {items.length === 0 ? (
-                        <div className="w-6 h-6 bg-stone-900 rounded-full animate-pulse shrink-0" />
+                        <div className="w-6 h-6 bg-zinc-900 rounded-full animate-pulse shrink-0" />
                     ) : (
                         <div className="shrink-0">
                             <TextureRenderer id={items[0]} className="size-10" />

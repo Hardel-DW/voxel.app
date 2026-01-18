@@ -35,13 +35,19 @@ export function ToggleGroupOption({ value, icon, children, className }: ToggleGr
     return (
         <button
             type="button"
+            data-state={isActive ? "on" : "off"}
             onClick={() => ctx.onChange(value)}
             className={cn(
-                "rounded-md transition-all cursor-pointer text-zinc-500 hover:text-zinc-300",
+                "rounded-md transition-all cursor-pointer text-zinc-500 hover:text-zinc-300 relative isolate",
                 isIconOnly ? "p-2" : "flex-1 text-[10px] uppercase font-bold py-1.5 px-2",
-                isActive && "bg-zinc-800 text-zinc-100 shadow-sm hover:text-zinc-100 ",
+                isActive && "bg-zinc-900 text-zinc-100 shadow-sm hover:text-zinc-100",
                 className
             )}>
+            {isActive && (
+                <div className="absolute inset-0 -z-10 brightness-20">
+                    <img src="/images/shine.avif" alt="Shine" loading="lazy" />
+                </div>
+            )}
             {children ?? icon}
         </button>
     );

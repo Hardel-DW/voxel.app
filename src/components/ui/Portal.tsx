@@ -1,10 +1,13 @@
-import type { ReactNode } from "react";
+import { createContext, type ReactNode, useContext } from "react";
 import { createPortal } from "react-dom";
 
-function PortalContent({ children, container }: { children: ReactNode; container?: HTMLElement }) {
-    return createPortal(children, container ?? document.body);
+const PortalContainerContext = createContext<HTMLElement | null>(null);
+
+export function PortalContainerProvider({ children, container }: { children: ReactNode; container: HTMLElement | null }) {
+    return <PortalContainerContext.Provider value={container}>{children}</PortalContainerContext.Provider>;
 }
 
 export default function Portal({ children, container }: { children: ReactNode; container?: HTMLElement }) {
-    return <PortalContent container={container}>{children}</PortalContent>;
+    const contextContainer = useContext(PortalContainerContext);
+    return createPortal(children, container ?? contextContainer ?? document.body);
 }

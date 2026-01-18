@@ -1,8 +1,8 @@
 import { RecipeAction } from "@voxelio/breeze";
-import { useSelectedItemStore } from "@/components/tools/elements/gui/SelectedItemStore";
+import { useSelectedItemStore } from "@/lib/store/SelectedItemStore";
 import TagsRenderer from "@/components/tools/elements/texture/TagsRenderer";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { useDragAndDrop } from "@/lib/hook/useDragAndDrop";
 import { useTooltipStore } from "@/lib/hook/useTooltip";
 

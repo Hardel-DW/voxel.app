@@ -10,7 +10,7 @@ import {
     type TagType
 } from "@voxelio/breeze";
 import { useShallow } from "zustand/shallow";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import useRegistry, { type FetchedRegistry } from "@/lib/hook/useRegistry";
 import { mergeRegistries } from "@/lib/registry";
 

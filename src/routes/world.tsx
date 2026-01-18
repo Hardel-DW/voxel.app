@@ -5,7 +5,7 @@ import Header from "@/components/home/world/header";
 import WorldRow from "@/components/home/world/WorldRow";
 import Background from "@/components/layout/Background";
 import NewsSidebar from "@/components/layout/news/NewsSidebar";
-import { openDatapackFromPath } from "@/components/tools/Store";
+import { openDatapackFromPath } from "@/lib/store/ProjectStore";
 import AsyncContent from "@/components/ui/AsyncContent";
 import Pagination, { usePaginatedLoader } from "@/components/ui/Pagination";
 import { Tab, TabList, TabPanel, Tabs } from "@/components/ui/Tabs";

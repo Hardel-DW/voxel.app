@@ -1,7 +1,7 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import HomeSidebar from "@/components/home/HomeSidebar";
-import EditorTabs from "@/components/layout/EditorTabs";
+import EditorTabs from "@/components/tools/EditorTabs";
 import StudioSidebar from "@/components/tools/sidebar/Sidebar";
 
 const appWindow = getCurrentWindow();

@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Identifier } from "@voxelio/breeze";
-import { useEditorUiStore } from "@/components/tools/concept/EditorUiStore";
+import { useEditorUiStore } from "@/lib/store/EditorUiStore";
 import RecipeOverviewCard from "@/components/tools/concept/recipe/RecipeOverviewCard";
-import { canBlockHandleRecipeType } from "@/components/tools/concept/recipe/recipeConfig";
+import { canBlockHandleRecipeType } from "@/lib/data/recipeConfig";
 import { TextInput } from "@/components/ui/TextInput";
 import { useElementsByType } from "@/lib/hook/useElementsByType";
 import { useInfiniteScroll } from "@/lib/hook/useInfiniteScroll";

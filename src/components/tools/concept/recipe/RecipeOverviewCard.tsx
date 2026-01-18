@@ -2,19 +2,19 @@ import { Link } from "@tanstack/react-router";
 import { Identifier, type RecipeProps } from "@voxelio/breeze";
 import RecipeRenderer from "@/components/tools/concept/recipe/RecipeRenderer";
 import ErrorPlaceholder from "@/components/tools/elements/error/ErrorPlaceholder";
-import { useConfiguratorStore } from "@/components/tools/Store";
 import ErrorBoundary from "@/components/ui/ErrorBoundary";
 import { t } from "@/lib/i18n";
+import { useTabsStore } from "@/lib/store/TabsStore";
 
 export default function RecipeOverviewCard(props: { element: RecipeProps; elementId: string }) {
     const label = Identifier.fromUniqueKey(props.elementId).resource;
     const handleConfigure = () => {
-        useConfiguratorStore.getState().openTab(props.elementId, "/editor/recipe/main", label);
+        useTabsStore.getState().openTab(props.elementId, "/editor/recipe/main", label);
     };
 
     return (
         <ErrorBoundary fallback={(e) => <ErrorPlaceholder error={e} />}>
-            <div className="bg-black/35 border-t-2 border-l-2 border-stone-900 select-none relative transition-all hover:ring-1 ring-zinc-900 rounded-xl p-4 flex flex-col">
+            <div className="bg-black/35 border-t-2 border-l-2 border-zinc-900 select-none relative transition-all hover:ring-1 ring-zinc-900 rounded-xl p-4 flex flex-col">
                 <div className="flex-1 flex flex-col">
                     <RecipeRenderer element={props.element} />
 

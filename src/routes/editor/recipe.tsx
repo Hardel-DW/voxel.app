@@ -1,25 +1,25 @@
 import { createFileRoute, Outlet, useLocation, useNavigate } from "@tanstack/react-router";
-import { Identifier, isVoxel } from "@voxelio/breeze";
-import { useEditorUiStore } from "@/components/tools/concept/EditorUiStore";
+import { Identifier } from "@voxelio/breeze";
 import { EditorHeader } from "@/components/tools/concept/layout/EditorHeader";
 import { EditorSidebar } from "@/components/tools/concept/layout/EditorSidebar";
-import { buildRecipeTree } from "@/components/tools/concept/recipe/buildRecipeTree";
-import { RECIPE_BLOCKS } from "@/components/tools/concept/recipe/recipeConfig";
-import { CONCEPTS } from "@/components/tools/elements";
 import { useDynamicIsland } from "@/components/tools/floatingbar/FloatingBarContext";
 import NotFoundStudio from "@/components/tools/NotFoundStudio";
-import { getCurrentElement, getModifiedElements, useConfiguratorStore } from "@/components/tools/Store";
+import { TreeSidebar } from "@/components/tools/sidebar/TreeSidebar";
 import { TreeProvider } from "@/components/ui/tree/TreeNavigationContext";
-import { TreeSidebar } from "@/components/ui/tree/TreeSidebar";
-import { useElementsByType } from "@/lib/hook/useElementsByType";
-import { t } from "@/lib/i18n";
+import { CONCEPTS } from "@/lib/data/elements";
+import { RECIPE_BLOCKS } from "@/lib/data/recipeConfig";
+import { useElementsIdByType } from "@/lib/hook/useElementsByType";
+import { useEditorUiStore } from "@/lib/store/EditorUiStore";
+import { buildRecipeTree } from "@/components/tools/concept/recipe/buildRecipeTree";
+import { useNavigationStore } from "@/lib/store/NavigationStore";
 
-const concept = CONCEPTS.find((c) => c.registry === "recipe");
-if (!concept) throw new Error("Recipe concept not found");
-const overviewRoute = concept.overview;
-const detailRoute = concept.tabs[0].url;
-const tabRoutes = concept.tabs.map((t) => t.url);
-const changesRoute = "/editor/recipe/changes";
+const concept = "recipe";
+const conceptData = CONCEPTS.find((c) => c.registry === "recipe");
+if (!conceptData) throw new Error("Recipe concept not found");
+const overviewRoute = conceptData.overview;
+const detailRoute = conceptData.tabs[0].url;
+const tabRoutes = conceptData.tabs.map((t) => t.url);
+const changesRoute = "/editor/changes/main";
 const RECIPE_ICON = "/images/features/block/crafting_table.webp";
 const folderIcons: Record<string, string> = Object.fromEntries(
     RECIPE_BLOCKS.filter((b) => !b.isSpecial).flatMap((b) => {
@@ -35,27 +35,25 @@ export const Route = createFileRoute("/editor/recipe")({
 
 function RecipeLayout() {
     const { filterPath } = useEditorUiStore();
-    const location = useLocation();
+    const isOverview = useLocation({ select: (loc) => loc.pathname.endsWith("/overview") });
     const navigate = useNavigate();
-    const elements = useElementsByType("recipe");
-    const tree = buildRecipeTree(elements);
-    const modifiedCount = useConfiguratorStore((s) => getModifiedElements(s, "recipe").length);
-    const currentElement = useConfiguratorStore((s) => getCurrentElement(s));
-    const recipe = currentElement && isVoxel(currentElement, "recipe") ? currentElement : undefined;
-    const isOverview = location.pathname.endsWith("/overview");
+    const elementIds = useElementsIdByType("recipe");
+    const tree = buildRecipeTree(elementIds);
+    const currentElement = useNavigationStore((s) => s.currentElementId);
+    const identifier = currentElement ? Identifier.fromUniqueKey(currentElement) : undefined;
     const { setContainerRef } = useDynamicIsland();
 
     return (
-        <TreeProvider config={{ overviewRoute, detailRoute, changesRoute, tabRoutes, tree, modifiedCount, folderIcons }}>
+        <TreeProvider config={{ concept, overviewRoute, detailRoute, changesRoute, tabRoutes, tree, folderIcons }}>
             <div className="flex size-full overflow-hidden relative z-10 isolate">
-                <EditorSidebar title={t("recipe.overview.title")} icon={RECIPE_ICON} linkTo="/editor/recipe/overview">
+                <EditorSidebar title="recipe:overview.title" icon={RECIPE_ICON} linkTo="/editor/recipe/overview">
                     <TreeSidebar />
                 </EditorSidebar>
 
                 <main ref={setContainerRef} className="flex-1 flex flex-col min-w-0 min-h-0 overflow-hidden relative bg-zinc-950">
                     <EditorHeader
                         fallbackTitle="Recipe"
-                        identifier={recipe?.identifier}
+                        identifier={identifier?.get()}
                         filterPath={filterPath}
                         isOverview={isOverview}
                         onBack={() => navigate({ to: "/editor/recipe/overview" })}

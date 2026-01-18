@@ -3,11 +3,12 @@ import { useState } from "react";
 import ItemSelector from "@/components/tools/elements/gui/ItemSelector";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
 import { useDynamicIsland } from "@/components/tools/floatingbar/FloatingBarContext";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import Counter from "@/components/ui/Counter";
 import { useClickOutside } from "@/lib/hook/useClickOutside";
 import useRegistry from "@/lib/hook/useRegistry";
 import { cn } from "@/lib/utils";
+import { useNavigationStore } from "@/lib/store/NavigationStore";
 
 interface LootItemEditorProps {
     item: LootItem;
@@ -21,7 +22,7 @@ export default function LootItemEditor({ item }: LootItemEditorProps) {
     const [countMax, setCountMax] = useState(countRange.max);
     const [selectingItem, setSelectingItem] = useState(false);
     const handleChange = useConfiguratorStore((state) => state.handleChange);
-    const currentElementId = useConfiguratorStore((state) => state.currentElementId);
+    const currentElementId = useNavigationStore((state) => state.currentElementId);
     const { data } = useRegistry<string[]>("registry", "item");
     const items = data?.filter((i) => i !== "air").map((i) => Identifier.of(i, "item").toString());
     const { collapse, resize } = useDynamicIsland();

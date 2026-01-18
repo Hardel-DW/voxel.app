@@ -1,8 +1,8 @@
 import { Link, useNavigate } from "@tanstack/react-router";
-import { useHomeStore } from "@/components/home/HomeStore";
+import { useHomeStore } from "@/lib/store/HomeStore";
 import Avatar from "@/components/ui/Avatar";
 import { t } from "@/lib/i18n";
-import { openDatapackFromPath, useConfiguratorStore } from "../tools/Store";
+import { openDatapackFromPath, useProjectStore } from "@/lib/store/ProjectStore";
 
 export default function HomeSidebar() {
     const navigate = useNavigate();
@@ -53,7 +53,7 @@ export default function HomeSidebar() {
                     type="button"
                     className="group size-10 rounded-xl flex items-center justify-center cursor-pointer transition-all hover:bg-zinc-800/40"
                     title={t("home.nav.new_project")}
-                    onClick={() => useConfiguratorStore.getState().createNewProject()}>
+                    onClick={() => useProjectStore.getState().createNewProject()}>
                     <svg
                         className="size-4 text-zinc-500 group-hover:text-zinc-300 transition-colors"
                         viewBox="0 0 24 24"

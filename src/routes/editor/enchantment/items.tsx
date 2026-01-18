@@ -5,7 +5,7 @@ import { useState } from "react";
 import ToolGrid from "@/components/tools/elements/ToolGrid";
 import ToolSectionSelector from "@/components/tools/elements/ToolSectionSelector";
 import ToolSlot from "@/components/tools/elements/ToolSlot";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { getEnchantableEntries } from "@/lib/data/tags";
 import { VOXEL_TAGS } from "@/lib/data/voxel";
 import { t } from "@/lib/i18n";

@@ -10,7 +10,7 @@ import SimpleCard from "@/components/tools/elements/SimpleCard";
 import { Toolbar } from "@/components/tools/floatingbar/Toolbar";
 import { ToolbarTextButton } from "@/components/tools/floatingbar/ToolbarTextButton";
 import { ToolbarTextLink } from "@/components/tools/floatingbar/ToolbarTextLink";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { Button } from "@/components/ui/Button";
 import Counter from "@/components/ui/Counter";
 import {

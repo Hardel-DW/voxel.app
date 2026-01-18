@@ -5,8 +5,8 @@ import LootDetailsPopover from "@/components/tools/concept/loot/LootDetailsPopov
 import LootOverviewList from "@/components/tools/concept/loot/LootOverviewList";
 import SimpleSwitch from "@/components/tools/elements/SimpleSwitch";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
-import { useConfiguratorStore } from "@/components/tools/Store";
 import { hueToHsl, stringToColor } from "@/lib/utils/color";
+import { useTabsStore } from "@/lib/store/TabsStore";
 
 interface LootOverviewCardProps {
     elementId: string;
@@ -25,7 +25,7 @@ export default function LootOverviewCard({ elementId, items, mode }: LootOvervie
     const isVanilla = identifier.namespace === "minecraft";
 
     const handleConfigure = () => {
-        useConfiguratorStore.getState().openTab(elementId, "/editor/loot_table/main", resourceName);
+        useTabsStore.getState().openTab(elementId, "/editor/loot_table/main", resourceName);
     };
 
     if (mode === "list") {

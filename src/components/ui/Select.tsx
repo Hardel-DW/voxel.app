@@ -85,15 +85,11 @@ export function SelectContent({ children, className }: { children: ReactNode; cl
                 ref={(node) => {
                     positionRef(node);
                     if (clickOutsideRef) clickOutsideRef.current = node;
-                    if (node && typeof node.showPopover === "function") {
-                        node.showPopover();
-                        if (triggerRef.current) node.style.width = `${triggerRef.current.offsetWidth}px`;
-                    }
+                    if (node && triggerRef.current) node.style.width = `${triggerRef.current.offsetWidth}px`;
                 }}
-                popover="auto"
-                style={{ position: "absolute", margin: 0, inset: "unset" }}
+                style={{ margin: 0, inset: "unset" }}
                 className={cn(
-                    "max-h-75 min-w-32 overflow-y-auto rounded-md border border-zinc-700 bg-zinc-950 text-zinc-400 shadow-md outline-hidden duration-150 ease-bounce",
+                    "max-h-75 min-w-32 overflow-y-auto rounded-md border border-zinc-700 bg-zinc-950 text-zinc-400 shadow-md outline-hidden z-9999",
                     className
                 )}>
                 <div className="p-1">{children}</div>

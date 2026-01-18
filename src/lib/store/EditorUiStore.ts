@@ -12,7 +12,7 @@ interface EditorUiState {
 }
 
 export const useEditorUiStore = create<EditorUiState>((set) => ({
-    viewMode: "grid",
+    viewMode: "list",
     search: "",
     filterPath: "",
     sidebarView: "slots",

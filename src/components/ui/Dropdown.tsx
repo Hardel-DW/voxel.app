@@ -37,13 +37,10 @@ export function DropdownMenuContent(props: { children: ReactNode; className?: st
                 ref={(node) => {
                     positionRef(node);
                     if (clickOutsideRef) clickOutsideRef.current = node;
-                    if (node && typeof node.showPopover === "function") node.showPopover();
                 }}
-                popover="auto"
-                style={{ position: "absolute", margin: 0, inset: "unset" }}
+                style={{ margin: 0, inset: "unset" }}
                 className={cn(
-                    "min-w-32 max-h-75 overflow-y-auto rounded-xl border border-zinc-800/50 bg-zinc-900/95 backdrop-blur-sm p-1.5 text-zinc-400 shadow-lg outline-hidden",
-                    "duration-150 ease-bounce",
+                    "min-w-32 max-h-75 overflow-y-auto rounded-2xl border border-zinc-700 bg-zinc-950 p-1 text-zinc-400 shadow-md outline-hidden z-9999",
                     props.className
                 )}>
                 {props.children}
@@ -64,7 +61,7 @@ export function DropdownMenuItem(
         <div
             {...props}
             className={cn(
-                "relative flex flex-col cursor-pointer select-none items-start justify-start gap-0.5 rounded-lg px-3 py-2 text-sm outline-hidden transition-colors hover:bg-zinc-800/50 hover:text-zinc-200",
+                "relative flex flex-col cursor-pointer select-none items-start justify-start gap-0.5 rounded-xl px-2 py-2.5 text-sm outline-hidden transition-colors hover:bg-zinc-900 hover:text-zinc-200",
                 "data-disabled:pointer-events-none data-disabled:opacity-50",
                 "[&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
                 props.disabled && "pointer-events-none opacity-50",
@@ -83,7 +80,7 @@ export function DropdownMenuLabel(props: { children: ReactNode; className?: stri
 }
 
 export function DropdownMenuSeparator(props: { className?: string }) {
-    return <div className={cn("my-1 h-px bg-zinc-800/50", props.className)} />;
+    return <div className={cn("-mx-1 my-1 h-px bg-zinc-800", props.className)} />;
 }
 
 export function DropdownMenuShortcut(props: { children: ReactNode; className?: string }) {

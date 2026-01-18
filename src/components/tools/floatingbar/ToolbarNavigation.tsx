@@ -1,7 +1,8 @@
-import { useConfiguratorStore } from "@/components/tools/Store";
+
+import { useNavigationStore } from "@/lib/store/NavigationStore";
 
 export function ToolbarNavigation() {
-    const { navigationHistory, navigationIndex, back, forward } = useConfiguratorStore();
+    const { navigationHistory, navigationIndex, back, forward } = useNavigationStore();
     const canGoBack = navigationIndex > 0;
     const canGoForward = navigationIndex < navigationHistory.length - 1;
 

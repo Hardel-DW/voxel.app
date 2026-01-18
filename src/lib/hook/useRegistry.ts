@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { getMinecraftVersion, PACK_VERSION } from "@voxelio/breeze";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { fetchMcmetaData, MCMETA_PATH } from "@/lib/github/mcmeta";
 
 export type FetchedRegistry<T> = Record<string, T>;

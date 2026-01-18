@@ -1,7 +1,7 @@
 import { useNavigate } from "@tanstack/react-router";
-import { useHomeStore } from "@/components/home/HomeStore";
+import { useHomeStore } from "@/lib/store/HomeStore";
 import ProjectCard from "@/components/home/sections/ProjectCard";
-import { openDatapackFromPath } from "@/components/tools/Store";
+import { openDatapackFromPath } from "@/lib/store/ProjectStore";
 import { useTauriFileDrop } from "@/lib/hook/useTauriFileDrop";
 import { t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";

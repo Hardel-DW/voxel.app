@@ -47,18 +47,13 @@ export function PopoverTrigger(props: {
     );
 }
 
-export function PopoverContent(props: {
-    children: ReactNode;
-    className?: string;
-    containerRef?: React.RefObject<HTMLElement | null>;
-    spacing?: number;
-}) {
-    const { children, className, containerRef, spacing } = props;
+export function PopoverContent(props: { children: ReactNode; className?: string; spacing?: number }) {
+    const { children, className, spacing } = props;
     const context = useContext(PopoverContext);
     if (!context) throw new Error("PopoverContent must be used within a Popover");
     const { activeId, setActiveId } = usePopoverStore();
     const isOpen = activeId === context.id;
-    const positionRef = usePopoverPosition({ triggerRef: context.triggerRef, containerRef, spacing });
+    const positionRef = usePopoverPosition({ triggerRef: context.triggerRef, spacing });
     const clickOutsideRef = useClickOutside(() => {
         if (isOpen) setActiveId(null);
     });
@@ -71,14 +66,10 @@ export function PopoverContent(props: {
                 ref={(node) => {
                     positionRef(node);
                     if (clickOutsideRef) clickOutsideRef.current = node;
-                    if (node && typeof node.showPopover === "function") {
-                        node.showPopover();
-                    }
                 }}
-                popover="auto"
-                style={{ position: "absolute", margin: 0, inset: "unset" }}
+                style={{ margin: 0, inset: "unset" }}
                 className={cn(
-                    "rounded-2xl border border-zinc-800 bg-zinc-950 p-4 text-zinc-200 shadow-md outline-hidden duration-150 ease-bounce z-50",
+                    "rounded-2xl border border-zinc-800 bg-zinc-950 p-4 text-zinc-200 shadow-md outline-hidden z-9999",
                     className
                 )}>
                 {children}

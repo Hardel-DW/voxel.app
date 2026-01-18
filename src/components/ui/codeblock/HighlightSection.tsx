@@ -1,31 +1,35 @@
-import { getTokenColor, processTokensIntoLines, tokenizeJSON } from "@/lib/utils/json-tokenizer";
+import { useRef } from "react";
+import { applyJsonHighlights } from "@/lib/utils/json-tokenizer";
 
-export default function HighlightSection(props: { children: string; language: string }) {
-    if (props.language !== "json") return null;
-    const lines = props.children.split("\n");
-    const tokens = tokenizeJSON(props.children);
-    const lineTokens = processTokensIntoLines(tokens);
+interface HighlightSectionProps {
+    children: string;
+    language: string;
+}
+
+export default function HighlightSection({ children, language }: HighlightSectionProps) {
+    const cleanupRef = useRef<() => void>(() => {});
+    const lineCount = children.split("\n").length;
+    if (language !== "json") return null;
+
+    const handleRef = (el: HTMLPreElement | null) => {
+        if (el) {
+            requestAnimationFrame(() => {
+                cleanupRef.current();
+                cleanupRef.current = applyJsonHighlights(el);
+            });
+        }
+    };
 
     return (
-        <pre className="text-gray-300 rounded-lg overflow-auto font-[Consolas] leading-normal">
-            <div className="flex">
-                <div className="flex-none p-4 text-right select-none border-r border-zinc-900">
-                    {lines.map((_, index) => (
-                        <div key={index.toString()}>{index + 1}</div>
-                    ))}
-                </div>
-                <div className="flex-1 p-4">
-                    {lineTokens.map((lineTokenList, lineIndex) => (
-                        <div key={lineIndex.toString()}>
-                            {lineTokenList.map((token, tokenIndex) => (
-                                <span key={`${lineIndex}-${tokenIndex}-${token.type}`} style={{ color: getTokenColor(token.type) }}>
-                                    {token.value}
-                                </span>
-                            ))}
-                        </div>
-                    ))}
-                </div>
+        <div className="flex font-[Consolas] text-sm leading-6">
+            <div className="shrink-0 select-none text-right px-4 border-r border-zinc-800/50 text-zinc-600">
+                {Array.from({ length: lineCount }, (_, i) => (
+                    <div key={`line-${i + 1}`}>{i + 1}</div>
+                ))}
             </div>
-        </pre>
+            <pre ref={handleRef} className="flex-1 px-4 whitespace-pre text-zinc-300 m-0">
+                {children}
+            </pre>
+        </div>
     );
 }

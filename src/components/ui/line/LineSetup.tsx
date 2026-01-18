@@ -2,7 +2,7 @@ import LineBackground from "@/components/ui/line/LineBackground";
 
 export default function LineSetup() {
     return (
-        <div className="absolute inset-0 size-full -z-10">
+        <div className="absolute w-full h-full inset-0 -z-10">
             <LineBackground />
         </div>
     );

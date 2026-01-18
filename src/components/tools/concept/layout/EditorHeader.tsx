@@ -1,12 +1,9 @@
-import { Link } from "@tanstack/react-router";
 import { Identifier, type IdentifierObject } from "@voxelio/breeze";
 import type { ReactNode } from "react";
 import { EditorBreadcrumb } from "@/components/tools/concept/layout/EditorBreadcrumb";
-import type { Tab } from "@/components/tools/elements";
 import { useActiveConcept } from "@/lib/hook/useActiveConcept";
-import { t } from "@/lib/i18n";
-import { cn } from "@/lib/utils";
 import { hueToHsl, stringToColor } from "@/lib/utils/color";
+import { EditorHeaderTabs } from "@/components/tools/concept/layout/EditorHeaderTabs";
 
 interface EditorHeaderProps {
     fallbackTitle: string;
@@ -24,8 +21,8 @@ export function EditorHeader({ fallbackTitle, identifier, filterPath, isOverview
             ? Identifier.toDisplay(filterPath.split("/").pop() || "")
             : "All"
         : identifier
-          ? new Identifier(identifier).toResourceName()
-          : fallbackTitle;
+            ? new Identifier(identifier).toResourceName()
+            : fallbackTitle;
 
     const colorKey = isOverview ? filterPath || "all" : identifier ? new Identifier(identifier).toUniqueKey() : fallbackTitle;
     const bgColor = hueToHsl(stringToColor(colorKey));
@@ -72,18 +69,3 @@ export function EditorHeader({ fallbackTitle, identifier, filterPath, isOverview
         </header>
     );
 }
-
-const EditorHeaderTabs = ({ tab, isActive }: { tab: Tab; isActive: boolean }) => {
-    return (
-        <Link
-            key={tab.id}
-            to={tab.url}
-            disabled={tab.soon}
-            className={cn(
-                "px-4 py-2 text-sm font-medium rounded-t-lg transition-all border-b-2 text-zinc-400 border-transparent disabled:opacity-40 disabled:cursor-not-allowed",
-                isActive ? "text-white border-white/60 bg-white/5" : "hover:text-zinc-200 hover:bg-white/5"
-            )}>
-            {t(tab.text)}
-        </Link>
-    );
-};

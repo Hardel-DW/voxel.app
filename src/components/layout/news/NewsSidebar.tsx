@@ -3,7 +3,7 @@ import NewsCard from "@/components/layout/news/NewsCard";
 import { t } from "@/lib/i18n";
 
 const links = [
-    { icon: "/icons/company/discord.svg", label: "Discord", href: "https://discord.gg/8z3tkQhay7" },
+    { icon: "/icons/company/discord.svg", label: "Discord", href: "https://discord.gg/TAmVFvkHep" },
     { icon: "/icons/company/github.svg", label: "GitHub", href: "https://github.com/voxelio" }
 ];
 

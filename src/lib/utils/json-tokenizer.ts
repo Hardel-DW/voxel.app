@@ -3,24 +3,14 @@ export interface Token {
     value: string;
 }
 
-export function getTokenColor(type: Token["type"]): string {
-    switch (type) {
-        case "string":
-            return "#d43dab";
-        case "number":
-            return "#f08d49";
-        case "boolean":
-            return "#4177e5";
-        case "null":
-            return "#4177e5";
-        case "property":
-            return "#d89600";
-        case "punctuation":
-            return "#ccc";
-        default:
-            return "#ccc";
-    }
-}
+const TOKEN_HIGHLIGHT_NAMES = {
+    string: "json-string",
+    number: "json-number",
+    boolean: "json-boolean",
+    null: "json-null",
+    property: "json-property",
+    punctuation: "json-punctuation"
+} as const;
 
 export function tokenizeJSON(json: string): Token[] {
     const tokens: Token[] = [];
@@ -112,34 +102,73 @@ export function tokenizeJSON(json: string): Token[] {
     return tokens;
 }
 
-export function processTokensIntoLines(tokens: Token[]): Token[][] {
-    let currentLine = 0;
-    let currentLineTokens: Token[] = [];
-    const lineTokens: Token[][] = [];
+export function applyJsonHighlights(element: HTMLElement): () => void {
+    if (!CSS.highlights) {
+        console.warn("CSS Custom Highlight API not supported");
+        return () => {};
+    }
 
-    for (const token of tokens) {
-        const newlines = (token.value.match(/\n/g) || []).length;
-        if (newlines === 0) {
-            currentLineTokens.push(token);
-        } else {
-            const parts = token.value.split("\n");
-            for (let i = 0; i < parts.length; i++) {
-                if (i === 0) {
-                    if (parts[i]) {
-                        currentLineTokens.push({ ...token, value: parts[i] });
-                    }
-                } else {
-                    lineTokens[currentLine] = currentLineTokens;
-                    currentLineTokens = [];
-                    currentLine++;
-                    if (parts[i]) {
-                        currentLineTokens.push({ ...token, value: parts[i] });
-                    }
+    const text = element.textContent ?? "";
+    const tokens = tokenizeJSON(text);
+    const tokensByType = Map.groupBy(
+        tokens.filter((t) => t.type !== "whitespace"),
+        (t) => t.type
+    );
+    const createdHighlights: string[] = [];
+
+    const textNodes: Text[] = [];
+    const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT);
+    let node = walker.nextNode();
+    while (node) {
+        textNodes.push(node as Text);
+        node = walker.nextNode();
+    }
+
+    if (textNodes.length === 0) return () => {};
+
+    const positionMap: Array<{ node: Text; localOffset: number }> = [];
+    let globalOffset = 0;
+    for (const textNode of textNodes) {
+        const length = textNode.textContent?.length ?? 0;
+        for (let i = 0; i < length; i++) {
+            positionMap[globalOffset + i] = { node: textNode, localOffset: i };
+        }
+        globalOffset += length;
+    }
+
+    for (const [type, typeTokens] of tokensByType) {
+        if (!typeTokens) continue;
+        const highlightName = TOKEN_HIGHLIGHT_NAMES[type as keyof typeof TOKEN_HIGHLIGHT_NAMES];
+        if (!highlightName) continue;
+
+        const ranges: Range[] = [];
+        let currentPos = 0;
+
+        for (const token of tokens) {
+            if (token.type === type) {
+                const start = positionMap[currentPos];
+                const end = positionMap[currentPos + token.value.length - 1];
+
+                if (start && end) {
+                    const range = new Range();
+                    range.setStart(start.node, start.localOffset);
+                    range.setEnd(end.node, end.localOffset + 1);
+                    ranges.push(range);
                 }
             }
+            currentPos += token.value.length;
+        }
+
+        if (ranges.length > 0) {
+            const highlight = new Highlight(...ranges);
+            CSS.highlights.set(highlightName, highlight);
+            createdHighlights.push(highlightName);
         }
     }
-    lineTokens[currentLine] = currentLineTokens;
 
-    return lineTokens;
+    return () => {
+        for (const name of createdHighlights) {
+            CSS.highlights.delete(name);
+        }
+    };
 }

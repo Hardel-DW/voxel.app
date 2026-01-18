@@ -3,7 +3,7 @@ import { CoreAction, type FlattenedLootItem, Identifier } from "@voxelio/breeze"
 import LootDetailsPopover from "@/components/tools/concept/loot/LootDetailsPopover";
 import SimpleSwitch from "@/components/tools/elements/SimpleSwitch";
 import TextureRenderer from "@/components/tools/elements/texture/TextureRenderer";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useTabsStore } from "@/lib/store/TabsStore";
 
 interface LootOverviewListProps {
     elementId: string;
@@ -14,7 +14,7 @@ interface LootOverviewListProps {
 
 export default function LootOverviewList({ elementId, items, resourceName, color }: LootOverviewListProps) {
     const handleConfigure = () => {
-        useConfiguratorStore.getState().openTab(elementId, "/editor/loot_table/main", resourceName);
+        useTabsStore.getState().openTab(elementId, "/editor/loot_table/main", resourceName);
     };
     const identifier = Identifier.fromUniqueKey(elementId);
     const pathParts = identifier.resource.split("/");

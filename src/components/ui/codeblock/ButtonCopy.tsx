@@ -9,20 +9,17 @@ export default function ButtonCopy(props: { snippet: string }) {
     };
 
     useEffect(() => {
-        if (pending) {
-            setTimeout(() => setPending(false), 3000);
-        }
+        if (!pending) return;
+        const timeout = setTimeout(() => setPending(false), 3000);
+        return () => clearTimeout(timeout);
     }, [pending]);
 
     return (
-        <div
-            className={
-                "w-12 h-12 p-2 hover:bg-zinc-800/50 cursor-pointer transition bg-black/10 border border-white/10 rounded-md flex justify-center items-center"
-            }>
+        <div className="w-10 h-10 p-2 hover:bg-zinc-800/50 cursor-pointer transition bg-black/10 border border-white/10 rounded-md flex justify-center items-center">
             {pending ? (
-                <img alt="checked" src="/icons/check.svg" className="invert" width={24} height={24} />
+                <img alt="checked" src="/icons/check.svg" className="invert" />
             ) : (
-                <img onKeyDown={copy} onClick={copy} alt="copy" src="/icons/copy.svg" className="invert" width={24} height={24} />
+                <img onKeyDown={copy} onClick={copy} alt="copy" src="/icons/copy.svg" className="invert" />
             )}
         </div>
     );

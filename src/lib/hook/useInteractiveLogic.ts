@@ -1,7 +1,8 @@
 import type { Action, ActionValue } from "@voxelio/breeze";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { type BaseComponent, useElementLocks, useElementProperty } from "@/lib/hook/useBreezeElement";
 import type { Lock, LockRenderer } from "@/lib/utils/lock";
+import { useNavigationStore } from "@/lib/store/NavigationStore";
 
 export type BaseRender = (el: any) => unknown;
 export type ActionOrBuilder = Action | ((value: any) => Action);
@@ -29,12 +30,12 @@ export interface UseInteractiveLogicProps<C extends BaseInteractiveComponent> {
 }
 
 export function useRenderer<T = unknown>(renderer?: BaseRender, elementId?: string): T | null {
-    const currentElementId = useConfiguratorStore((state) => elementId ?? state.currentElementId);
+    const currentElementId = useNavigationStore((state) => elementId ?? state.currentElementId);
     return useElementProperty(renderer, currentElementId, !!currentElementId) as T;
 }
 
 export function useActionHandler(action: ActionOrBuilder | undefined, options?: UseActionHandlerOptions) {
-    const currentElementId = useConfiguratorStore((state) => options?.elementId ?? state.currentElementId);
+    const currentElementId = useNavigationStore((state) => options?.elementId ?? state.currentElementId);
     const lock = useElementLocks(options?.lock, currentElementId);
     const performGlobalHandleChange = useConfiguratorStore((state) => state.handleChange);
 

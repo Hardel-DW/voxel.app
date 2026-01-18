@@ -1,15 +1,16 @@
-import { useNavigate } from "@tanstack/react-router";
+import { useLocation, useNavigate } from "@tanstack/react-router";
 import { Identifier } from "@voxelio/breeze";
-import { CONCEPTS } from "@/components/tools/elements";
-import { useConfiguratorStore, type OpenTab } from "@/components/tools/Store";
+import { CONCEPTS } from "@/lib/data/elements";
+import { type OpenTab, useTabsStore } from "@/lib/store/TabsStore";
 import { cn } from "@/lib/utils";
+import { getConceptFromPathname } from "@/lib/utils/concept";
 
 function TabItem({ tab, index, isActive }: { tab: OpenTab; index: number; isActive: boolean }) {
     const navigate = useNavigate();
-    const switchTab = useConfiguratorStore((state) => state.switchTab);
-    const closeTab = useConfiguratorStore((state) => state.closeTab);
-    const isDirty = useConfiguratorStore((state) => state.isDirty);
-    const icon = CONCEPTS.find((c) => tab.route.startsWith(`/editor/${c.registry}`))?.image.src
+    const location = useLocation();
+    const switchTab = useTabsStore((state) => state.switchTab);
+    const closeTab = useTabsStore((state) => state.closeTab);
+    const icon = CONCEPTS.find((c) => tab.route.includes(`/editor/${c.registry}`))?.image.src;
 
     const handleClick = () => {
         switchTab(index);
@@ -18,7 +19,29 @@ function TabItem({ tab, index, isActive }: { tab: OpenTab; index: number; isActi
 
     const handleClose = (e: React.KeyboardEvent<HTMLButtonElement> | React.MouseEvent<HTMLButtonElement>) => {
         e.stopPropagation();
+        const openTabs = useTabsStore.getState().openTabs;
+        const activeTabIndex = useTabsStore.getState().activeTabIndex;
         closeTab(index);
+
+        const updatedTabs = openTabs.toSpliced(index, 1);
+        if (updatedTabs.length === 0) {
+            const tabConcept = getConceptFromPathname(tab.route);
+            const currentConcept = getConceptFromPathname(location.pathname);
+            if (tabConcept && tabConcept === currentConcept) {
+                navigate({ to: "/editor/enchantment/overview" });
+            }
+            return;
+        }
+
+        const newActiveIndex =
+            index === activeTabIndex
+                ? Math.min(index, updatedTabs.length - 1)
+                : index < activeTabIndex
+                    ? activeTabIndex - 1
+                    : activeTabIndex;
+
+        const nextTab = updatedTabs[newActiveIndex];
+        if (nextTab) navigate({ to: nextTab.route });
     };
 
     return (
@@ -33,8 +56,7 @@ function TabItem({ tab, index, isActive }: { tab: OpenTab; index: number; isActi
                 "hover:bg-zinc-800/50",
                 isActive ? "bg-zinc-800/80 text-zinc-100" : "text-zinc-400"
             )}>
-            {icon && <img src={icon} alt="" className="size-4" />}
-            {isDirty && isActive && <span className="size-2 rounded-full bg-amber-500" />}
+            {icon && <img src={icon} alt="Icon" className="size-4" />}
             <span className="truncate max-w-48">{Identifier.fromUniqueKey(tab.elementId).toResourcePath()}</span>
             <button
                 type="button"
@@ -55,9 +77,8 @@ function TabItem({ tab, index, isActive }: { tab: OpenTab; index: number; isActi
 }
 
 export default function EditorTabs() {
-    const openTabs = useConfiguratorStore((state) => state.openTabs);
-    const activeTabIndex = useConfiguratorStore((state) => state.activeTabIndex);
-
+    const openTabs = useTabsStore((state) => state.openTabs);
+    const activeTabIndex = useTabsStore((state) => state.activeTabIndex);
     if (openTabs.length === 0) return null;
 
     return (

@@ -15,7 +15,9 @@ import { Route as AuthRouteImport } from './routes/auth'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as EditorRecipeRouteImport } from './routes/editor/recipe'
 import { Route as EditorLoot_tableRouteImport } from './routes/editor/loot_table'
+import { Route as EditorGithubRouteImport } from './routes/editor/github'
 import { Route as EditorEnchantmentRouteImport } from './routes/editor/enchantment'
+import { Route as EditorChangesRouteImport } from './routes/editor/changes'
 import { Route as EditorRecipeOverviewRouteImport } from './routes/editor/recipe/overview'
 import { Route as EditorRecipeMainRouteImport } from './routes/editor/recipe/main'
 import { Route as EditorLoot_tablePoolsRouteImport } from './routes/editor/loot_table/pools'
@@ -29,6 +31,11 @@ import { Route as EditorEnchantmentMainRouteImport } from './routes/editor/encha
 import { Route as EditorEnchantmentItemsRouteImport } from './routes/editor/enchantment/items'
 import { Route as EditorEnchantmentFindRouteImport } from './routes/editor/enchantment/find'
 import { Route as EditorEnchantmentExclusiveRouteImport } from './routes/editor/enchantment/exclusive'
+import { Route as EditorChangesVoxelRouteImport } from './routes/editor/changes/voxel'
+import { Route as EditorChangesPatchRouteImport } from './routes/editor/changes/patch'
+import { Route as EditorChangesMainRouteImport } from './routes/editor/changes/main'
+import { Route as EditorChangesEditRouteImport } from './routes/editor/changes/edit'
+import { Route as EditorChangesDiffRouteImport } from './routes/editor/changes/diff'
 
 const WorldRoute = WorldRouteImport.update({
   id: '/world',
@@ -60,9 +67,19 @@ const EditorLoot_tableRoute = EditorLoot_tableRouteImport.update({
   path: '/loot_table',
   getParentRoute: () => EditorRoute,
 } as any)
+const EditorGithubRoute = EditorGithubRouteImport.update({
+  id: '/github',
+  path: '/github',
+  getParentRoute: () => EditorRoute,
+} as any)
 const EditorEnchantmentRoute = EditorEnchantmentRouteImport.update({
   id: '/enchantment',
   path: '/enchantment',
+  getParentRoute: () => EditorRoute,
+} as any)
+const EditorChangesRoute = EditorChangesRouteImport.update({
+  id: '/changes',
+  path: '/changes',
   getParentRoute: () => EditorRoute,
 } as any)
 const EditorRecipeOverviewRoute = EditorRecipeOverviewRouteImport.update({
@@ -135,15 +152,47 @@ const EditorEnchantmentExclusiveRoute =
     path: '/exclusive',
     getParentRoute: () => EditorEnchantmentRoute,
   } as any)
+const EditorChangesVoxelRoute = EditorChangesVoxelRouteImport.update({
+  id: '/voxel',
+  path: '/voxel',
+  getParentRoute: () => EditorChangesRoute,
+} as any)
+const EditorChangesPatchRoute = EditorChangesPatchRouteImport.update({
+  id: '/patch',
+  path: '/patch',
+  getParentRoute: () => EditorChangesRoute,
+} as any)
+const EditorChangesMainRoute = EditorChangesMainRouteImport.update({
+  id: '/main',
+  path: '/main',
+  getParentRoute: () => EditorChangesRoute,
+} as any)
+const EditorChangesEditRoute = EditorChangesEditRouteImport.update({
+  id: '/edit',
+  path: '/edit',
+  getParentRoute: () => EditorChangesRoute,
+} as any)
+const EditorChangesDiffRoute = EditorChangesDiffRouteImport.update({
+  id: '/diff',
+  path: '/diff',
+  getParentRoute: () => EditorChangesRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRouteWithChildren
   '/world': typeof WorldRoute
+  '/editor/changes': typeof EditorChangesRouteWithChildren
   '/editor/enchantment': typeof EditorEnchantmentRouteWithChildren
+  '/editor/github': typeof EditorGithubRoute
   '/editor/loot_table': typeof EditorLoot_tableRouteWithChildren
   '/editor/recipe': typeof EditorRecipeRouteWithChildren
+  '/editor/changes/diff': typeof EditorChangesDiffRoute
+  '/editor/changes/edit': typeof EditorChangesEditRoute
+  '/editor/changes/main': typeof EditorChangesMainRoute
+  '/editor/changes/patch': typeof EditorChangesPatchRoute
+  '/editor/changes/voxel': typeof EditorChangesVoxelRoute
   '/editor/enchantment/exclusive': typeof EditorEnchantmentExclusiveRoute
   '/editor/enchantment/find': typeof EditorEnchantmentFindRoute
   '/editor/enchantment/items': typeof EditorEnchantmentItemsRoute
@@ -163,9 +212,16 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRouteWithChildren
   '/world': typeof WorldRoute
+  '/editor/changes': typeof EditorChangesRouteWithChildren
   '/editor/enchantment': typeof EditorEnchantmentRouteWithChildren
+  '/editor/github': typeof EditorGithubRoute
   '/editor/loot_table': typeof EditorLoot_tableRouteWithChildren
   '/editor/recipe': typeof EditorRecipeRouteWithChildren
+  '/editor/changes/diff': typeof EditorChangesDiffRoute
+  '/editor/changes/edit': typeof EditorChangesEditRoute
+  '/editor/changes/main': typeof EditorChangesMainRoute
+  '/editor/changes/patch': typeof EditorChangesPatchRoute
+  '/editor/changes/voxel': typeof EditorChangesVoxelRoute
   '/editor/enchantment/exclusive': typeof EditorEnchantmentExclusiveRoute
   '/editor/enchantment/find': typeof EditorEnchantmentFindRoute
   '/editor/enchantment/items': typeof EditorEnchantmentItemsRoute
@@ -186,9 +242,16 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/editor': typeof EditorRouteWithChildren
   '/world': typeof WorldRoute
+  '/editor/changes': typeof EditorChangesRouteWithChildren
   '/editor/enchantment': typeof EditorEnchantmentRouteWithChildren
+  '/editor/github': typeof EditorGithubRoute
   '/editor/loot_table': typeof EditorLoot_tableRouteWithChildren
   '/editor/recipe': typeof EditorRecipeRouteWithChildren
+  '/editor/changes/diff': typeof EditorChangesDiffRoute
+  '/editor/changes/edit': typeof EditorChangesEditRoute
+  '/editor/changes/main': typeof EditorChangesMainRoute
+  '/editor/changes/patch': typeof EditorChangesPatchRoute
+  '/editor/changes/voxel': typeof EditorChangesVoxelRoute
   '/editor/enchantment/exclusive': typeof EditorEnchantmentExclusiveRoute
   '/editor/enchantment/find': typeof EditorEnchantmentFindRoute
   '/editor/enchantment/items': typeof EditorEnchantmentItemsRoute
@@ -210,9 +273,16 @@ export interface FileRouteTypes {
     | '/auth'
     | '/editor'
     | '/world'
+    | '/editor/changes'
     | '/editor/enchantment'
+    | '/editor/github'
     | '/editor/loot_table'
     | '/editor/recipe'
+    | '/editor/changes/diff'
+    | '/editor/changes/edit'
+    | '/editor/changes/main'
+    | '/editor/changes/patch'
+    | '/editor/changes/voxel'
     | '/editor/enchantment/exclusive'
     | '/editor/enchantment/find'
     | '/editor/enchantment/items'
@@ -232,9 +302,16 @@ export interface FileRouteTypes {
     | '/auth'
     | '/editor'
     | '/world'
+    | '/editor/changes'
     | '/editor/enchantment'
+    | '/editor/github'
     | '/editor/loot_table'
     | '/editor/recipe'
+    | '/editor/changes/diff'
+    | '/editor/changes/edit'
+    | '/editor/changes/main'
+    | '/editor/changes/patch'
+    | '/editor/changes/voxel'
     | '/editor/enchantment/exclusive'
     | '/editor/enchantment/find'
     | '/editor/enchantment/items'
@@ -254,9 +331,16 @@ export interface FileRouteTypes {
     | '/auth'
     | '/editor'
     | '/world'
+    | '/editor/changes'
     | '/editor/enchantment'
+    | '/editor/github'
     | '/editor/loot_table'
     | '/editor/recipe'
+    | '/editor/changes/diff'
+    | '/editor/changes/edit'
+    | '/editor/changes/main'
+    | '/editor/changes/patch'
+    | '/editor/changes/voxel'
     | '/editor/enchantment/exclusive'
     | '/editor/enchantment/find'
     | '/editor/enchantment/items'
@@ -323,11 +407,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EditorLoot_tableRouteImport
       parentRoute: typeof EditorRoute
     }
+    '/editor/github': {
+      id: '/editor/github'
+      path: '/github'
+      fullPath: '/editor/github'
+      preLoaderRoute: typeof EditorGithubRouteImport
+      parentRoute: typeof EditorRoute
+    }
     '/editor/enchantment': {
       id: '/editor/enchantment'
       path: '/enchantment'
       fullPath: '/editor/enchantment'
       preLoaderRoute: typeof EditorEnchantmentRouteImport
+      parentRoute: typeof EditorRoute
+    }
+    '/editor/changes': {
+      id: '/editor/changes'
+      path: '/changes'
+      fullPath: '/editor/changes'
+      preLoaderRoute: typeof EditorChangesRouteImport
       parentRoute: typeof EditorRoute
     }
     '/editor/recipe/overview': {
@@ -421,8 +519,63 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof EditorEnchantmentExclusiveRouteImport
       parentRoute: typeof EditorEnchantmentRoute
     }
+    '/editor/changes/voxel': {
+      id: '/editor/changes/voxel'
+      path: '/voxel'
+      fullPath: '/editor/changes/voxel'
+      preLoaderRoute: typeof EditorChangesVoxelRouteImport
+      parentRoute: typeof EditorChangesRoute
+    }
+    '/editor/changes/patch': {
+      id: '/editor/changes/patch'
+      path: '/patch'
+      fullPath: '/editor/changes/patch'
+      preLoaderRoute: typeof EditorChangesPatchRouteImport
+      parentRoute: typeof EditorChangesRoute
+    }
+    '/editor/changes/main': {
+      id: '/editor/changes/main'
+      path: '/main'
+      fullPath: '/editor/changes/main'
+      preLoaderRoute: typeof EditorChangesMainRouteImport
+      parentRoute: typeof EditorChangesRoute
+    }
+    '/editor/changes/edit': {
+      id: '/editor/changes/edit'
+      path: '/edit'
+      fullPath: '/editor/changes/edit'
+      preLoaderRoute: typeof EditorChangesEditRouteImport
+      parentRoute: typeof EditorChangesRoute
+    }
+    '/editor/changes/diff': {
+      id: '/editor/changes/diff'
+      path: '/diff'
+      fullPath: '/editor/changes/diff'
+      preLoaderRoute: typeof EditorChangesDiffRouteImport
+      parentRoute: typeof EditorChangesRoute
+    }
   }
 }
+
+interface EditorChangesRouteChildren {
+  EditorChangesDiffRoute: typeof EditorChangesDiffRoute
+  EditorChangesEditRoute: typeof EditorChangesEditRoute
+  EditorChangesMainRoute: typeof EditorChangesMainRoute
+  EditorChangesPatchRoute: typeof EditorChangesPatchRoute
+  EditorChangesVoxelRoute: typeof EditorChangesVoxelRoute
+}
+
+const EditorChangesRouteChildren: EditorChangesRouteChildren = {
+  EditorChangesDiffRoute: EditorChangesDiffRoute,
+  EditorChangesEditRoute: EditorChangesEditRoute,
+  EditorChangesMainRoute: EditorChangesMainRoute,
+  EditorChangesPatchRoute: EditorChangesPatchRoute,
+  EditorChangesVoxelRoute: EditorChangesVoxelRoute,
+}
+
+const EditorChangesRouteWithChildren = EditorChangesRoute._addFileChildren(
+  EditorChangesRouteChildren,
+)
 
 interface EditorEnchantmentRouteChildren {
   EditorEnchantmentExclusiveRoute: typeof EditorEnchantmentExclusiveRoute
@@ -479,13 +632,17 @@ const EditorRecipeRouteWithChildren = EditorRecipeRoute._addFileChildren(
 )
 
 interface EditorRouteChildren {
+  EditorChangesRoute: typeof EditorChangesRouteWithChildren
   EditorEnchantmentRoute: typeof EditorEnchantmentRouteWithChildren
+  EditorGithubRoute: typeof EditorGithubRoute
   EditorLoot_tableRoute: typeof EditorLoot_tableRouteWithChildren
   EditorRecipeRoute: typeof EditorRecipeRouteWithChildren
 }
 
 const EditorRouteChildren: EditorRouteChildren = {
+  EditorChangesRoute: EditorChangesRouteWithChildren,
   EditorEnchantmentRoute: EditorEnchantmentRouteWithChildren,
+  EditorGithubRoute: EditorGithubRoute,
   EditorLoot_tableRoute: EditorLoot_tableRouteWithChildren,
   EditorRecipeRoute: EditorRecipeRouteWithChildren,
 }

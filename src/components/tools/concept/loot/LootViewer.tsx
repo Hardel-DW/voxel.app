@@ -12,7 +12,7 @@ export default function LootViewer(props: LootViewerProps) {
     const totalProbability = props.data.reduce((sum, reward) => sum + reward.probability, 0);
 
     return (
-        <div className="relative overflow-hidden bg-black/35 border-t-2 border-l-2 border-stone-900 ring-0 ring-zinc-900 rounded-xl w-full min-h-full">
+        <div className="relative overflow-hidden bg-black/35 border-t-2 border-l-2 border-zinc-900 ring-0 ring-zinc-900 rounded-xl w-full min-h-full">
             <div className="overflow-y-auto col-span-5 flex flex-col gap-y-4 p-8">
                 <div>
                     <div className="flex justify-between items-center gap-y-2">

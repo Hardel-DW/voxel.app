@@ -1,11 +1,11 @@
 import { useNavigate } from "@tanstack/react-router";
 import { Datapack } from "@voxelio/breeze";
-import { useConfiguratorStore } from "@/components/tools/Store";
-import { useExportStore } from "@/components/tools/sidebar/ExportStore";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
+import { useGithubStore } from "@/lib/store/GithubStore";
 import { Button } from "@/components/ui/Button";
 import { t } from "@/lib/i18n";
 import { hasSession, restoreSession } from "@/lib/utils/sessionPersistence";
-import { TOAST, toast } from "../ui/Toast";
+import { TOAST, toast } from "@/components/ui/Toast";
 
 export default function RestoreLastSession({ className }: { className?: string }) {
     const navigate = useNavigate();
@@ -26,12 +26,12 @@ export default function RestoreLastSession({ className }: { className?: string }
                 .getState()
                 .setup({ ...result, logger: session.logger, elements: restoredElements }, session.isModded, session.name);
 
-            useExportStore.getState().clearGitRepository();
+            useGithubStore.getState().clearGitRepository();
             if (session.isGitRepository) {
-                useExportStore.getState().setGitRepository(session.owner, session.repositoryName, session.branch, "");
+                useGithubStore.getState().setGitRepository(session.owner, session.repositoryName, session.branch, "");
             }
 
-            useExportStore.getState().setInitializing(session.isInitializing);
+            useGithubStore.getState().setInitializing(session.isInitializing);
 
             toast("Session restored successfully", TOAST.SUCCESS);
             navigate({ to: "/editor/enchantment/overview" });

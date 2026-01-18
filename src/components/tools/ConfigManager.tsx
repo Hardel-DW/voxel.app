@@ -1,5 +1,5 @@
 import type { PropsWithChildren } from "react";
-import { useConfiguratorStore } from "@/components/tools/Store";
+import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { Button } from "@/components/ui/Button";
 import { t } from "@/lib/i18n";
 import RestoreLastSession from "./RestoreLastSession";

@@ -1,7 +1,7 @@
 import { invoke } from "@tauri-apps/api/core";
 import { open } from "@tauri-apps/plugin-dialog";
 import { useState } from "react";
-import { useHomeStore } from "@/components/home/HomeStore";
+import { useHomeStore } from "@/lib/store/HomeStore";
 import { Button } from "@/components/ui/Button";
 import {
     Dialog,

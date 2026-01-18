@@ -22,7 +22,7 @@ export type ToolDonationType = BaseComponent & {
 export default function Donation(props: ToolDonationType) {
     return (
         <RenderGuard condition={props.hide}>
-            <div className="bg-black/35 border-t-2 border-l-2 rounded-2xl border-stone-900 ring-0 ring-zinc-800 overflow-hidden backdrop-blur-2xl relative mt-auto">
+            <div className="bg-black/35 border-t-2 border-l-2 rounded-2xl border-zinc-900 ring-0 ring-zinc-800 overflow-hidden backdrop-blur-2xl relative mt-auto">
                 <img className="absolute -top-24 -right-24 size-96 opacity-20" src={props.icon} alt="Voxel Labs" />
 
                 <div className="flex flex-col justify-between h-full p-8 pl-12">

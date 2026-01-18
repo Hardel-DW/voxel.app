@@ -2,9 +2,9 @@ import { CoreAction, isVoxel, RecipeAction, type RecipeProps } from "@voxelio/br
 import { useState } from "react";
 import RecipeRenderer from "@/components/tools/concept/recipe/RecipeRenderer";
 import RecipeSelector from "@/components/tools/concept/recipe/RecipeSelector";
-import { getBlockByRecipeType, getFirstTypeFromSelection, RECIPE_BLOCKS } from "@/components/tools/concept/recipe/recipeConfig";
+import { getBlockByRecipeType, getFirstTypeFromSelection, RECIPE_BLOCKS } from "@/lib/data/recipeConfig";
 import ToolCounter from "@/components/tools/elements/ToolCounter";
-import { getCurrentElement, useConfiguratorStore } from "@/components/tools/Store";
+import { getCurrentElement, useConfiguratorStore } from "@/lib/store/StudioStore";
 import { Tab, TabList, Tabs } from "@/components/ui/Tabs";
 
 const TAB_CONFIGS: Record<string, { label: string; value: string }[]> = {
@@ -29,7 +29,7 @@ export default function RecipeSection() {
     const tabs = currentBlock ? TAB_CONFIGS[currentBlock.id] : undefined;
 
     return (
-        <div className="relative overflow-hidden bg-black/35 border-t-2 border-l-2 border-stone-900 ring-0 ring-zinc-900 transition-all hover:ring-1 rounded-xl p-6">
+        <div className="relative overflow-hidden bg-black/35 border-t-2 border-l-2 border-zinc-900 ring-0 ring-zinc-900 transition-all hover:ring-1 rounded-xl p-6">
             <div className="px-6 flex justify-between items-center gap-4">
                 <div>
                     <h2 className="text-xl font-bold text-white">Recipe</h2>

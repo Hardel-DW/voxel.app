@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Identifier } from "@voxelio/breeze";
-import { useEditorUiStore } from "@/components/tools/concept/EditorUiStore";
+import { useEditorUiStore } from "@/lib/store/EditorUiStore";
 import LootOverviewCard from "@/components/tools/concept/loot/LootOverviewCard";
 import { TextInput } from "@/components/ui/TextInput";
 import { useElementsByType } from "@/lib/hook/useElementsByType";

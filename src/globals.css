@@ -50,6 +50,10 @@
     background-size: 200% 100%;
 }
 
+@utility grid-auto-* {
+    grid-template-columns: repeat(auto-fit, minmax(calc(var(--spacing) * --value(integer)), 1fr));
+}
+
 @utility squaring-* {
     background-image: linear-gradient(to right, --value(--color-*) 1px, transparent 1px), linear-gradient(to bottom, --value(--color-*) 1px, transparent 1px);
     background-size: 4rem 4rem;

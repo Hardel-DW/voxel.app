@@ -1,6 +1,6 @@
 import { useState } from "react";
 import GameCard from "@/components/home/client/GameCard";
-import type { GameClient } from "@/components/home/HomeStore";
+import type { GameClient } from "@/lib/store/HomeStore";
 import { t } from "@/lib/i18n";
 import { useCacheValue } from "@/lib/utils/cache";
 import { instanceCache, syncClient } from "@/lib/utils/instance/cache";

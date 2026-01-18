@@ -4,10 +4,10 @@ import { CoreAction, Identifier } from "@voxelio/breeze";
 import ToolRange from "@/components/tools/elements/ToolRange";
 import ToolSection from "@/components/tools/elements/ToolSection";
 import ToolSwitch from "@/components/tools/elements/ToolSwitch";
-import { useConfiguratorStore } from "@/components/tools/Store";
 import { useElementProperty } from "@/lib/hook/useBreezeElement";
 import { t } from "@/lib/i18n";
 import { isMinecraft } from "@/lib/utils/lock";
+import { useNavigationStore } from "@/lib/store/NavigationStore";
 
 export const Route = createFileRoute("/editor/enchantment/technical")({
     component: EnchantmentTechnicalPage
@@ -23,7 +23,7 @@ const FIELDS = [
 ];
 
 function EnchantmentTechnicalPage() {
-    const currentElementId = useConfiguratorStore((state) => state.currentElementId);
+    const currentElementId = useNavigationStore((state) => state.currentElementId);
     const effectKeys = useElementProperty((el) => (el?.effects ? Object.keys(el.effects) : []), currentElementId, !!currentElementId);
     if (!currentElementId) return null;
 
