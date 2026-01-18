@@ -26,7 +26,7 @@ function HomePage() {
                         <div className="space-y-1">
                             <h1 className="text-2xl font-bold text-white tracking-tight">{getGreeting()}</h1>
                             <p className="text-sm text-zinc-500">
-                                {projectCount > 0 ? t("home.subtitle.projects", { count: projectCount }) : t("home.subtitle.empty")}
+                                {projectCount > 0 ? t("tauri:home.subtitle.projects", { count: projectCount }) : t("tauri:home.subtitle.empty")}
                             </p>
                         </div>
                         <div className="flex items-center gap-3">

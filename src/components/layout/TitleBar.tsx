@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 
 const appWindow = getCurrentWindow();
@@ -8,7 +9,7 @@ export default function TitleBar() {
             <div data-tauri-drag-region className="h-8 flex items-center justify-between">
                 <div className="flex items-center gap-2 pl-3 pointer-events-none">
                     <img src="/icons/logo.svg" alt="Voxel" className="size-4" />
-                    <span className="text-xs font-medium text-zinc-400">Voxel Studio Pro</span>
+                    <span className="text-xs font-medium text-zinc-400">{t("tauri:app.title")}</span>
                 </div>
 
                 <div className="flex items-center h-full">

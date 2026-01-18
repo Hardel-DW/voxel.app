@@ -21,7 +21,7 @@ export default function ClientRow({ client, showDivider }: { client: GameClient;
     };
 
     const isVanilla = client.type === "vanilla";
-    const emptyLabel = isVanilla ? t("home.noWorlds") : t("home.noInstances");
+    const emptyLabel = isVanilla ? t("tauri:home.noWorlds") : t("tauri:home.noInstances");
     const items = data ?? [];
 
     return (
@@ -36,7 +36,7 @@ export default function ClientRow({ client, showDivider }: { client: GameClient;
                         onClick={handleSync}
                         disabled={!canSync || syncing}
                         className="p-1 rounded hover:bg-zinc-800/50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
-                        title={t("home.sync")}>
+                        title={t("tauri:home.sync")}>
                         <svg
                             className={`size-4 text-zinc-400 ${syncing ? "animate-spin" : ""}`}
                             fill="none"
@@ -53,7 +53,7 @@ export default function ClientRow({ client, showDivider }: { client: GameClient;
                 </div>
 
                 {!data ? (
-                    <p className="text-sm text-zinc-500">{t("home.loading")}</p>
+                    <p className="text-sm text-zinc-500">{t("tauri:home.loading")}</p>
                 ) : items.length === 0 ? (
                     <p className="text-sm text-zinc-500">{emptyLabel}</p>
                 ) : (

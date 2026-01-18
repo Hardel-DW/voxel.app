@@ -34,18 +34,18 @@ export default function NewsSidebar() {
                             <div className="flex items-center gap-3">
                                 <img src="/images/avatar/hardel.webp" alt="User" className="size-10 rounded-full object-cover" />
                                 <div className="flex-1 min-w-0">
-                                    <p className="text-sm font-medium text-zinc-200">{t("home.user.guest")}</p>
-                                    <p className="text-xs text-zinc-500">{t("home.user.login_hint")}</p>
+                                    <p className="text-sm font-medium text-zinc-200">{t("tauri:home.user.guest")}</p>
+                                    <p className="text-xs text-zinc-500">{t("tauri:home.user.login_hint")}</p>
                                 </div>
                                 <button
                                     type="button"
                                     className="px-3 py-1.5 text-xs font-medium text-zinc-300 bg-zinc-800/50 hover:bg-zinc-700/50 border border-zinc-700/50 rounded-lg transition-colors cursor-pointer">
-                                    Connect
+                                    {t("tauri:home.user.connect")}
                                 </button>
                             </div>
                         </div>
                         <div className="space-y-3">
-                            <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider px-1">{t("home.news.title")}</h3>
+                            <h3 className="text-sm font-semibold text-zinc-400 uppercase tracking-wider px-1">{t("tauri:home.news.title")}</h3>
                             {NEWS_ITEMS.map((item) => (
                                 <NewsCard key={`${item.id}-${item.title}`} item={item} />
                             ))}
@@ -58,15 +58,15 @@ export default function NewsSidebar() {
                                 <svg className="size-4 text-red-400" viewBox="0 0 16 16" fill="currentColor">
                                     <path d="M8 2.748l-.717-.737C5.6.281 2.514.878 1.4 3.053c-.523 1.023-.641 2.5.314 4.385.92 1.815 2.834 3.989 6.286 6.357 3.452-2.368 5.365-4.542 6.286-6.357.955-1.886.838-3.362.314-4.385C13.486.878 10.4.28 8.717 2.01L8 2.748z" />
                                 </svg>
-                                <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider">{t("home.support.title")}</span>
+                                <span className="text-xs font-bold text-zinc-300 uppercase tracking-wider">{t("tauri:home.support.title")}</span>
                             </div>
-                            <p className="text-xs text-zinc-500 mb-3">{t("home.support.description")}</p>
+                            <p className="text-xs text-zinc-500 mb-3">{t("tauri:home.support.description")}</p>
                             <a
                                 href="https://www.patreon.com/hardel"
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="block w-full px-4 py-2 text-sm font-medium text-center text-white shimmer-orange-700 hover:shimmer-orange-600 rounded-lg transition-colors cursor-pointer">
-                                {t("home.support.button")}
+                                {t("tauri:home.support.button")}
                             </a>
                         </div>
 

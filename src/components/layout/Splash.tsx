@@ -1,3 +1,4 @@
+import { t } from "@/lib/i18n";
 import TitleBar from "./TitleBar";
 
 const GridBackground = () => (
@@ -29,7 +30,7 @@ export default function Splash() {
 
                     <div className="flex justify-between items-end">
                         <div className="text-[10px] text-zinc-600 font-mono cursor-pointer hover:text-zinc-400 transition-colors">
-                            Need Help?
+                            {t("tauri:splash.help")}
                         </div>
                         <a
                             href="https://github.com"
@@ -52,12 +53,12 @@ export default function Splash() {
                             VOXEL
                         </h1>
                         <p className="text-xs tracking-[0.3em] font-medium text-zinc-500 uppercase opacity-100 translate-y-0 transition-all duration-500 delay-300 starting:opacity-0 starting:translate-y-4">
-                            Studio Pro
+                            {t("tauri:splash.subtitle")}
                         </p>
                     </div>
 
                     <div className="absolute bottom-20 flex flex-col items-center gap-3 w-64 opacity-100 transition-opacity duration-500 delay-500 starting:opacity-0">
-                        <p className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest animate-pulse">Loading...</p>
+                        <p className="text-[10px] font-mono text-zinc-400 uppercase tracking-widest animate-pulse">{t("tauri:splash.loading")}</p>
                     </div>
                 </div>
             </div>

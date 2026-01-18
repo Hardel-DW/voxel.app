@@ -1,4 +1,4 @@
-import { getLocale } from "@/lib/i18n";
+import { getLocale, t } from "@/lib/i18n";
 import { cn } from "@/lib/utils";
 
 export interface NewsItem {
@@ -29,7 +29,7 @@ export default function NewsCard({ item }: { item: NewsItem }) {
                             item.type === "Feature" && "bg-emerald-500/5 text-emerald-600 border-emerald-500/10",
                             item.type === "Announcement" && "bg-amber-500/5 text-amber-600 border-amber-500/10"
                         )}>
-                        {item.type}
+                        {t(`tauri:home.news.type.${item.type.toLowerCase()}`)}
                     </span>
                     <p className="text-xs text-zinc-600">{formattedDate}</p>
                 </div>

@@ -933,5 +933,17 @@
     "tauri:studio.projects": "Projets",
     "tauri:studio.vanilla_explorer": "Données Vanilla",
     "tauri:studio.vanilla_explorer.description": "Parcourir le contenu par défaut de Minecraft",
-    "tauri:restore_session.description": "Reprendre là où vous vous êtes arrêté"
+    "tauri:restore_session.description": "Reprendre là où vous vous êtes arrêté",
+    "tauri:app.title": "Voxel Studio Pro",
+    "tauri:splash.subtitle": "Studio Pro",
+    "tauri:splash.loading": "Chargement...",
+    "tauri:splash.help": "Besoin d'aide ?",
+    "tauri:home.nav.home": "Accueil",
+    "tauri:home.nav.new_project": "Nouveau Projet",
+    "tauri:home.noWorlds": "Aucun monde trouvé",
+    "tauri:home.sync": "Synchroniser",
+    "tauri:home.loading": "Chargement...",
+    "tauri:home.news.type.update": "Mise à jour",
+    "tauri:home.news.type.feature": "Fonctionnalité",
+    "tauri:home.news.type.announcement": "Annonce"
 }

@@ -18,7 +18,7 @@ export default function RecentProjects() {
                 <>
                     <div className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
-                            <h2 className="text-lg font-semibold text-zinc-200">{t("home.recent.title")}</h2>
+                            <h2 className="text-lg font-semibold text-zinc-200">{t("tauri:home.recent.title")}</h2>
                             <span className="text-xs text-zinc-500 bg-zinc-800/50 px-2 py-0.5 rounded-md">{projects.length}</span>
                         </div>
                     </div>
@@ -45,8 +45,8 @@ export default function RecentProjects() {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                         </svg>
                     </div>
-                    <p className="text-sm text-zinc-400 text-center">{t("home.recent.empty")}</p>
-                    <p className="text-xs text-zinc-600 mt-1">{t("home.recent.empty.hint")}</p>
+                    <p className="text-sm text-zinc-400 text-center">{t("tauri:home.recent.empty")}</p>
+                    <p className="text-xs text-zinc-600 mt-1">{t("tauri:home.recent.empty.hint")}</p>
                 </div>
             )}
         </section>

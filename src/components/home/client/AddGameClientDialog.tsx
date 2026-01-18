@@ -85,7 +85,7 @@ export default function AddGameClientDialog() {
                             </svg>
                         </div>
                         <span className="text-sm font-medium text-zinc-400 group-hover:text-zinc-300 transition-colors">
-                            {t("home.addClient.button")}
+                            {t("tauri:home.addClient.button")}
                         </span>
                     </div>
                 </button>
@@ -94,14 +94,14 @@ export default function AddGameClientDialog() {
             <DialogContent className="w-5xl px-8 py-4">
                 <DialogHeader>
                     <DialogTitle>
-                        <h2 className="text-lg font-semibold text-zinc-200">{t("home.addClient.title")}</h2>
+                        <h2 className="text-lg font-semibold text-zinc-200">{t("tauri:home.addClient.title")}</h2>
                     </DialogTitle>
                 </DialogHeader>
 
                 <DialogBody className="space-y-5 py-3">
                     <div className="space-y-2">
                         <label htmlFor="launcher" className="text-sm font-medium text-zinc-400">
-                            {t("home.addClient.launcher")}
+                            {t("tauri:home.addClient.launcher")}
                         </label>
                         <div className="grid grid-cols-3 gap-2">
                             {LAUNCHER_PRESETS.map((p) => (
@@ -124,7 +124,7 @@ export default function AddGameClientDialog() {
 
                     <div className="space-y-2 pt-4">
                         <label htmlFor="path" className="text-sm font-medium text-zinc-400">
-                            {t("home.addClient.path")}
+                            {t("tauri:home.addClient.path")}
                         </label>
                         <div className="flex gap-2">
                             <input
@@ -134,11 +134,11 @@ export default function AddGameClientDialog() {
                                     setPath(e.target.value);
                                     validate(e.target.value, preset);
                                 }}
-                                placeholder={t("home.addClient.pathPlaceholder")}
+                                placeholder={t("tauri:home.addClient.pathPlaceholder")}
                                 className="flex-1 px-3 py-2 bg-zinc-900/60 border border-zinc-800/50 rounded-lg text-sm text-zinc-200 placeholder-zinc-600 focus:outline-none focus:border-zinc-600 transition-colors"
                             />
                             <Button variant="ghost_border" onClick={handleBrowse} className="shrink-0">
-                                {t("home.addClient.browse")}
+                                {t("tauri:home.addClient.browse")}
                             </Button>
                         </div>
                     </div>
@@ -153,15 +153,15 @@ export default function AddGameClientDialog() {
                                 validation.status === "valid" && "text-emerald-400",
                                 validation.status === "invalid" && "text-red-400"
                             )}>
-                            {validation.status === "validating" && t("home.addClient.status.validating")}
-                            {validation.status === "valid" && t("home.addClient.status.valid", { count: validation.count })}
-                            {validation.status === "invalid" && t("home.addClient.status.invalid")}
+                            {validation.status === "validating" && t("tauri:home.addClient.status.validating")}
+                            {validation.status === "valid" && t("tauri:home.addClient.status.valid", { count: validation.count })}
+                            {validation.status === "invalid" && t("tauri:home.addClient.status.invalid")}
                         </span>
                     )}
                     <div className="flex gap-2 ml-auto">
                         <DialogCloseButton variant="ghost_border">{t("cancel")}</DialogCloseButton>
                         <DialogCloseButton variant="ghost" onClick={handleAdd} disabled={validation.status !== "valid"}>
-                            {t("home.addClient.add")}
+                            {t("tauri:home.addClient.add")}
                         </DialogCloseButton>
                     </div>
                 </DialogFooter>

@@ -16,7 +16,7 @@ export default function HomeSidebar() {
                 <Link
                     to="/"
                     className="group size-10 rounded-xl flex items-center justify-center hover:bg-zinc-800/50 transition-colors cursor-pointer"
-                    title={t("home.nav.home")}>
+                    title={t("tauri:home.nav.home")}>
                     <svg
                         className="size-5 text-zinc-500 group-hover:text-zinc-300 transition-colors"
                         viewBox="0 0 24 24"
@@ -52,7 +52,7 @@ export default function HomeSidebar() {
                 <button
                     type="button"
                     className="group size-10 rounded-xl flex items-center justify-center cursor-pointer transition-all hover:bg-zinc-800/40"
-                    title={t("home.nav.new_project")}
+                    title={t("tauri:home.nav.new_project")}
                     onClick={() => useProjectStore.getState().createNewProject()}>
                     <svg
                         className="size-4 text-zinc-500 group-hover:text-zinc-300 transition-colors"
@@ -90,7 +90,7 @@ export default function HomeSidebar() {
                 <button
                     type="button"
                     className="group size-10 rounded-full bg-linear-to-br from-zinc-700 to-zinc-800 border border-zinc-600/50 flex items-center justify-center cursor-pointer hover:from-zinc-600 hover:to-zinc-700 transition-all"
-                    title={t("home.user.connect")}>
+                    title={t("tauri:home.user.connect")}>
                     <svg
                         className="size-5 text-zinc-400 group-hover:text-zinc-200 transition-colors"
                         viewBox="0 0 24 24"
