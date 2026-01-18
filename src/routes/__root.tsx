@@ -3,6 +3,8 @@ import DefaultCatchBoundary from "@/components/DefaultCatchBoundary";
 import NotFound from "@/components/NotFound";
 import Providers from "@/components/QueryProvider";
 import { Toaster } from "@/components/ui/Toast";
+import { FloatingBarProvider } from "@/components/tools/floatingbar/FloatingBarContext";
+import AppLayout from "@/components/layout/AppLayout";
 
 export const Route = createRootRoute({
     errorComponent: DefaultCatchBoundary,
@@ -13,7 +15,11 @@ export const Route = createRootRoute({
 function RootComponent() {
     return (
         <Providers>
-            <Outlet />
+            <FloatingBarProvider>
+                <AppLayout>
+                    <Outlet />
+                </AppLayout>
+            </FloatingBarProvider>
             <Toaster />
         </Providers>
     );
