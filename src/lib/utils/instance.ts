@@ -1,10 +1,18 @@
-import { join } from "@tauri-apps/api/path";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { join } from "@tauri-apps/api/path";
 import { cachedFetch } from "@/lib/utils/cache";
 import { getContentCounts, scanContent, scanDatapacks } from "@/lib/utils/instance/content";
 import { hashDir } from "@/lib/utils/instance/helpers";
 import { scanLauncherInstances } from "@/lib/utils/instance/launchers";
-import type { ClientType, ContentCounts, ContentType, InstanceInfo, PackContent, PaginatedResult, WorldInfo } from "@/lib/utils/instance/types";
+import type {
+    ClientType,
+    ContentCounts,
+    ContentType,
+    InstanceInfo,
+    PackContent,
+    PaginatedResult,
+    WorldInfo
+} from "@/lib/utils/instance/types";
 import { scanWorlds } from "@/lib/utils/instance/worlds";
 
 export function useInstancesQuery(path: string | undefined, type: ClientType) {
@@ -89,7 +97,10 @@ export function useModsAndDatapacksQuery(instancePath: string | undefined, page:
                 `mods-datapacks:${instancePath}:${page}`,
                 async () => `${modsHash}|${datapacksHash}`,
                 async () => {
-                    const [m, d] = await Promise.all([scanContent(instancePath, "mods", page), scanContent(instancePath, "datapacks", page)]);
+                    const [m, d] = await Promise.all([
+                        scanContent(instancePath, "mods", page),
+                        scanContent(instancePath, "datapacks", page)
+                    ]);
                     return { items: [...m.items, ...d.items], total: m.total + d.total, hasMore: m.hasMore || d.hasMore };
                 }
             );

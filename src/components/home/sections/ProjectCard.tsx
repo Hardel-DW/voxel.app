@@ -64,6 +64,15 @@ export default function ProjectCard({ project, onOpen, onRemove }: ProjectCardPr
                                 )}>
                                 {project.type === "mods" ? "Mod" : "Datapack"}
                             </span>
+                            <span
+                                className={cn(
+                                    "text-xs px-2 py-0.5 rounded-md font-medium",
+                                    project.type === "folder"
+                                        ? "bg-amber-500/10 text-amber-400 border border-amber-500/20"
+                                        : "bg-sky-500/10 text-sky-400 border border-sky-500/20"
+                                )}>
+                                {project.type === "folder" ? "Folder" : project.type === "mods" ? "Jar" : "Zipped"}
+                            </span>
                             <span className="text-xs text-zinc-500">{formatRelativeTime(project.lastOpened)}</span>
                         </div>
                     ) : (

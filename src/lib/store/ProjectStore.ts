@@ -46,9 +46,8 @@ export const openDatapackFromPath = async (path: string, onSuccess: () => void) 
         useConfiguratorStore.getState().setup(datapack, isModded, name);
         useProjectStore.getState().setSourceMetadata({ path, type: sourceType });
         useProjectStore.getState().markClean();
-        useHomeStore.getState().addRecentProject({ name, path, type: projectType, icon: iconPath ?? undefined });
-
         onSuccess();
+        useHomeStore.getState().addRecentProject({ name, path, type: projectType, icon: iconPath ?? undefined });
     } catch (e: unknown) {
         console.error("[openDatapackFromPath] Error:", e);
     }

@@ -7,11 +7,7 @@ interface CacheEntry<T> {
 
 const store = Store.load("cache.json");
 
-export async function cachedFetch<T>(
-    key: string,
-    computeHash: () => Promise<string>,
-    fetch: () => Promise<T>
-): Promise<T> {
+export async function cachedFetch<T>(key: string, computeHash: () => Promise<string>, fetch: () => Promise<T>): Promise<T> {
     const s = await store;
     const hash = await computeHash();
     const cached = await s.get<CacheEntry<T>>(key);

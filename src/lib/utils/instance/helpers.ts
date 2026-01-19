@@ -4,7 +4,10 @@ import { exists, readDir } from "@tauri-apps/plugin-fs";
 
 export async function hashDir(path: string): Promise<string> {
     const entries = await readDir(path).catch(() => []);
-    return entries.map((e) => e.name).toSorted().join("|");
+    return entries
+        .map((e) => e.name)
+        .toSorted()
+        .join("|");
 }
 
 export async function safeExists(path: string): Promise<boolean> {

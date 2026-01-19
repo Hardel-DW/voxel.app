@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import GameClients from "@/components/home/client/GameClients";
-import RecentProjects from "@/components/home/sections/RecentProjects";
+import EmptyState from "@/components/home/sections/EmptyState";
+import ProjectList from "@/components/home/sections/ProjectList";
 import Background from "@/components/layout/Background";
 import NewsSidebar from "@/components/layout/news/NewsSidebar";
 import { TextInput } from "@/components/ui/TextInput";
@@ -14,6 +15,7 @@ export const Route = createFileRoute("/$lang/")({
 
 function HomePage() {
     const projectCount = useHomeStore((s) => s.recentProjects.length);
+    const projects = useHomeStore((s) => s.recentProjects);
     const t = useTranslate();
 
     return (
@@ -34,7 +36,7 @@ function HomePage() {
                             <TextInput placeholder="Search projects..." className="min-w-64 backdrop-blur-xs relative z-50" />
                         </div>
                     </div>
-                    <RecentProjects />
+                    <section className="space-y-4 relative z-50 px-8">{projects.length > 0 ? <ProjectList /> : <EmptyState />}</section>
                     <GameClients />
                 </div>
             </div>
