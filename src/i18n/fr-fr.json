@@ -888,6 +888,7 @@
     "tauri:home.recent.empty": "Aucun projet récent",
     "tauri:home.recent.empty.hint": "Importez un datapack ou mod pour commencer",
     "tauri:home.recent.clear": "Tout effacer",
+    "tauri:home.recent.not_found": "Non trouvé ou déplacé",
     "tauri:home.clients.title": "Instances de Jeu",
     "tauri:home.clients.worlds": "{count} mondes",
     "tauri:home.clients.scan": "Scanner ce dossier pour découvrir les mondes",

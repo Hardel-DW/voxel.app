@@ -1,44 +1,94 @@
+import { revealItemInDir } from "@tauri-apps/plugin-opener";
 import { formatRelativeTime } from "@/lib/getGreeting";
-import type { RecentProject } from "@/lib/store/HomeStore";
+import { useTranslate } from "@/lib/i18n";
+import { useHomeStore, type RecentProject } from "@/lib/store/HomeStore";
 import { cn } from "@/lib/utils";
 import { convertIconToSrc } from "@/lib/utils/instance/helpers";
 
-export default function ProjectCard(props: { project: RecentProject; onOpen: () => void; onRemove: () => void }) {
-    const iconSrc = convertIconToSrc(props.project.icon ?? null);
+interface ProjectCardProps {
+    project: RecentProject;
+    onOpen: () => void;
+    onRemove: () => void;
+}
+
+export default function ProjectCard({ project, onOpen, onRemove }: ProjectCardProps) {
+    const t = useTranslate();
+    const exists = useHomeStore((s) => s.projectExistsMap[project.path] ?? true);
+    const iconSrc = convertIconToSrc(project.icon ?? null);
+
     return (
-        <article className="group relative flex items-center gap-4 p-4 rounded-xl shadow-lg shadow-zinc-950/20 bg-zinc-950/30 border border-zinc-800/50 hover:border-zinc-700/50 transition-all ease-in-out duration-200 backdrop-blur-sm">
-            <button
-                type="button"
-                onClick={props.onOpen}
-                className="absolute inset-0 z-0 cursor-pointer rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
-                aria-label={`Open ${props.project.name}`}
-            />
-            <div className="size-14 rounded-xl bg-zinc-900 border border-zinc-800/50 flex items-center justify-center overflow-hidden shrink-0">
-                <img src={iconSrc ?? "/images/addons/icon/yggdrasil.webp"} alt="Project icon" className="size-full object-cover" />
+        <article
+            className={cn(
+                "group relative flex items-center gap-4 p-4 rounded-xl shadow-lg shadow-zinc-950/20 border transition-all ease-in-out duration-200 backdrop-blur-sm",
+                exists
+                    ? "bg-zinc-950/30 border-zinc-800/50 hover:border-zinc-700/50"
+                    : "bg-red-950/20 border-red-900/30 opacity-60"
+            )}>
+            {exists ? (
+                <button
+                    type="button"
+                    onClick={onOpen}
+                    className="absolute inset-0 z-0 cursor-pointer rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-500"
+                    aria-label={`Open ${project.name}`}
+                />
+            ) : (
+                <div className="absolute inset-0 z-0 rounded-xl cursor-not-allowed" />
+            )}
+            <div
+                className={cn(
+                    "size-14 rounded-xl border flex items-center justify-center overflow-hidden shrink-0",
+                    exists ? "bg-zinc-900 border-zinc-800/50" : "bg-red-950/30 border-red-900/30"
+                )}>
+                <img
+                    src={iconSrc}
+                    alt="Project icon"
+                    className={cn("size-full object-cover", !exists && "grayscale opacity-50")}
+                />
             </div>
             <div className="flex-1 min-w-0 pointer-events-none">
-                <p className="font-medium text-zinc-200 group-hover:text-white transition-colors truncate">{props.project.name}</p>
-                <div className="flex items-center gap-2 mt-1">
-                    <span
+                <div className="flex flex-col">
+                    <p
                         className={cn(
-                            "text-xs px-2 py-0.5 rounded-md font-medium",
-                            props.project.type === "mods"
-                                ? "bg-purple-500/10 text-purple-400 border border-purple-500/20"
-                                : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                            "font-medium transition-colors truncate",
+                            exists ? "text-zinc-200 group-hover:text-white" : "text-red-400/70"
                         )}>
-                        {props.project.type === "mods" ? "Mod" : "Datapack"}
+                        {project.name}
+                    </p>
+                    <span className="text-[9px] text-zinc-600 truncate max-w-9/10" title={project.path}>
+                        {project.path}
                     </span>
-                    <span className="text-xs text-zinc-500">{formatRelativeTime(props.project.lastOpened)}</span>
+                </div>
+                <div className="flex items-center gap-2 mt-1">
+                    {exists ? (
+                        <div className="flex items-center gap-2">
+                            <span
+                                className={cn(
+                                    "text-xs px-2 py-0.5 rounded-md font-medium",
+                                    project.type === "mods"
+                                        ? "bg-purple-500/10 text-purple-400 border border-purple-500/20"
+                                        : "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
+                                )}>
+                                {project.type === "mods" ? "Mod" : "Datapack"}
+                            </span>
+                            <span className="text-xs text-zinc-500">{formatRelativeTime(project.lastOpened)}</span>
+                        </div>
+                    ) : (
+                        <span className="text-xs text-red-400/70">{t("tauri:home.recent.not_found")}</span>
+                    )}
                 </div>
             </div>
-            <button
-                type="button"
-                onClick={props.onRemove}
-                className="relative z-10 opacity-0 group-hover:opacity-100 p-2 rounded-lg hover:bg-zinc-700/50 transition-all cursor-pointer">
-                <svg className="size-4 text-zinc-500 hover:text-zinc-300" viewBox="0 0 16 16" fill="none">
-                    <path d="M4 4L12 12M12 4L4 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-                </svg>
-            </button>
+            <div className={cn("relative z-10 flex items-center gap-1", exists ? "opacity-0 group-hover:opacity-100" : "opacity-100")}>
+                <button
+                    type="button"
+                    onClick={() => revealItemInDir(project.path)}
+                    className="p-2 rounded-lg hover:bg-zinc-700/50 transition-all cursor-pointer group/icon"
+                    aria-label="Open in file explorer">
+                    <img src="/icons/folder.svg" alt="Open in file explorer" className="size-4 invert-25 group-hover/icon:invert-70" />
+                </button>
+                <button type="button" onClick={onRemove} className={cn("p-2 rounded-lg transition-all cursor-pointer group/icon", exists ? "hover:bg-zinc-700/50" : "hover:bg-red-900/30")}>
+                    <img src="/icons/close.svg" alt="Remove" className="size-4 invert-25 group-hover/icon:invert-70" />
+                </button>
+            </div>
         </article>
     );
 }

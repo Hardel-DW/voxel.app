@@ -55,7 +55,7 @@ src/
 
 ### Key Architectural Concepts
 #### Voxel Studio
-- **Main Store**: `src/components/tools/Store.ts` - Central Zustand store
+- **Store Folder**: `src/lib/store.ts` - Central Zustand store
   managing:
   - Voxel elements and datapack compilation
   - Current element selection and editing
@@ -69,7 +69,7 @@ src/
 
 #### Internationalization
 - use t() function to transtale string allow interpolation with {}, i18n code is in @/lib/i18n.ts.
-- All translations are in `src-tauri/resources/locales` folder.
+- All translations are in `src/i18n` folder.
 
 #### Element System
 - Powered by `@voxelio/breeze` library for Minecraft datapack operations

@@ -887,6 +887,7 @@
     "tauri:home.recent.empty": "No recent projects",
     "tauri:home.recent.empty.hint": "Import a datapack or mod to get started",
     "tauri:home.recent.clear": "Clear all",
+    "tauri:home.recent.not_found": "Not found or moved",
     "tauri:home.clients.title": "Game Instances",
     "tauri:home.clients.worlds": "{count} worlds",
     "tauri:home.clients.scan": "Scan this folder to discover worlds",
