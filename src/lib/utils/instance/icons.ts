@@ -5,28 +5,23 @@ import { safeExists } from "@/lib/utils/instance/helpers";
 import type { ContentType } from "@/lib/utils/instance/types";
 
 const ICON_FALLBACKS: Record<ContentType, string[]> = {
-    mods: ["icon.png", "logo.png"],
+    mods: ["pack.png", "icon.png", "logo.png"],
     datapacks: ["pack.png"],
     resourcepacks: ["pack.png"]
 };
 
-const ICON_EXTRACTORS = {
-    json: (content: string) => /"icon"\s*:\s*"([^"]+)"/.exec(content)?.[1] ?? null,
-    toml: (content: string) => /logoFile\s*=\s*"([^"]+)"/.exec(content)?.[1] ?? null
-} as const;
-
-const MOD_LOADER_FILES: Record<string, keyof typeof ICON_EXTRACTORS> = {
-    "fabric.mod.json": "json",
-    "quilt.mod.json": "json",
-    "META-INF/neoforge.mods.toml": "toml",
-    "META-INF/mods.toml": "toml"
-};
+const MOD_META_FILES = [
+    { file: "fabric.mod.json", regex: /"icon"\s*:\s*"([^"]+)"/ },
+    { file: "quilt.mod.json", regex: /"icon"\s*:\s*"([^"]+)"/ },
+    { file: "META-INF/neoforge.mods.toml", regex: /logoFile\s*=\s*"([^"]+)"/ },
+    { file: "META-INF/mods.toml", regex: /logoFile\s*=\s*"([^"]+)"/ }
+] as const;
 
 function findModIcon(files: Record<string, Uint8Array>): Uint8Array | null {
-    for (const [metaFile, format] of Object.entries(MOD_LOADER_FILES)) {
-        const content = files[metaFile];
+    for (const { file, regex } of MOD_META_FILES) {
+        const content = files[file];
         if (!content) continue;
-        const iconPath = ICON_EXTRACTORS[format](new TextDecoder().decode(content));
+        const iconPath = regex.exec(new TextDecoder().decode(content))?.[1];
         if (iconPath && files[iconPath]) return files[iconPath];
     }
     return null;
