@@ -105,3 +105,14 @@ Set -> intersection().union().difference().symmetricDifference().isSubsetOf().is
 Nullish Coalescing -> ??
 Logical Assignment -> ||=
 Float16Array
+
+Rules For Rust: 
+1. Unwrap()
+Using .unwrap() in production code is a major red flag, as the resulting code is likely very fragile and relies on potentially unclear preconditions.
+Andrew Gallant (author of ripgrep) recommends preferring expect() over unwrap(), as it provides more descriptive messages when a panic occurs.
+
+2. Unhandled Mutex Poisoning
+Most mutex uses simply unwrap() these results, propagating panics between threads to ensure that a possibly invalid invariant is not observed.
+
+3. Type-erased errors
+Type-erased errors (like String) should only be used in prototypes where maintenance will never be a concern.

@@ -1,4 +1,5 @@
-import { readDir, readFile } from "@tauri-apps/plugin-fs";
+import { invoke } from "@tauri-apps/api/core";
+import { readFile } from "@tauri-apps/plugin-fs";
 import { Datapack } from "@voxelio/breeze";
 import { cachePackIcon, findIconInDir } from "@/lib/utils/instance/icons";
 
@@ -11,28 +12,26 @@ export interface DatapackLoadResult {
 
 const extractName = (path: string) => path.split(/[/\\]/).pop() ?? path;
 
-const normalizePath = (path: string) => path.replace(/\\/g, "/");
+const base64ToUint8Array = (base64: string): Uint8Array => {
+    const binary = atob(base64);
+    const bytes = new Uint8Array(binary.length);
+    for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+    }
+    return bytes;
+};
 
-const readDirRecursive = async (dirPath: string, rootPath: string): Promise<Record<string, Uint8Array>> => {
-    const entries = await readDir(dirPath);
-    const normalizedRoot = normalizePath(rootPath);
-
-    const results = await Promise.all(
-        entries.map(async (entry): Promise<Record<string, Uint8Array>> => {
-            const fullPath = normalizePath(`${dirPath}/${entry.name}`);
-            const relativePath = fullPath.slice(normalizedRoot.length + 1);
-
-            if (entry.isDirectory) {
-                return readDirRecursive(fullPath, rootPath);
-            }
-            return entry.isFile ? { [relativePath]: await readFile(fullPath) } : {};
-        })
-    );
-    return Object.assign({}, ...results);
+const readDirectoryRecursive = async (path: string): Promise<Record<string, Uint8Array>> => {
+    const result = await invoke<Record<string, string>>("read_directory_recursive", { path });
+    const files: Record<string, Uint8Array> = {};
+    for (const [key, value] of Object.entries(result)) {
+        files[key] = base64ToUint8Array(value);
+    }
+    return files;
 };
 
 export const loadDatapackFromFolder = async (path: string): Promise<DatapackLoadResult> => {
-    const files = await readDirRecursive(path, path);
+    const files = await readDirectoryRecursive(path);
     const result = new Datapack(files).parse();
     const iconPath = await findIconInDir(path, "datapacks");
     return { datapack: result, name: extractName(path), isModded: false, iconPath };

@@ -42,10 +42,9 @@ export const openDatapackFromPath = async (path: string, onSuccess: () => void) 
 
         const sourceType: SourceType = isDir ? "folder" : isModded ? "jar" : "zip";
         const projectType = isDir ? "folder" : isModded ? "mods" : "datapacks";
-        const sourceMetadata: SourceMetadata = { path, type: sourceType };
 
         useConfiguratorStore.getState().setup(datapack, isModded, name);
-        useProjectStore.getState().setSourceMetadata(sourceMetadata);
+        useProjectStore.getState().setSourceMetadata({ path, type: sourceType });
         useProjectStore.getState().markClean();
         useHomeStore.getState().addRecentProject({ name, path, type: projectType, icon: iconPath ?? undefined });
 
