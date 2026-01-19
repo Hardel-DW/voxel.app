@@ -1,22 +1,35 @@
 import { ContentCard } from "@/components/home/sections/ContentCard";
 import AsyncContent from "@/components/ui/AsyncContent";
-import Pagination, { type PageState } from "@/components/ui/Pagination";
+import Pagination from "@/components/ui/Pagination";
 import { cn } from "@/lib/utils";
 import { convertIconToSrc } from "@/lib/utils/instance/helpers";
-import type { PackContent, WorldInfo } from "@/lib/utils/instance/types";
+import type { PackContent, PaginatedResult, WorldInfo } from "@/lib/utils/instance/types";
 import { PAGE_SIZE } from "@/lib/utils/instance/worlds";
-
-type LoadablePageState<T, C = undefined> = PageState<T> & { load: (page?: number, context?: C) => void };
 
 interface WorldRowProps {
     world: WorldInfo;
     expanded: boolean;
-    datapacks: LoadablePageState<PackContent, string>;
+    datapacks: PaginatedResult<PackContent> | undefined;
+    datapacksLoading: boolean;
+    datapacksPage: number;
     onExpand: () => void;
     onConfigure: (pack: PackContent) => void;
+    onDatapacksPageChange: (page: number) => void;
 }
 
-export default function WorldRow({ world, expanded, datapacks, onExpand, onConfigure }: WorldRowProps) {
+export default function WorldRow({
+    world,
+    expanded,
+    datapacks,
+    datapacksLoading,
+    datapacksPage,
+    onExpand,
+    onConfigure,
+    onDatapacksPageChange
+}: WorldRowProps) {
+    const items = datapacks?.items ?? [];
+    const total = datapacks?.total ?? 0;
+
     return (
         <div
             className={cn(
@@ -34,8 +47,8 @@ export default function WorldRow({ world, expanded, datapacks, onExpand, onConfi
             />
             {expanded && (
                 <div className="mt-2 pl-6 flex flex-col gap-1.5 border-l-2 border-zinc-700/50 ml-7">
-                    <AsyncContent loading={datapacks.loading} empty={datapacks.items.length === 0}>
-                        {datapacks.items.map((dp) => (
+                    <AsyncContent loading={datapacksLoading} empty={items.length === 0}>
+                        {items.map((dp) => (
                             <ContentCard
                                 key={dp.path}
                                 title={dp.name}
@@ -46,11 +59,11 @@ export default function WorldRow({ world, expanded, datapacks, onExpand, onConfi
                             />
                         ))}
                         <Pagination
-                            page={datapacks.page}
-                            total={datapacks.total}
+                            page={datapacksPage}
+                            total={total}
                             pageSize={PAGE_SIZE}
-                            loading={datapacks.loading}
-                            onPageChange={(p) => datapacks.load(p, world.path)}
+                            loading={datapacksLoading}
+                            onPageChange={onDatapacksPageChange}
                         />
                     </AsyncContent>
                 </div>

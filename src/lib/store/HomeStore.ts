@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { removeCachedIcon } from "@/lib/utils/instance/icons";
 import { safeExists } from "@/lib/utils/instance/helpers";
+import { removeCachedIcon } from "@/lib/utils/instance/icons";
 import type { ClientType } from "@/lib/utils/instance/types";
 
 export type ProjectType = "datapacks" | "mods" | "resourcepacks" | "folder";

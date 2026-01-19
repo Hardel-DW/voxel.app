@@ -1,59 +1,27 @@
 import { getCurrentWebview } from "@tauri-apps/api/webview";
-import { useRef, useState, useSyncExternalStore } from "react";
+import { useEffect, useState } from "react";
 
-interface TauriDropState {
-    isDragging: boolean;
-    paths: string[];
-}
+export function useTauriFileDrop(onDrop?: (paths: string[]) => void) {
+    const [isDragging, setIsDragging] = useState(false);
 
-const initialState: TauriDropState = { isDragging: false, paths: [] };
+    useEffect(() => {
+        const promise = getCurrentWebview().onDragDropEvent((event) => {
+            const type = event.payload.type;
 
-export function useTauriFileDrop(onDrop: (paths: string[]) => void) {
-    const [state, setState] = useState<TauriDropState>(initialState);
-    const unlistenRef = useRef<(() => void) | null>(null);
-    const onDropRef = useRef(onDrop);
-    onDropRef.current = onDrop;
-
-    const subscribe = (callback: () => void) => {
-        let isMounted = true;
-
-        getCurrentWebview()
-            .onDragDropEvent((event) => {
-                if (!isMounted) return;
-
-                const { type } = event.payload;
-
-                if (type === "enter" || type === "over") {
-                    setState({ isDragging: true, paths: [] });
-                    callback();
-                } else if (type === "drop") {
-                    const paths = event.payload.paths;
-                    setState({ isDragging: false, paths });
-                    onDropRef.current(paths);
-                    callback();
-                } else if (type === "leave") {
-                    setState(initialState);
-                    callback();
-                }
-            })
-            .then((unlisten) => {
-                if (isMounted) {
-                    unlistenRef.current = unlisten;
-                } else {
-                    unlisten();
-                }
-            });
+            if (type === "enter" || type === "over") {
+                setIsDragging(true);
+            } else if (type === "drop") {
+                setIsDragging(false);
+                onDrop?.(event.payload.paths);
+            } else {
+                setIsDragging(false);
+            }
+        });
 
         return () => {
-            isMounted = false;
-            unlistenRef.current?.();
-            unlistenRef.current = null;
+            promise.then((unlisten) => unlisten());
         };
-    };
+    }, [onDrop]);
 
-    const getSnapshot = () => state;
-
-    useSyncExternalStore(subscribe, getSnapshot, getSnapshot);
-
-    return { isDragging: state.isDragging };
+    return { isDragging };
 }

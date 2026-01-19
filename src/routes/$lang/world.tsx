@@ -6,17 +6,16 @@ import WorldRow from "@/components/home/world/WorldRow";
 import Background from "@/components/layout/Background";
 import NewsSidebar from "@/components/layout/news/NewsSidebar";
 import AsyncContent from "@/components/ui/AsyncContent";
-import Pagination, { usePaginatedLoader } from "@/components/ui/Pagination";
+import Pagination from "@/components/ui/Pagination";
 import { Tabs, TabsContent, TabsTrigger } from "@/components/ui/Tabs";
 import { openDatapackFromPath } from "@/lib/store/ProjectStore";
-import { useCacheValue } from "@/lib/utils/cache";
-import { countsCache, syncCounts } from "@/lib/utils/instance/cache";
-import { scanContent, scanDatapacks } from "@/lib/utils/instance/content";
+import { useContentCountsQuery, useContentQuery, useDatapacksQuery, useModsAndDatapacksQuery, useWorldsQuery } from "@/lib/utils/instance";
 import { convertIconToSrc } from "@/lib/utils/instance/helpers";
-import type { PackContent, WorldInfo } from "@/lib/utils/instance/types";
-import { PAGE_SIZE, scanWorlds } from "@/lib/utils/instance/worlds";
+import type { PackContent } from "@/lib/utils/instance/types";
+import { PAGE_SIZE } from "@/lib/utils/instance/worlds";
 
 type TabType = "worlds" | "mods" | "resourcepacks";
+
 export const Route = createFileRoute("/$lang/world")({
     component: WorldPage,
     validateSearch: (search: Record<string, unknown>) => ({
@@ -30,55 +29,33 @@ function WorldPage() {
     const navigate = useNavigate();
     const { lang } = useParams({ from: "/$lang" });
     const [tab, setTab] = useState<TabType>("worlds");
+    const [worldsPage, setWorldsPage] = useState(0);
+    const [modsPage, setModsPage] = useState(0);
+    const [resourcepacksPage, setResourcepacksPage] = useState(0);
     const [expandedWorld, setExpandedWorld] = useState<string | null>(null);
-    const cachedCounts = useCacheValue(countsCache, path);
-    if (path && !cachedCounts) syncCounts(path);
+    const [datapacksPage, setDatapacksPage] = useState(0);
+    const counts = useContentCountsQuery(path);
+    const worlds = useWorldsQuery(path, worldsPage);
+    const mods = useModsAndDatapacksQuery(path, modsPage);
+    const resourcepacks = useContentQuery(path, "resourcepacks", resourcepacksPage);
+    const datapacks = useDatapacksQuery(expandedWorld, datapacksPage);
+    if (!path) return <div className="size-full flex items-center justify-center text-zinc-500">No instance selected</div>;
 
-    const worlds = usePaginatedLoader<WorldInfo>((page) => {
-        if (!path) return Promise.resolve({ items: [], total: 0, hasMore: false });
-        return scanWorlds(path, page);
-    });
-
-    const mods = usePaginatedLoader<PackContent>(async (page) => {
-        if (!path) return { items: [], total: 0, hasMore: false };
-        const [m, d] = await Promise.all([scanContent(path, "mods", page), scanContent(path, "datapacks", page)]);
-        return { items: [...m.items, ...d.items], total: m.total + d.total, hasMore: m.hasMore || d.hasMore };
-    });
-
-    const resourcepacks = usePaginatedLoader<PackContent>((page) => {
-        if (!path) return Promise.resolve({ items: [], total: 0, hasMore: false });
-        return scanContent(path, "resourcepacks", page);
-    });
-
-    const datapacks = usePaginatedLoader<PackContent, string>((page, worldPath) => {
-        if (!worldPath) return Promise.resolve({ items: [], total: 0, hasMore: false });
-        return scanDatapacks(worldPath, page);
-    });
-
-    const tabs = { worlds, mods, resourcepacks } as const;
-    const current = tabs[tab];
-    if (!path) throw new Error("No instance selected");
-
-    const handleTabChange = (t: string) => {
-        const newTab = t as TabType;
-        setTab(newTab);
-        if (tabs[newTab].total === 0 && !tabs[newTab].loading) tabs[newTab].load();
-    };
-
+    const handleTabChange = (t: string) => setTab(t as TabType);
     const handleWorldExpand = (worldPath: string) => {
         const isExpanding = expandedWorld !== worldPath;
         setExpandedWorld(isExpanding ? worldPath : null);
-        if (isExpanding) {
-            datapacks.reset();
-            datapacks.load(0, worldPath);
-        }
+        if (isExpanding) setDatapacksPage(0);
     };
 
-    if (worlds.total === 0 && !worlds.loading) worlds.load();
-    const firstWorldIcon = worlds.items[0]?.iconPath;
-    const backgroundSrc = convertIconToSrc(firstWorldIcon);
-    const handleOpenDatapack = (pack: PackContent) =>
+    const handleOpenDatapack = (pack: PackContent) => {
         openDatapackFromPath(pack.path, () => navigate({ to: "/$lang/studio/editor/enchantment/overview", params: { lang } }));
+    };
+
+    const firstWorldIcon = worlds.data?.items[0]?.iconPath ?? null;
+    const backgroundSrc = convertIconToSrc(firstWorldIcon);
+    const currentTotal =
+        tab === "worlds" ? (worlds.data?.total ?? 0) : tab === "mods" ? (mods.data?.total ?? 0) : (resourcepacks.data?.total ?? 0);
 
     return (
         <div className="size-full flex relative">
@@ -96,44 +73,49 @@ function WorldPage() {
                 <Header
                     name={name}
                     path={path}
-                    total={current.total}
+                    total={currentTotal}
                     iconSrc={backgroundSrc}
                     onBack={() => navigate({ to: "/$lang", params: { lang } })}
                 />
                 <Tabs defaultValue={tab} onValueChange={handleTabChange} className="flex-1 flex flex-col min-h-0 px-8 gap-4">
-                    <TabsTrigger value="worlds">Worlds ({cachedCounts?.worlds ?? worlds.total})</TabsTrigger>
+                    <TabsTrigger value="worlds">Worlds ({counts.data?.worlds ?? worlds.data?.total ?? 0})</TabsTrigger>
                     <TabsTrigger value="mods">
-                        Mods & Packs ({cachedCounts ? cachedCounts.mods + cachedCounts.datapacks : mods.total})
+                        Mods & Packs ({counts.data ? counts.data.mods + counts.data.datapacks : (mods.data?.total ?? 0)})
                     </TabsTrigger>
-                    <TabsTrigger value="resourcepacks">Resources ({cachedCounts?.resourcepacks ?? resourcepacks.total})</TabsTrigger>
+                    <TabsTrigger value="resourcepacks">
+                        Resources ({counts.data?.resourcepacks ?? resourcepacks.data?.total ?? 0})
+                    </TabsTrigger>
 
                     <TabsContent value="worlds" className="flex-1 overflow-y-auto pb-8 flex flex-col gap-2">
-                        <AsyncContent loading={worlds.loading} empty={worlds.items.length === 0}>
+                        <AsyncContent loading={worlds.isLoading} empty={worlds.data?.items.length === 0}>
                             <div className="worlds-list flex flex-col gap-2">
-                                {worlds.items.map((world) => (
+                                {worlds.data?.items.map((world) => (
                                     <WorldRow
                                         key={world.path}
                                         world={world}
                                         expanded={expandedWorld === world.path}
-                                        datapacks={datapacks}
+                                        datapacks={datapacks.data}
+                                        datapacksLoading={datapacks.isLoading}
+                                        datapacksPage={datapacksPage}
                                         onExpand={() => handleWorldExpand(world.path)}
                                         onConfigure={handleOpenDatapack}
+                                        onDatapacksPageChange={setDatapacksPage}
                                     />
                                 ))}
                             </div>
                             <Pagination
-                                page={worlds.page}
-                                total={worlds.total}
+                                page={worldsPage}
+                                total={worlds.data?.total ?? 0}
                                 pageSize={PAGE_SIZE}
-                                loading={worlds.loading}
-                                onPageChange={(p) => worlds.load(p)}
+                                loading={worlds.isFetching}
+                                onPageChange={setWorldsPage}
                             />
                         </AsyncContent>
                     </TabsContent>
 
                     <TabsContent value="mods" className="flex-1 overflow-y-auto pb-8 flex flex-col gap-2">
-                        <AsyncContent loading={mods.loading} empty={mods.items.length === 0}>
-                            {mods.items.map((pack) => (
+                        <AsyncContent loading={mods.isLoading} empty={mods.data?.items.length === 0}>
+                            {mods.data?.items.map((pack) => (
                                 <ContentCard
                                     key={pack.path}
                                     title={pack.name}
@@ -144,18 +126,18 @@ function WorldPage() {
                                 />
                             ))}
                             <Pagination
-                                page={mods.page}
-                                total={mods.total}
+                                page={modsPage}
+                                total={mods.data?.total ?? 0}
                                 pageSize={PAGE_SIZE}
-                                loading={mods.loading}
-                                onPageChange={(p) => mods.load(p)}
+                                loading={mods.isFetching}
+                                onPageChange={setModsPage}
                             />
                         </AsyncContent>
                     </TabsContent>
 
                     <TabsContent value="resourcepacks" className="flex-1 overflow-y-auto pb-8 flex flex-col gap-2">
-                        <AsyncContent loading={resourcepacks.loading} empty={resourcepacks.items.length === 0}>
-                            {resourcepacks.items.map((rp) => (
+                        <AsyncContent loading={resourcepacks.isLoading} empty={resourcepacks.data?.items.length === 0}>
+                            {resourcepacks.data?.items.map((rp) => (
                                 <ContentCard
                                     key={rp.path}
                                     title={rp.name}
@@ -166,11 +148,11 @@ function WorldPage() {
                                 />
                             ))}
                             <Pagination
-                                page={resourcepacks.page}
-                                total={resourcepacks.total}
+                                page={resourcepacksPage}
+                                total={resourcepacks.data?.total ?? 0}
                                 pageSize={PAGE_SIZE}
-                                loading={resourcepacks.loading}
-                                onPageChange={(p) => resourcepacks.load(p)}
+                                loading={resourcepacks.isFetching}
+                                onPageChange={setResourcepacksPage}
                             />
                         </AsyncContent>
                     </TabsContent>

@@ -1,26 +1,14 @@
-import { useState } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import GameCard from "@/components/home/client/GameCard";
 import { useTranslate } from "@/lib/i18n";
 import type { GameClient } from "@/lib/store/HomeStore";
-import { useCacheValue } from "@/lib/utils/cache";
-import { instanceCache, syncClient } from "@/lib/utils/instance/cache";
-
-const SYNC_COOLDOWN = 5000;
+import { useInstancesQuery } from "@/lib/utils/instance";
 
 export default function ClientRow({ client, showDivider }: { client: GameClient; showDivider: boolean }) {
     const t = useTranslate();
-    const { data, syncing } = { data: useCacheValue(instanceCache, client.path), syncing: instanceCache.isSyncing(client.path) };
-    const [lastSync, setLastSync] = useState(0);
-
-    if (!data && !syncing) syncClient(client.path, client.type);
-
-    const canSync = Date.now() - lastSync > SYNC_COOLDOWN;
-    const handleSync = () => {
-        if (!canSync || syncing) return;
-        setLastSync(Date.now());
-        syncClient(client.path, client.type, true);
-    };
-
+    const queryClient = useQueryClient();
+    const { data, isFetching } = useInstancesQuery(client.path, client.type);
+    const handleSync = () => queryClient.invalidateQueries({ queryKey: ["instances", client.path, client.type] });
     const isVanilla = client.type === "vanilla";
     const emptyLabel = isVanilla ? t("tauri:home.noWorlds") : t("tauri:home.noInstances");
     const items = data ?? [];
@@ -35,11 +23,11 @@ export default function ClientRow({ client, showDivider }: { client: GameClient;
                     <button
                         type="button"
                         onClick={handleSync}
-                        disabled={!canSync || syncing}
+                        disabled={isFetching}
                         className="p-1 rounded hover:bg-zinc-800/50 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
                         title={t("tauri:home.sync")}>
                         <svg
-                            className={`size-4 text-zinc-400 ${syncing ? "animate-spin" : ""}`}
+                            className={`size-4 text-zinc-400 ${isFetching ? "animate-spin" : ""}`}
                             fill="none"
                             viewBox="0 0 24 24"
                             stroke="currentColor">

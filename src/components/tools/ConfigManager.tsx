@@ -1,10 +1,10 @@
+import { useParams } from "@tanstack/react-router";
 import type { PropsWithChildren } from "react";
 import { Button } from "@/components/ui/Button";
 import LineSetup from "@/components/ui/line/LineSetup";
 import { useTranslate } from "@/lib/i18n";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import RestoreLastSession from "./RestoreLastSession";
-import { useParams } from "@tanstack/react-router";
 
 export default function ConfigManager(props: PropsWithChildren) {
     const t = useTranslate();

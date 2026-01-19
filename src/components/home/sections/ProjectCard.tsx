@@ -1,7 +1,7 @@
 import { revealItemInDir } from "@tauri-apps/plugin-opener";
 import { formatRelativeTime } from "@/lib/getGreeting";
 import { useTranslate } from "@/lib/i18n";
-import { useHomeStore, type RecentProject } from "@/lib/store/HomeStore";
+import { type RecentProject, useHomeStore } from "@/lib/store/HomeStore";
 import { cn } from "@/lib/utils";
 import { convertIconToSrc } from "@/lib/utils/instance/helpers";
 
@@ -20,9 +20,7 @@ export default function ProjectCard({ project, onOpen, onRemove }: ProjectCardPr
         <article
             className={cn(
                 "group relative flex items-center gap-4 p-4 rounded-xl shadow-lg shadow-zinc-950/20 border transition-all ease-in-out duration-200 backdrop-blur-sm",
-                exists
-                    ? "bg-zinc-950/30 border-zinc-800/50 hover:border-zinc-700/50"
-                    : "bg-red-950/20 border-red-900/30 opacity-60"
+                exists ? "bg-zinc-950/30 border-zinc-800/50 hover:border-zinc-700/50" : "bg-red-950/20 border-red-900/30 opacity-60"
             )}>
             {exists ? (
                 <button
@@ -39,11 +37,7 @@ export default function ProjectCard({ project, onOpen, onRemove }: ProjectCardPr
                     "size-14 rounded-xl border flex items-center justify-center overflow-hidden shrink-0",
                     exists ? "bg-zinc-900 border-zinc-800/50" : "bg-red-950/30 border-red-900/30"
                 )}>
-                <img
-                    src={iconSrc}
-                    alt="Project icon"
-                    className={cn("size-full object-cover", !exists && "grayscale opacity-50")}
-                />
+                <img src={iconSrc} alt="Project icon" className={cn("size-full object-cover", !exists && "grayscale opacity-50")} />
             </div>
             <div className="flex-1 min-w-0 pointer-events-none">
                 <div className="flex flex-col">
@@ -85,7 +79,13 @@ export default function ProjectCard({ project, onOpen, onRemove }: ProjectCardPr
                     aria-label="Open in file explorer">
                     <img src="/icons/folder.svg" alt="Open in file explorer" className="size-4 invert-25 group-hover/icon:invert-70" />
                 </button>
-                <button type="button" onClick={onRemove} className={cn("p-2 rounded-lg transition-all cursor-pointer group/icon", exists ? "hover:bg-zinc-700/50" : "hover:bg-red-900/30")}>
+                <button
+                    type="button"
+                    onClick={onRemove}
+                    className={cn(
+                        "p-2 rounded-lg transition-all cursor-pointer group/icon",
+                        exists ? "hover:bg-zinc-700/50" : "hover:bg-red-900/30"
+                    )}>
                     <img src="/icons/close.svg" alt="Remove" className="size-4 invert-25 group-hover/icon:invert-70" />
                 </button>
             </div>

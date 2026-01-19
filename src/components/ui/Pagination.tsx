@@ -1,25 +1,4 @@
-import { useState } from "react";
 import { cn } from "@/lib/utils";
-import type { PaginatedResult } from "@/lib/utils/instance/types";
-
-export interface PageState<T> extends PaginatedResult<T> {
-    page: number;
-    loading: boolean;
-}
-
-const emptyPage = <T,>(): PageState<T> => ({ items: [], total: 0, hasMore: false, page: 0, loading: false });
-
-export const usePaginatedLoader = <T, C = undefined>(loader: (page: number, context: C) => Promise<PaginatedResult<T>>) => {
-    const [state, setState] = useState<PageState<T>>(emptyPage());
-
-    const load = async (page = 0, context?: C) => {
-        setState((s) => ({ ...s, loading: true }));
-        const result = await loader(page, context as C);
-        setState({ ...result, page, loading: false });
-    };
-
-    return { ...state, load, reset: () => setState(emptyPage()) };
-};
 
 interface PaginationProps {
     page: number;
