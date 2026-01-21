@@ -13,25 +13,19 @@ export interface SourceMetadata {
 
 export interface ProjectState {
     sourceMetadata: SourceMetadata | null;
-    isDirty: boolean;
-    markDirty: () => void;
-    markClean: () => void;
     setSourceMetadata: (source: SourceMetadata | null) => void;
     createNewProject: () => void;
 }
 
 export const useProjectStore = create<ProjectState>((set) => ({
     sourceMetadata: null,
-    isDirty: false,
-    markDirty: () => set({ isDirty: true }),
-    markClean: () => set({ isDirty: false }),
     setSourceMetadata: (source) => set({ sourceMetadata: source }),
     createNewProject: () => {
         const mcmeta = { pack: { pack_format: 61, description: "New Voxel Project" } };
         const files = new Datapack({ "pack.mcmeta": new TextEncoder().encode(JSON.stringify(mcmeta)) }).getFiles();
         const logger = new Logger(files);
         useConfiguratorStore.getState().setup({ files, elements: new Map(), version: 61, logger }, false, "New Project");
-        set({ sourceMetadata: null, isDirty: false });
+        set({ sourceMetadata: null });
     }
 }));
 
@@ -45,7 +39,6 @@ export const openDatapackFromPath = async (path: string, onSuccess: () => void) 
 
         useConfiguratorStore.getState().setup(datapack, isModded, name);
         useProjectStore.getState().setSourceMetadata({ path, type: sourceType });
-        useProjectStore.getState().markClean();
         onSuccess();
         useHomeStore.getState().addRecentProject({ name, path, type: projectType, icon: iconPath ?? undefined });
     } catch (e: unknown) {

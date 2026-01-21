@@ -38,7 +38,7 @@ function ChangesLayout() {
     const onSelectElement = (filePath: string) => {
         navigate({ to: detailRoute, params: { lang }, search: { file: filePath } });
     };
-    const onSelectFolder = () => {};
+    const onSelectFolder = () => { };
 
     const pushMutation = useMutation({
         mutationFn: () => {

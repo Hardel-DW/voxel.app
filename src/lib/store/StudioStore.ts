@@ -14,6 +14,7 @@ import { useGithubStore } from "@/lib/store/GithubStore";
 import { useNavigationStore } from "@/lib/store/NavigationStore";
 import { useTabsStore } from "@/lib/store/TabsStore";
 import { encodeFilesRecord } from "@/lib/utils/encode";
+import { syncFolderToDisk } from "@/lib/utils/saveDatapack";
 import { saveSession, updateSessionData, updateSessionLogger } from "@/lib/utils/sessionPersistence";
 
 export type RegistrySearchOptions = {
@@ -90,6 +91,7 @@ const createConfiguratorStore = <T extends keyof Analysers>() =>
             if (!updatedElement || !isVoxelElement(updatedElement)) return;
             set((state) => ({ elements: state.elements.set(elementId, updatedElement), registryCache: new Map() }));
             updateSessionLogger(state.logger);
+            syncFolderToDisk();
         },
         setup: (updates, isModded, name) => {
             set({
