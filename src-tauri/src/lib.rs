@@ -3,11 +3,18 @@ use jwalk::WalkDir;
 use rayon::prelude::*;
 use std::collections::HashMap;
 use std::path::Path;
-use std::sync::Mutex;
+use std::sync::{Mutex, OnceLock};
 use tauri::Manager;
 use tauri_plugin_fs::FsExt;
 
+static LAUNCH_PATH: OnceLock<Option<String>> = OnceLock::new();
+
 const IGNORED_DIRS: &[&str] = &[".git", ".github", "node_modules", ".vscode", ".idea", "__pycache__"];
+
+#[tauri::command]
+fn get_launch_path() -> Option<String> {
+    LAUNCH_PATH.get().cloned().flatten()
+}
 
 #[tauri::command]
 fn allow_directory(app: tauri::AppHandle, path: std::path::PathBuf) -> Result<(), String> {
@@ -63,7 +70,17 @@ pub fn run() {
         .plugin(tauri_plugin_persisted_scope::init())
         .plugin(tauri_plugin_store::Builder::new().build())
         .plugin(tauri_plugin_dialog::init())
-        .invoke_handler(tauri::generate_handler![allow_directory, read_directory_recursive])
+        .plugin(tauri_plugin_cli::init())
+        .setup(|app| {
+            let launch_path = app.cli().matches().ok().and_then(|matches| {
+                matches.args.get("launch_by_minecraft").and_then(|arg| {
+                    arg.value.as_str().map(|s| s.to_string())
+                })
+            });
+            let _ = LAUNCH_PATH.set(launch_path);
+            Ok(())
+        })
+        .invoke_handler(tauri::generate_handler![allow_directory, read_directory_recursive, get_launch_path])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");
 }

@@ -1,5 +1,6 @@
 import { createRouter, RouterProvider } from "@tanstack/react-router";
 import ReactDOM from "react-dom/client";
+import { useLaunchStore } from "@/lib/store/LaunchStore";
 import { routeTree } from "./routeTree.gen";
 import "./globals.css";
 
@@ -10,6 +11,8 @@ declare module "@tanstack/react-router" {
         router: typeof router;
     }
 }
+
+useLaunchStore.getState().initialize();
 
 const rootElement = document.getElementById("root");
 if (rootElement && !rootElement.innerHTML) {

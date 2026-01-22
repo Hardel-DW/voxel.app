@@ -29,4 +29,5 @@ base64 = "0.22"
 jwalk = "0.8"
 rayon = "1.10"
 tauri-plugin-persisted-scope = { version = "2.3", features = ["protocol-asset"] }
+tauri-plugin-cli = "2"
 

@@ -3,6 +3,18 @@
     "productName": "studio",
     "version": "0.1.0",
     "identifier": "com.hardel-dw.studio",
+    "plugins": {
+        "cli": {
+            "args": [
+                {
+                    "name": "launch_by_minecraft",
+                    "short": "m",
+                    "takesValue": true,
+                    "description": "Path to mods/datapack folder when launched from Minecraft"
+                }
+            ]
+        }
+    },
     "build": {
         "beforeDevCommand": "pnpm dev",
         "devUrl": "http://localhost:1420",
