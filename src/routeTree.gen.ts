@@ -19,6 +19,7 @@ import { Route as LangStudioEditorRecipeRouteImport } from './routes/$lang/studi
 import { Route as LangStudioEditorLoot_tableRouteImport } from './routes/$lang/studio/editor/loot_table'
 import { Route as LangStudioEditorGithubRouteImport } from './routes/$lang/studio/editor/github'
 import { Route as LangStudioEditorEnchantmentRouteImport } from './routes/$lang/studio/editor/enchantment'
+import { Route as LangStudioEditorDebugRouteImport } from './routes/$lang/studio/editor/debug'
 import { Route as LangStudioEditorChangesRouteImport } from './routes/$lang/studio/editor/changes'
 import { Route as LangStudioEditorRecipeOverviewRouteImport } from './routes/$lang/studio/editor/recipe/overview'
 import { Route as LangStudioEditorRecipeMainRouteImport } from './routes/$lang/studio/editor/recipe/main'
@@ -93,6 +94,11 @@ const LangStudioEditorEnchantmentRoute =
     path: '/enchantment',
     getParentRoute: () => LangStudioEditorRoute,
   } as any)
+const LangStudioEditorDebugRoute = LangStudioEditorDebugRouteImport.update({
+  id: '/debug',
+  path: '/debug',
+  getParentRoute: () => LangStudioEditorRoute,
+} as any)
 const LangStudioEditorChangesRoute = LangStudioEditorChangesRouteImport.update({
   id: '/changes',
   path: '/changes',
@@ -227,6 +233,7 @@ export interface FileRoutesByFullPath {
   '/$lang/': typeof LangIndexRoute
   '/$lang/studio/editor': typeof LangStudioEditorRouteWithChildren
   '/$lang/studio/editor/changes': typeof LangStudioEditorChangesRouteWithChildren
+  '/$lang/studio/editor/debug': typeof LangStudioEditorDebugRoute
   '/$lang/studio/editor/enchantment': typeof LangStudioEditorEnchantmentRouteWithChildren
   '/$lang/studio/editor/github': typeof LangStudioEditorGithubRoute
   '/$lang/studio/editor/loot_table': typeof LangStudioEditorLoot_tableRouteWithChildren
@@ -259,6 +266,7 @@ export interface FileRoutesByTo {
   '/$lang': typeof LangIndexRoute
   '/$lang/studio/editor': typeof LangStudioEditorRouteWithChildren
   '/$lang/studio/editor/changes': typeof LangStudioEditorChangesRouteWithChildren
+  '/$lang/studio/editor/debug': typeof LangStudioEditorDebugRoute
   '/$lang/studio/editor/enchantment': typeof LangStudioEditorEnchantmentRouteWithChildren
   '/$lang/studio/editor/github': typeof LangStudioEditorGithubRoute
   '/$lang/studio/editor/loot_table': typeof LangStudioEditorLoot_tableRouteWithChildren
@@ -293,6 +301,7 @@ export interface FileRoutesById {
   '/$lang/': typeof LangIndexRoute
   '/$lang/studio/editor': typeof LangStudioEditorRouteWithChildren
   '/$lang/studio/editor/changes': typeof LangStudioEditorChangesRouteWithChildren
+  '/$lang/studio/editor/debug': typeof LangStudioEditorDebugRoute
   '/$lang/studio/editor/enchantment': typeof LangStudioEditorEnchantmentRouteWithChildren
   '/$lang/studio/editor/github': typeof LangStudioEditorGithubRoute
   '/$lang/studio/editor/loot_table': typeof LangStudioEditorLoot_tableRouteWithChildren
@@ -328,6 +337,7 @@ export interface FileRouteTypes {
     | '/$lang/'
     | '/$lang/studio/editor'
     | '/$lang/studio/editor/changes'
+    | '/$lang/studio/editor/debug'
     | '/$lang/studio/editor/enchantment'
     | '/$lang/studio/editor/github'
     | '/$lang/studio/editor/loot_table'
@@ -360,6 +370,7 @@ export interface FileRouteTypes {
     | '/$lang'
     | '/$lang/studio/editor'
     | '/$lang/studio/editor/changes'
+    | '/$lang/studio/editor/debug'
     | '/$lang/studio/editor/enchantment'
     | '/$lang/studio/editor/github'
     | '/$lang/studio/editor/loot_table'
@@ -393,6 +404,7 @@ export interface FileRouteTypes {
     | '/$lang/'
     | '/$lang/studio/editor'
     | '/$lang/studio/editor/changes'
+    | '/$lang/studio/editor/debug'
     | '/$lang/studio/editor/enchantment'
     | '/$lang/studio/editor/github'
     | '/$lang/studio/editor/loot_table'
@@ -495,6 +507,13 @@ declare module '@tanstack/react-router' {
       path: '/enchantment'
       fullPath: '/$lang/studio/editor/enchantment'
       preLoaderRoute: typeof LangStudioEditorEnchantmentRouteImport
+      parentRoute: typeof LangStudioEditorRoute
+    }
+    '/$lang/studio/editor/debug': {
+      id: '/$lang/studio/editor/debug'
+      path: '/debug'
+      fullPath: '/$lang/studio/editor/debug'
+      preLoaderRoute: typeof LangStudioEditorDebugRouteImport
       parentRoute: typeof LangStudioEditorRoute
     }
     '/$lang/studio/editor/changes': {
@@ -745,6 +764,7 @@ const LangStudioEditorRecipeRouteWithChildren =
 
 interface LangStudioEditorRouteChildren {
   LangStudioEditorChangesRoute: typeof LangStudioEditorChangesRouteWithChildren
+  LangStudioEditorDebugRoute: typeof LangStudioEditorDebugRoute
   LangStudioEditorEnchantmentRoute: typeof LangStudioEditorEnchantmentRouteWithChildren
   LangStudioEditorGithubRoute: typeof LangStudioEditorGithubRoute
   LangStudioEditorLoot_tableRoute: typeof LangStudioEditorLoot_tableRouteWithChildren
@@ -753,6 +773,7 @@ interface LangStudioEditorRouteChildren {
 
 const LangStudioEditorRouteChildren: LangStudioEditorRouteChildren = {
   LangStudioEditorChangesRoute: LangStudioEditorChangesRouteWithChildren,
+  LangStudioEditorDebugRoute: LangStudioEditorDebugRoute,
   LangStudioEditorEnchantmentRoute:
     LangStudioEditorEnchantmentRouteWithChildren,
   LangStudioEditorGithubRoute: LangStudioEditorGithubRoute,

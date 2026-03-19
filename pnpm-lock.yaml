@@ -38,6 +38,9 @@ importers:
       '@voxelio/converter':
         specifier: ^1.0.45
         version: 1.0.45
+      '@voxelio/diff':
+        specifier: ^1.0.8
+        version: 1.0.8
       '@voxelio/snbt':
         specifier: ^1.0.2
         version: 1.0.2

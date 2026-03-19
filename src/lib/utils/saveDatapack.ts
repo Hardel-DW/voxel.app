@@ -3,10 +3,19 @@ import { mkdir, remove, writeFile } from "@tauri-apps/plugin-fs";
 import { DatapackDownloader } from "@voxelio/breeze";
 import { TOAST, toast } from "@/components/ui/Toast";
 import { translate } from "@/lib/i18n";
+import { logger } from "@/lib/store/DebugStore";
 import { type SourceMetadata, useProjectStore } from "@/lib/store/ProjectStore";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 
 const ensureDir = async (path: string) => mkdir(await dirname(path), { recursive: true }).catch(() => {});
+
+/** Stores the content we just wrote, for comparison in file watcher */
+const lastWrittenFiles = new Map<string, Uint8Array>();
+
+export const getLastWrittenContent = (relativePath: string): Uint8Array | undefined => lastWrittenFiles.get(relativePath);
+export const clearLastWritten = (relativePath: string): void => {
+    lastWrittenFiles.delete(relativePath);
+};
 
 /**
  * Write modified files to disk for folder mode
@@ -21,21 +30,32 @@ export const syncFolderToDisk = async (): Promise<void> => {
     const compiledFiles = compiledDatapack.getFiles();
     const diff = new DatapackDownloader(compiledFiles).getDiff(files);
 
+    if (diff.size === 0) {
+        logger.info().cat("Sync").msg("No changes to sync").send();
+        return;
+    }
+
+    logger.info().cat("Sync").msg(`Syncing ${diff.size} file(s) to disk`).with({ files: [...diff.keys()] }).send();
+
     const basePath = sourceMetadata.path;
 
     for (const [relativePath, status] of diff) {
         const fullPath = `${basePath}/${relativePath}`;
 
         if (status === "deleted") {
+            lastWrittenFiles.delete(relativePath);
             await remove(fullPath).catch(() => {});
+            logger.warn().cat("Sync").msg(`Deleted: ${relativePath}`).send();
             continue;
         }
 
         const content = compiledFiles[relativePath];
         if (!content) continue;
 
+        lastWrittenFiles.set(relativePath, content);
         await ensureDir(fullPath);
         await writeFile(fullPath, content);
+        logger.success().cat("Sync").msg(`Written: ${relativePath}`).with({ status }).send();
     }
 };
 

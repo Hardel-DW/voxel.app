@@ -3,6 +3,7 @@ import { create } from "zustand";
 import { useHomeStore } from "@/lib/store/HomeStore";
 import { useConfiguratorStore } from "@/lib/store/StudioStore";
 import { loadDatapackFromFolder, loadDatapackFromPath } from "@/lib/utils/datapack";
+import { startWatching, stopWatching } from "@/lib/utils/folderWatcher";
 
 export type SourceType = "zip" | "jar" | "folder";
 
@@ -31,6 +32,8 @@ export const useProjectStore = create<ProjectState>((set) => ({
 
 export const openDatapackFromPath = async (path: string, onSuccess: () => void) => {
     try {
+        stopWatching();
+
         const isDir = !path.endsWith(".zip") && !path.endsWith(".jar");
         const { datapack, name, isModded, iconPath } = isDir ? await loadDatapackFromFolder(path) : await loadDatapackFromPath(path);
 
@@ -39,6 +42,11 @@ export const openDatapackFromPath = async (path: string, onSuccess: () => void) 
 
         useConfiguratorStore.getState().setup(datapack, isModded, name);
         useProjectStore.getState().setSourceMetadata({ path, type: sourceType });
+
+        if (isDir) {
+            await startWatching(path);
+        }
+
         onSuccess();
         useHomeStore.getState().addRecentProject({ name, path, type: projectType, icon: iconPath ?? undefined });
     } catch (e: unknown) {

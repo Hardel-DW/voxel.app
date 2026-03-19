@@ -5,6 +5,7 @@ use std::collections::HashMap;
 use std::path::Path;
 use std::sync::{Mutex, OnceLock};
 use tauri::Manager;
+use tauri_plugin_cli::CliExt;
 use tauri_plugin_fs::FsExt;
 
 static LAUNCH_PATH: OnceLock<Option<String>> = OnceLock::new();

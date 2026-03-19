@@ -24,6 +24,7 @@
         "@tauri-apps/plugin-store": "^2.4.2",
         "@voxelio/breeze": "^1.10.33",
         "@voxelio/converter": "^1.0.45",
+        "@voxelio/diff": "^1.0.8",
         "@voxelio/snbt": "^1.0.2",
         "@voxelio/zip": "^3.2.3",
         "react": "^19.2.3",

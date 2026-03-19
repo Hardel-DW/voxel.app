@@ -132,7 +132,7 @@ function EnchantmentYggdrasilPage() {
                             title={t(`yggdrasil:${key}.title`)}
                             description={t(`yggdrasil:${key}.description`)}
                             image={value.image}
-                            action={CoreAction.toggleValue("tags", value.tag)}
+                            action={CoreAction.toggleValueInList("tags", value.tag)}
                             renderer={(el: EnchantmentProps) => el.tags.includes(value.tag)}
                         />
                     ))}
@@ -147,7 +147,7 @@ function EnchantmentYggdrasilPage() {
                             title={t(`yggdrasil:${key}.title`)}
                             description={t(`yggdrasil:${key}.description`)}
                             image={value.image}
-                            action={CoreAction.toggleValue("tags", value.tag)}
+                            action={CoreAction.toggleValueInList("tags", value.tag)}
                             renderer={(el: EnchantmentProps) => el.tags.includes(value.tag)}
                         />
                     ))}
@@ -162,7 +162,7 @@ function EnchantmentYggdrasilPage() {
                             title={t(`yggdrasil:${key}.title`)}
                             description={t(`yggdrasil:${key}.description`)}
                             image={value.image}
-                            action={CoreAction.toggleValue("tags", value.tag)}
+                            action={CoreAction.toggleValueInList("tags", value.tag)}
                             renderer={(el: EnchantmentProps) => el.tags.includes(value.tag)}
                         />
                     ))}
@@ -177,7 +177,7 @@ function EnchantmentYggdrasilPage() {
                             title={t(`yggdrasil:runic_laby.${key}.title`)}
                             description={t(`yggdrasil:runic_laby.${key}.description`)}
                             image={value.image}
-                            action={CoreAction.toggleValue("tags", value.tag)}
+                            action={CoreAction.toggleValueInList("tags", value.tag)}
                             renderer={(el: EnchantmentProps) => el.tags.includes(value.tag)}
                         />
                     ))}
